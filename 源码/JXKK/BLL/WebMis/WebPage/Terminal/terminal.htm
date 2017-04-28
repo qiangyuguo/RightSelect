@@ -1,0 +1,104 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>终端查询</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //加载终端状态列表
+            $("#ddlTerminalStatus").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Terminal/TerminalHttp.ashx?action=ddlStatusListLoad'
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 200;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Terminal/TerminalHttp.ashx?action=gridLoad',
+                queryParams: {
+                    terminalId: $("#tbTerminalId").val(),
+                    status: $("#ddlTerminalStatus").combobox("getValue"),
+                    supplierCode: $("#tbSupplierCode").val(),
+                    supplierBatch: $("#tbSupplierBatch").val()
+                },
+                idField: 'terminalid',
+                columns: [[
+					{ title: '终端号', field: 'terminalid', width: gridWidth * 0.10, align: 'left' },
+                    { title: '当前状态', field: 'status', width: gridWidth * 0.10, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '在库';
+                            else if (value == "1")
+                                return '使用';
+                            else if (value == "2")
+                                return '停用';
+                            else if (value == "3")
+                                return '维修';
+                            else
+                                return '作废';
+                        }
+                    },
+					{ title: '终端类型', field: 'terminaltype', width: gridWidth * 0.10, align: 'left' },
+                    { title: '快开厅', field: 'sitename', width: gridWidth * 0.15, align: 'left' },
+                    { title: '代理商', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '出厂时间', field: 'supplierdate', width: gridWidth * 0.20, align: 'left' },
+                    { title: '厂家代码', field: 'suppliercode', width: gridWidth * 0.10, align: 'left' },
+                    { title: '厂家批次号', field: 'supplierbatch', width: gridWidth * 0.10, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    terminalId: $("#tbTerminalId").val(),
+                    status: $("#ddlTerminalStatus").combobox("getValue"),
+                    supplierCode: $("#tbSupplierCode").val(),
+                    supplierBatch: $("#tbSupplierBatch").val()
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbTerminalId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        状态:</div>
+                    <div style="float: left; padding: 2px;">
+                        <select id="ddlTerminalStatus" class="easyui-combobox" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        厂家代码</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbSupplierCode" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        厂家批次号</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbSupplierBatch" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

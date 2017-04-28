@@ -1,0 +1,165 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>区域管理</title>
+</head>
+<body>
+
+    <script type="text/javascript">
+		$(document).ready(function(){
+		    //菜单点击事件
+		    $('#myMenu').menu({
+		        onClick:function(item){
+		            if(item.text=='新增'){
+                        $('#myWindow').window({title:"区域新增",iconCls:"icon-add"});
+				        $('#myWindow').window('open');
+		                $('#myForm').form('clear');
+				        var node = $('#myTree').tree('getSelected');
+				        $('#myForm').attr('action','../Set/Handler/AreaHandler.ashx?action=add');
+				        $('#myForm').form('load', { areaId: "系统自动生成",
+				            areaIndex: 0,
+					        parentId: node.attributes["areaId"],
+					        areaLayer: node.attributes["areaLayer"] + 1
+					    });
+			            node=null;
+				    }else if(item.text=='修改'){
+			            $('#myWindow').window({ title: "区域修改", iconCls: "icon-edit" });
+				        $('#myWindow').window('open');
+				        $('#myForm').form('clear');
+				        var node = $('#myTree').tree('getSelected');
+				        $('#myForm').attr('action', '../Set/Handler/AreaHandler.ashx?action=edit&areaId=' + node.attributes["areaId"]);
+				        $('#myForm').form('load', '../Set/Handler/AreaHandler.ashx?action=load&areaId=' + node.attributes["areaId"]);
+				        node=null;
+				    }else if(item.text=='删除'){
+				        var node = $('#myTree').tree('getSelected');
+				        $.messager.confirm("操作提示", "您确认要删除“" + node.attributes["areaName"] + "”区域吗？", function (bChoose) {
+					        if(bChoose==true){
+					            $.getJSON("../Set/Handler/AreaHandler.ashx?action=delete", { areaId: node.attributes["areaId"] }, function (result) {
+							        if($.SuccessCheck(result)==true){//成功检查
+								        $.messager.alert("操作提示",result.message,"info",function(){
+									        $("#myTree").tree("reload");
+								        });
+							        }
+						        });    
+					        }
+					        node=null;
+				        });
+				    }
+               }
+		    });
+		    
+			//加载树
+			$("#myTree").tree({
+			    url: '../Set/Handler/AreaHandler.ashx?action=treeLoad',
+				onContextMenu: function(e, node){
+					e.preventDefault();
+					$('#myTree').tree('select', node.target);
+					$('#myMenu').html('');
+					$('#myMenu').menu('appendItem', {
+	                    text: '新增',
+	                    iconCls: 'icon-add'
+                    });
+                    $('#myMenu').menu('appendItem', {
+	                    text: '修改',
+	                    iconCls: 'icon-edit'
+	                });
+                    $('#myMenu').menu('appendItem', {
+	                    text: '删除',
+	                    iconCls: 'icon-remove'
+	                });
+					if(node.attributes["parentId"]==""){
+						$('#myMenu').menu('removeItem', $('#myMenu').menu('findItem', '修改').target);
+						$('#myMenu').menu('removeItem', $('#myMenu').menu('findItem', '删除').target);
+					}else if(node.attributes["parentId"]=="0" && $('#myTree').tree('isLeaf', node.target)==false){
+						$('#myMenu').menu('removeItem', $('#myMenu').menu('findItem', '删除').target);
+					}else if(node.attributes["parentId"]=="0" && $('#myTree').tree('isLeaf', node.target)==true){
+					   ;
+				    }else{
+						$('#myMenu').menu('removeItem', $('#myMenu').menu('findItem', '新增').target);
+					}
+					$('#myMenu').menu('show',{
+						left: e.pageX,
+						top: e.pageY
+					});
+				}
+			});
+
+			//关闭按钮事件
+		    $('#btnCancel').bind("click",function(){
+		    	$('#myWindow').window('close');
+		    });
+		    
+		    //确定按钮事件
+			$('#btnSave').bind("click",function(){
+				$('#myForm').form('submit',{
+					success:function(data){
+						var objRes = eval("(" + data + ")");
+						if($.SuccessCheck(objRes)==true){//成功检查
+							$.messager.alert("操作提示",objRes.message,"info",function(){
+								$('#myWindow').window('close');//关闭当前窗口
+								$("#myTree").tree("reload");
+							});
+						}
+						objRes=null;
+					}
+				});
+			});	    	
+		});	
+    </script>
+
+    <div class="easyui-panel" data-options="fit:true">
+        <ul id="myTree">
+        </ul>
+    </div>
+    <div id="myMenu" class="easyui-menu" style="width: 120px;">
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 400px">
+        <form id="myForm" method="post" action="">
+            <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td class="tdT" align="right" style="width: 120px;">
+                            区域编号：</td>
+                        <td class="tdE" align="left" style="width: 255px;">
+                            <input type="text" name="areaId" disabled="disabled" value="系统自动生成" style="width: 250px;" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            区域代码：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="areaCode" style="width: 250px;" maxlength="10" class="easyui-validatebox"
+                                data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            区域名称：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="areaName" validtype="name" style="width: 250px;" maxlength="60" class="easyui-validatebox"
+                                data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            使用状态：</td>
+                        <td class="tdE" align="left">
+                            <input type="checkbox" name="isUse"/></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            排列顺序：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="areaIndex" style="width: 250px;" value="0" maxlength="6"
+                                class="easyui-numberbox" data-options="required:true,min:0,max:999999,precision:0" /></td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                            <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                                确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                    data-options="iconCls:'icon-cancel'">取消</a><input type="hidden" id="htbParentId"
+                                        name="parentId" /><input type="hidden" id="htbAreaLayer" name="areaLayer" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

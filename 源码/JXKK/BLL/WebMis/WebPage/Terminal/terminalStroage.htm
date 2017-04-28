@@ -1,0 +1,80 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>终端入库</title>
+</head>
+<body style="text-align:center;">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //清空按钮事件
+            $('#btnClear').bind("click", function () {
+                $('#myForm').form('clear');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').attr('action', '../WebAction/Terminal/TerminalStoreHttp.ashx?action=add');
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+   <div style="margin:20px 0;"></div>
+   <div class="easyui-window" data-options="draggable:false,closable:false,inline:true,title:'终端入库'" style="width:450px">
+        <form id="myForm" method="post" action="" >
+            <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td class="tdT" align="right">
+                            终端号：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="terminalId" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                                data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            终端类型：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="terminalType" style="width: 150px;" maxlength="1" class="easyui-validatebox"
+                                data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            出厂时间：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="supplierDate" class="easyui-datebox"
+					              data-options="validType:'date'" style="width: 153px;" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            厂家代码：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="supplierCode" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                               /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            厂家批次号：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="supplierBatch" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                               /></td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                            <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                                确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnClear" class="easyui-linkbutton"
+                                    data-options="iconCls:'icon-cancel'">清空</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

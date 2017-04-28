@@ -1,0 +1,115 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>非现场执法系统</title>
+
+    <script src="Scripts/common.js" type="text/javascript"></script>
+    <style type="text/css">
+        input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 1000px white inset;
+            border: none;
+            color: black;
+            -webkit-appearance: none; /*for chrome*/
+        }
+
+        input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus, input[type=button] {
+            -webkit-box-shadow: 0 0 0 1000px white inset;
+            border: none;
+            color: black;
+            -webkit-appearance: none; /*for chrome*/
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function login() {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            window.location.href = "main.htm";
+                        } else {
+                            $('#tbUserPwd').val('');
+                        }
+                        objRes = null;
+                    }
+                });
+            }
+
+            //添加登录事件
+            $('#btnLogin').bind('click', login);
+            $('#tbUserCode').bind('keypress', function (event) {
+                if (event.which == 13)
+                    login();
+            });
+            $('#tbUserPwd').bind('keypress', function (event) {
+                if (event.which == 13)
+                    login();
+            });
+
+            //添加取消事件
+            $('#btnCancel').bind('click', function () {
+                $('#tbUserCode').val('');
+                $('#tbUserPwd').val('');
+            });
+        });
+    </script>
+
+</head>
+<body style="background-image: url(Styles/themes/sysImage/login/bg.gif);">
+    <div style="position: absolute; top: 50%; left: 50%; margin: -263px 0 0 -471px; width: 942px;
+            height: 466px;">
+        <form id="myForm" action="../Sys/Handler/LoginHandler.ashx?action=login" method="post">
+            <table style="width: 942px;" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td style="width: 358px; height: 223px;background-image: url(Styles/themes/sysImage/login/left_0_0.jpg);">&nbsp;</td>
+                    <td style="width: 232px;background-image: url(Styles/themes/sysImage/login/center_0_0.jpg);">&nbsp;</td>
+                    <td style="width: 352px;background-image: url(Styles/themes/sysImage/login/right_0_0.jpg);">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td style="height: 81px;background-image: url(Styles/themes/sysImage/login/left.gif);">&nbsp;</td>
+                    <td style="background-image: url(Styles/themes/sysImage/login/center.gif);">
+                        <table style="width: 232px;" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td style="width: 24px;height:30px;background-image: url(Styles/themes/sysImage/login/user.gif); background-position: center center; background-repeat: no-repeat;"></td>
+                                <td style="width: 65px; font-size: 14px; color: white;" align="right">
+                                    用&nbsp;&nbsp;户：
+                                </td>
+                                <td style="width: 142px;" align="left">
+                                    <input type="text" id="tbUserCode" name="userCode" tabindex="1" maxlength="20" class="easyui-validatebox"
+                                           data-options="required:true" style="width: 130px;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height:30px;background-image: url(Styles/themes/sysImage/login/password.gif); background-position: center center; background-repeat: no-repeat;"></td>
+                                <td style="font-size: 14px; color: white;" align="right">
+                                    密&nbsp;&nbsp;码：
+                                </td>
+                                <td align="left">
+                                    <input type="password" id="tbUserPwd" name="userPwd" tabindex="2" maxlength="20"
+                                           class="easyui-validatebox" data-options="required:true" style="width: 130px;" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="background-image: url(Styles/themes/sysImage/login/right.gif);">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height: 162px;background-image: url(Styles/themes/sysImage/login/left_1.gif);">
+                        &nbsp;
+                    </td>
+                    <td style="background-image: url(Styles/themes/sysImage/login/center_1.gif);text-align: center;" valign="top">
+                        &nbsp; &nbsp;
+                        <img id="btnLogin" src="Styles/themes/sysImage/login/login.gif" style="border-width:0px; cursor: hand;" alt="登录" />
+                        &nbsp; &nbsp;<img id="btnCancel" src="Styles/themes/sysImage/login/reset.gif" style="border-width:0px; cursor: hand;" alt="重置" />&nbsp; &nbsp;
+                    </td>
+                    <td style="background-image: url(Styles/themes/sysImage/login/right_1.gif);">
+                        &nbsp;
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

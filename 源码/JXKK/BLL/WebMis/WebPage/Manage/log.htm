@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>系统日志管理</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            var today = new Date();
+            $('#tbStartDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            $('#tbEndDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Manage/LogHttp.ashx?action=gridLoad',
+                queryParams: {
+                    userName: $("#tbUserName").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                idField: 'logid',
+                columns: [[
+					{ title: '编号', field: 'logid', width: gridWidth * 0.06, align: 'left' },
+					{ title: '部门', field: 'deptname', width: gridWidth * 0.09, align: 'left' },
+					{ title: '用户', field: 'username', width: gridWidth * 0.09, align: 'left' },
+					{ title: '模块', field: 'modulename', width: gridWidth * 0.10, align: 'left' },
+					{ title: '操作', field: 'userevent', width: gridWidth * 0.40, align: 'left' },
+					{ title: '时间', field: 'createdate', width: gridWidth * 0.17, align: 'center' }
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                if (!$('#myForm').form('validate'))
+                    return;
+                $('#myDataGrid').datagrid("load", {
+                    userName: $("#tbUserName").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+
+            //删除事件绑定
+            $("#btnRemove").bind('click', function () {
+                if (!$('#myForm').form('validate'))
+                    return;
+                $.messager.confirm("操作提示", "您确认要删除所查询出来的记录吗？", function (bChoose) {
+                    if (bChoose == true) {
+                        $.getJSON("../WebAction/Manage/LogHttp.ashx?action=delete", {
+                            userName: $("#tbUserName").val(),
+                            startDate: $("#tbStartDate").datebox('getValue'),
+                            endDate: $("#tbEndDate").datebox('getValue')
+                        }, function (result) {
+                            if ($.SuccessCheck(result) == false)
+                                return;
+                            $.messager.alert("操作提示", result.message, "info", function () {
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">
+                            删除</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        用户名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbUserName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        查询日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table id="myDataGrid">
+    </table>
+</body>
+</html>

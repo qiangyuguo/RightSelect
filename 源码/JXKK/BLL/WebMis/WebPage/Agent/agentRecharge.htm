@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>保证金充值</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载充值方式列表
+            $("#ddlHandleMode").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Agent/AgentRechargeHttp.ashx?action=handleModeListLoad'
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Agent/AgentRechargeHttp.ashx?action=gridLoad',
+                idField: 'agentid',
+                columns: [[
+					{ title: '代理商编号', field: 'agentid', width: gridWidth * 0.08, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+                    { title: '区域', field: 'areaname', width: gridWidth * 0.10, align: 'left' },
+					{ title: '返点(%)', field: 'rebate', width: gridWidth * 0.07, align: 'right' },
+                    { title: '账户余额', field: 'balancevalue', width: gridWidth * 0.10, align: 'right' },
+                    { title: '预警金额', field: 'warnvalue', width: gridWidth * 0.10, align: 'right' },
+                    { title: '充值总额', field: 'sumrecharge', width: gridWidth * 0.10, align: 'right' },
+                    { title: '提现总额', field: 'sumdraw', width: gridWidth * 0.10, align: 'right' },
+                    { title: '客户提现', field: 'clientsumdraw', width: gridWidth * 0.10, align: 'right' },
+                    { title: '客户充值', field: 'clientsumrecharge', width: gridWidth * 0.10, align: 'right' }
+
+				]],
+                toolbar: "#tb"
+            });
+            //增加事件绑定
+            $("#btnAdd").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要充值的代理商', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "代理商充值", iconCls: "icon-add" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../WebAction/Agent/AgentRechargeHttp.ashx?action=add');
+                $('#myForm').form('load', '../WebAction/Agent/AgentRechargeHttp.ashx?action=load&agentId=' + row.agentid);
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#tbAgentId").val(),
+                    agentName: $("#tbAgentName").val(),
+                    bankCardId: $("#tbBankCardId").val()
+                });
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">
+                            充值</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentId" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        名称:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbAgentName" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        银行帐号</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbBankCardId" class="easyui-textbox" style="width: 180px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        所属代理商：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="agentName" disabled="disabled" style="width: 180px;" />
+                        <input type="hidden" name="agentId" />
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="tdT" align="right">
+                        当前余额(元)：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="balanceValue" disabled="disabled" style="width: 183px;" maxlength="12" class="easyui-numberbox"
+                            />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        充值金额(元)：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="fee" style="width: 183px;" maxlength="12"  class="easyui-numberbox"
+                            data-options="required:true,min:0,precision:2" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        充值方式：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlHandleMode" class="easyui-combobox" name="handleMode" style="width: 183px;"
+                            data-options="required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        银行帐号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="bankCardId" style="width: 180px;" maxlength="25" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        银行流水号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="bankFlowId" style="width: 180px;" maxlength="36" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        说明：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="description" style="width: 180px;" maxlength="50" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

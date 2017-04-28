@@ -1,0 +1,179 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>行政处罚审批</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+
+
+            $('#btnPrint').bind("click", function () {
+
+                alert('print');
+            });
+
+        });
+    </script>
+
+   <form id="form1" runat="server">
+    <!--startprint--> 
+    <div>
+        <p align="center">
+            <b>从轻、减轻或不予行政处罚审批表</b></p>
+        <table align="center" border="1" cellpadding="0" cellspacing="0" width="643">
+            <tr align="middle">
+                <td height="40" rowspan="2" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        申<span class="Apple-converted-space">&nbsp;</span><br />
+                        请<span class="Apple-converted-space">&nbsp;</span><br />
+                        人</p>
+                </td>
+                <td colspan="2" height="40" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        姓名</p>
+                </td>
+                <td colspan="2" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        <input id="xingming" type="text" maxlength="10" size="15" runat="server"/></p>
+                </td>
+                <td style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);" width="74">
+                    <p align="center">
+                        住 址</p>
+                </td>
+                <td colspan="3" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input id="zhuzhi" type="text" maxlength="30" size="30" runat="server"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="40" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        单位名称</p>
+                </td>
+                <td colspan="4" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input id="danwei" type="text" maxlength="30" size="30" runat="server"/>
+                </td>
+                <td style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);" width="96">
+                    <p align="center">
+                        法定代表人</p>
+                </td>
+                <td>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input id="daibiaoren" type="text" maxlength="20" size="18" runat="server"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="80" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        事<span class="Apple-converted-space">&nbsp;</span><br />
+                        实<span class="Apple-converted-space">&nbsp;</span><br />
+                        认<span class="Apple-converted-space">&nbsp;</span><br />
+                        定</p>
+                </td>
+                <td colspan="8" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 申请人于<span class="Apple-converted-space">&nbsp;</span>
+                        <input type="text" id="shenqingtime" maxlength="30" size="15" readonly runat="server" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })"/><span class="Apple-converted-space">&nbsp;</span>驾驶牌号为<span
+                            class="Apple-converted-space">&nbsp;</span>
+                        <input type="text" id="chepai" maxlength="10" size="15" runat="server"/>
+                        <span class="Apple-converted-space">&nbsp;</span>的车辆，在公路上擅自超限</p>
+                    <p>
+                        &nbsp; 行驶，已行驶<span class="Apple-converted-space">&nbsp;</span>
+                        <input type="text" id="gongli" maxlength="4" size="8" runat="server"/>公里。经检测，<span class="Apple-converted-space">&nbsp;</span>
+                        <input type="text" id="jiance" maxlength="30" size="36" runat="server"/></p>
+                </td>
+            </tr>
+            <tr>
+                <td align="middle" colspan="4" height="30" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    交通行政处罚告知书编号
+                </td>
+                <td align="left" colspan="5" height="30" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    &nbsp;&nbsp;<span class="Apple-converted-space">&nbsp;</span>
+                    <input type="text" id="bianhao"  maxlength="20" size="64" style="border-color: red; color: black;" runat="server" datacol="yes" err="该项必须填写" checkexpession="NotNull"/>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="130" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        处罚<span class="Apple-converted-space">&nbsp;</span><br />
+                        决定</p>
+                </td>
+                <td align="middle" colspan="7" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <textarea id="chufajueding" cols="70" rows="6" style="color: black;" runat="server"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="140" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        减免<span class="Apple-converted-space">&nbsp;</span><br />
+                        理由</p>
+                </td>
+                <td colspan="7" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="left">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;减免金额：
+                        <input type="text" id="jianmiannum" maxlength="10" readonly size="25" style="color: rgb(138, 138, 138);" runat="server" onfocus="ShowWindow('jianmiannum')"/></p>
+                    <p align="center">
+                        <textarea id="jianmianliyou" cols="70" rows="6" style="color: black;" runat="server"></textarea></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="170" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        站（所）长<br />
+                        意见</p>
+                </td>
+                <td align="middle" colspan="7" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <textarea id="zhanzhangyijian"  cols="70" rows="6" style="color: black;" runat="server"></textarea>
+                   
+                    <p align="right">
+                        签名：<input id="qianming1" type="text" maxlength="5" size="18" runat="server"/><span
+                            class="Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="Apple-converted-space">&nbsp;</span><input
+                                id="qianmingtime1" maxlength="30" readonly size="18" style="color: black;" runat="server" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })"/><span class="Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" height="170" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <p align="center">
+                        中队长
+
+                        <br />
+                        意见</p>
+                </td>
+                <td align="middle" colspan="7" style="border-collapse: collapse; border: 1px solid rgb(187, 187, 187);">
+                    <textarea id="luzhengyijian" cols="70" rows="6" style="color: black;" runat="server"></textarea>
+                    <p align="right">
+                        签名：<input id="qianming2" type="text" maxlength="5" size="18" runat="server"/><span
+                            class="Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="Apple-converted-space">&nbsp;</span>
+                            <input id="qianmingtime2" type="text" maxlength="30" readonly size="18" style="color: black;" runat="server" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })"/><span class="Apple-converted-space">&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--endprint--> 
+    <div class="frmbottom" align="center">
+        <asp:Button ID="Button1" runat="server" Text="保存" OnClick="Button1_Click" class="button"
+            OnClientClick="return CheckDataValid('#form1');" />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" value="打印" class="button" onclick="doPrint()" />
+    </div>
+    </form>
+    <script src="../Scripts/util.js" type="text/javascript"></script>
+    <script src="../Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+     </body>
+    </html>

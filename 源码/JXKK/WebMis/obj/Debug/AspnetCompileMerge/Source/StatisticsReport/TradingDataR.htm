@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>交易数据报表</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            var today = new Date();
+            $('#tbStartDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            $('#tbEndDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            //加载市区县执法文书类型列表
+            $("#ddlCity").combobox({
+
+                url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=cityListLoad',
+                onSelect: function (recordCity) {
+                    $('#ddlSite').combobox({
+                        url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=siteListLoad&cityId=' + recordCity.value
+                    }).combobox('clear');
+                    $('#ddlCounty').combobox({
+                        url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=countyListLoad&cityId=' + recordCity.value
+                    }).combobox('clear');
+                }
+            });
+            $('#ddlCounty').combobox({
+                onSelect: function (recordCounty) {
+                    $('#ddlSite').combobox({
+                        url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=siteListLoad&countyId=' + recordCounty.value
+                    }).combobox('clear');
+                }
+            });
+            //加载彩种
+            $("#ddlLotteryType").combobox({
+                url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=lotteryTypeListLoad'
+            });
+            //加载彩种
+            $("#ddlGame").combobox({
+                url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=gameListLoad'
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../StatisticsReport/Handler/TradingDataHandler.ashx?action=gridLoad',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                showFooter: true,
+                columns: [[
+                    { title: '市', field: 'city', width: gridWidth * 0.06, align: 'left' },
+                    { title: '区(县)', field: 'county', width: gridWidth * 0.06, align: 'left' },
+                    { title: '执法文书类型名称', field: 'sitename', width: gridWidth * 0.10, align: 'left' },
+                    { title: '终端号', field: 'terminalid', width: gridWidth * 0.09, align: 'left' },
+                    { title: '客户编号', field: 'clientid', width: gridWidth * 0.06, align: 'left' },
+                    { title: '彩种', field: 'lotterytype', width: gridWidth * 0.06, align: 'left' },
+                    { title: '游戏', field: 'gameid', width: gridWidth * 0.06, align: 'left' },
+                    { title: '期次', field: 'period', width: gridWidth * 0.09, align: 'left' },
+                    { title: '交易时间', field: 'bettime', width: gridWidth * 0.15, align: 'left' },
+                    { title: '订单号', field: 'orderid', width: gridWidth * 0.18, align: 'left' },
+                    { title: '销售金额￥', field: 'betfee', width: gridWidth * 0.09, align: 'right' }
+				]],
+                onLoadSuccess: function (data) {
+                    $.SuccessCheck(data); //成功检查
+                    $('#myDataGrid').datagrid('statistics');
+                },
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    cityId: $("#ddlCity").combobox("getValue"),
+                    countyId: $("#ddlCounty").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    terminalId: $("#tbTerminalId").val(),
+                    lotteryType: $("#ddlLotteryType").combobox("getValue"),
+                    gameId: $("#ddlGame").combobox("getValue")
+                });
+            });
+            //输出Excel
+            $("#btnToExcel").bind('click', function () {
+                var startDate = $("#tbStartDate").datebox('getValue');
+                var endDate = $("#tbEndDate").datebox('getValue');
+                var cityId = $("#ddlCity").combobox("getValue");
+                var countyId = $("#ddlCounty").combobox("getValue");
+                var siteId = $("#ddlSite").combobox("getValue");
+                var terminalId = $("#tbTerminalId").val();
+                var lotteryType = $("#ddlLotteryType").combobox("getValue");
+                var gameId = $("#ddlGame").combobox("getValue");
+                location.href = "../StatisticsReport/Handler/TradingDataHandler.ashx?action=ToExcel&startDate=" + startDate + "&endDate=" + endDate + "&cityId=" + cityId + "&countyId=" + countyId + "&siteId=" + siteId + "&terminalId=" + terminalId + "&lotteryType=" + lotteryType + "&gameId=" + gameId + "";
+            });
+        });
+        $.extend($.fn.datagrid.methods, {
+            statistics: function (jq) {
+                debugger;
+                var opt = $(jq).datagrid('options').columns;
+                var rows = $("#myDataGrid").datagrid("getRows");
+                var footer = new Array();
+                footer['sum'] = "";
+                $.getJSON("../StatisticsReport/Handler/TradingDataHandler.ashx?action=totalFee", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    cityId: $("#ddlCity").combobox("getValue"),
+                    countyId: $("#ddlCounty").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    terminalId: $("#tbTerminalId").val(),
+                    lotteryType: $("#ddlLotteryType").combobox("getValue"),
+                    gameId: $("#ddlGame").combobox("getValue")
+                }, function (result) {
+                    debugger;
+                    if ($.SuccessCheck(result) == true) {//成功检查
+                        footer['sum'] = '"betfee":"<b>￥' + result + '</b>",';
+                        var footerObj = new Array();
+                        if (footer['sum'] != "") {
+                            var tmp = '{' + footer['sum'].substring(0, footer['sum'].length - 1) + "}";
+                            var obj = eval('(' + tmp + ')');
+                            if (obj[opt[0][0].field] == undefined) {
+                                footer['sum'] += '"' + opt[0][0].field + '":"<b>合计:</b>"';
+                                obj = eval('({' + footer['sum'] + '})');
+                            } else {
+                                obj[opt[0][0].field] = "<b>合计:</b>" + obj[opt[0][0].field];
+                            }
+                            footerObj.push(obj);
+                        }
+                        if (footerObj.length > 0) {
+                            $(jq).datagrid('reloadFooter', footerObj);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnToExcel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            ToExcel</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        市:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlCity" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        区县:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlCounty" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbTerminalId" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        彩种:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlLotteryType" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        游戏:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlGame" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>&nbsp;&nbsp; <span style="color: Red">注:最大行数不能超过65536行</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

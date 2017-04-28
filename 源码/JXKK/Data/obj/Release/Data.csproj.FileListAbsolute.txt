@@ -1,0 +1,5 @@
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Data\bin\Release\Data.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Data\bin\Release\Data.pdb
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Data\bin\Release\Oracle.ManagedDataAccess.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Data\obj\Release\Data.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Data\obj\Release\Data.pdb

@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>提现申请</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //加载办理状态列表
+            $("#ddlDealWS").combobox({
+                
+                url: '../Agent/Handler/AgentTakeCashApplyHandler.ashx?action=dealWSListLoad'
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Agent/Handler/AgentTakeCashApplyHandler.ashx?action=gridLoad',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                idField: 'flowid',
+                columns: [[
+                    { title: '代理商名称', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '提现金额', field: 'fee', width: gridWidth * 0.10, align: 'right' },
+					{ title: '银行帐号', field: 'bankaccountid', width: gridWidth * 0.20, align: 'left' },
+                    { title: '办理状态', field: 'dealwithstatus', width: gridWidth * 0.10, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '<span style="color:red">待办</span>';
+                            else if (value == "1")
+                                return '已办';
+                            else
+                                return '<span style="color:red">拒绝</span>';
+                        }
+                    },
+                    { title: '转账日期', field: 'transferaccdate', width: gridWidth * 0.20, align: 'left' },
+					{ title: '申请时间', field: 'createtime', width: gridWidth * 0.25, align: 'left' },
+					{ title: '提现说明', field: 'remark', width: gridWidth * 0.40, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+            //修改事件绑定
+            $("#btnEdit").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要办理的记录', 'warning');
+                    return;
+                }
+                if (row.dealwithstatus == "1") {
+                    $.messager.alert('提示', '提现已经办理不能重复操作', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "代理商提现", iconCls: "icon-edit" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../Agent/Handler/AgentTakeCashApplyHandler.ashx?action=edit&flowId=' + row.flowid);
+                $('#myForm').form('load', '../Agent/Handler/AgentTakeCashApplyHandler.ashx?action=load&flowId=' + row.flowid);
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">
+                            办理</a>
+                    </div>
+                     <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        查询日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right" style="width: 120px;">
+                        代理商名称：
+                    </td>
+                    <td class="tdE" align="left" style="width: 305px;">
+                        <input type="text" name="agentName" disabled="disabled" style="width: 150px;" />
+                        <input type="hidden" name="agentId" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        提现金额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="fee" disabled="disabled" style="width: 153px;" maxlength="12" class="easyui-validatebox"/>
+                             <input type="hidden" name="fee" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        银行帐号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="bankAccountId" disabled="disabled" style="width: 150px;" maxlength="25" class="easyui-validatebox" />
+                        <input type="hidden" name="bankAccountId" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        提现说明：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="remark" disabled="disabled" style="width: 150px;" maxlength="80" class="easyui-validatebox"
+                            data-options="required:true" />
+                           <input type="hidden" name="remark" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        办理状态：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlDealWS" name="dealWithStatus" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width: 150px;">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        转账日期：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="transferAccDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 150px;" /></td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        办理意见：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="opinion" style="width: 150px;" maxlength="80" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

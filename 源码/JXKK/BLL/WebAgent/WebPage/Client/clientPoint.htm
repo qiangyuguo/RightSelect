@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>积分明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            //加载快开厅列表
+            $("#ddlSite").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Client/ClientHttp.ashx?action=siteListLoad'
+            });
+	        //查询事件绑定
+	        $("#btnSearch").bind('click', function () {
+	            $('#myDataGrid').datagrid("load", {
+	                clientId: $("#tbClientId").val(),
+	                siteId: $("#ddlSite").combobox("getValue"),
+	                cardId: $("#tbCardId").val(),
+	                clientName: $("#tbClientName").val()
+	            });
+	        });
+
+	        //加载DataGrid
+	        var gridWidth = $("#mainCenter").width() - 25;
+	        $('#myDataGrid').datagrid({
+	            url: '../WebAction/Client/ClientPointHttp.ashx?action=gridLoad',
+	            queryParams: {
+	                clientId: $("#tbClientId").val(),
+	                siteId: $("#ddlSite").combobox("getValue"),
+	                cardId: $("#tbCardId").val(),
+	                clientName: $("#tbClientName").val()
+	            },
+	            idField: 'flowId',
+	            columns: [[
+					{ title: '客户编号', field: 'clientid', width: gridWidth * 0.08, align: 'left' },
+					{ title: '客户名称', field: 'clientname', width: gridWidth * 0.09, align: 'left' },
+					{ title: '快开厅名称', field: 'sitename', width: gridWidth * 0.09, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.08, align: 'left' },
+					{ title: '上次积分', field: 'lastpoint', width: gridWidth * 0.08, align: 'right' },
+                    { title: '发生积分', field: 'point', width: gridWidth * 0.08, align: 'right' },
+                    { title: '剩余积分', field: 'remainingpoint', width: gridWidth * 0.08, align: 'left' },
+                    { title: '创建时间', field: 'createtime', width: gridWidth * 0.16, align: 'left' },
+                    { title: '操作人', field: 'operatorname', width: gridWidth * 0.10, align: 'left' },
+                    { title: '说明', field: 'description', width: gridWidth * 0.16, align: 'left' }
+				]],
+	            toolbar: "#tb"
+	        });
+
+
+	    });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        快开厅:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        卡号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbCardId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbclientName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

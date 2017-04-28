@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>佣金结算</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Agent/Handler/AgentSettlementHandler.ashx?action=gridLoad',
+                columns: [[
+                    { title: '代理商编号', field: 'agentid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '代理商名称', field: 'agentname', width: gridWidth * 0.16, align: 'left' },
+					{ title: '起始日期', field: 'startdate', width: gridWidth * 0.16, align: 'left' },
+					{ title: '结束日期', field: 'enddate', width: gridWidth * 0.16, align: 'left' },
+                    { title: '销售总额(元)', field: 'salefee', width: gridWidth * 0.14, align: 'right' },
+                    { title: '返比(%)', field: 'rebate', width: gridWidth * 0.12, align: 'right' },
+                    { title: '佣金(元)', field: 'commissionfee', width: gridWidth * 0.12, align: 'right' }
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+                $("#hidStartDate").val($("#tbStartDate").datebox('getValue'));
+                $("#hidEndDate").val($("#tbEndDate").datebox('getValue'));
+            });
+            //结算事件绑定
+            $("#btnSettlement").bind('click', function () {
+                var startDate = $("#hidStartDate").val();
+                var endDate = $("#hidEndDate").val();
+                $.messager.confirm("操作提示", "您确定要结算日期为[" + startDate + "至" + endDate + "]的佣金吗？", function (bChoose) {
+                    if (bChoose == true) {
+                        $.getJSON("../Agent/Handler/AgentSettlementHandler.ashx?action=settlement", { startDate: startDate, endDate: endDate }, function (result) {
+                            if ($.SuccessCheck(result) == true) {//成功检查
+                                $.messager.alert("操作提示", result.message, "info", function () {
+                                    $('#myDataGrid').datagrid("reload");
+                                    $('#myDataGrid').datagrid("unselectAll");
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <input type="hidden" id="hidStartDate" />
+    <input type="hidden" id="hidEndDate" />
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnSettlement" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            结算</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

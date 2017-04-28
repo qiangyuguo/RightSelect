@@ -1,0 +1,180 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>扣留车辆凭证</title>
+</head>
+<body>
+    <script type="text/javascript">
+        
+    </script>
+
+    <form id="form1" method="post" action="">
+        <!--startprint-->
+        <div>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;"
+                   width="505">
+                <caption>
+                    <b>
+                        郴州市公路管理局<br />
+                        扣留车辆凭证
+                    </b>
+                </caption>
+                <tr>
+                    <td colspan="3" class="style2">
+                        （&nbsp;
+                        <input id="luzheng" maxlength="8" size="5" type="text" style="color: black;"
+                               value="郴" />
+                        &nbsp;） 路政超限扣留字（&nbsp;
+                        <input id="zistr" maxlength="8" size="8" type="text" style="color: black;" />
+                        &nbsp;）第&nbsp;
+                        <input id="haostr" maxlength="8" size="8" type="text" style="color: black;" />
+                        &nbsp;号&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        <input id="name" type="text" maxlength="25" size="25" style="border-color: red;
+                        color: black;" class="LongTextMust" datacol="yes" err="该项必须填写" checkexpession="NotNull" />&nbsp;:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select id="chenghu1">
+                            <option selected=selected value="你">你</option>
+                            <option value="你单位">你单位</option>
+                        </select>于&nbsp;
+                        <input id="thetime1" type="text" maxlength="21" readonly=readonly size="23"
+                               class="LongText" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                        &nbsp;驾驶牌号为&nbsp;
+                        <input id="chepai" type="text" maxlength="12" size="16" style="color: black;" class="LongText" />
+                    </td>
+                </tr>
+                <tr>
+                    <td id="ext-gen2066" colspan="3" class="style2">
+                        的车辆，在&nbsp;
+                        <input id="zhandian" type="text" maxlength="12" size="49" style="color: black;" class="LongText" />站点超限行驶.
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        <input id="zhandianstr" type="text" maxlength="100" size="67" style="color: black;" class="LongText" />根据
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+
+                        <input id="genju" type="text" maxlength="40" size="58" style="color: black;" class="LongText" />
+                        &nbsp;的规定，决定扣
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        留<select id="kouliu">
+                            <option selected="" value="车辆">车辆</option>
+                            <option value="工具">工具</option>
+                        </select>。&nbsp;
+                        <select id="chenghu2">
+                            <option selected=selected value="你">你</option>
+                            <option value="你单位">你单位</option>
+                        </select>
+                        &nbsp;于&nbsp;
+
+                        <input id="thetime2" type="text" maxlength="27" readonly=readonly size="35" style="color: black;" class="LongText" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })" />&nbsp;前持本
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        凭证到&nbsp;<input id="chuludifang" type="text"
+                                        maxlength="24" size="23" style="color: black;" class="LongText" />&nbsp;接受处理。逾期不接受处理的，本局将依法作
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        出行政处罚决定。
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;对本扣留车辆行政行为不服的，可以在收到本凭证之日起六十日内向郴州市人民政
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        府或郴州市交通运输局申请复议或在三个月内依法向人民法院起诉。在法定期限内不
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        申请复议，不起诉，又不接受处理的，本局将依法处理。
+                    </td>
+                </tr>
+                <tr>
+                    <td id="ext-gen2154" colspan="3" class="style2">
+                        执法人员签名：&nbsp;<input id="zhifaren1" type="text"
+                                            maxlength="15" size="13" style="color: black;" class="LongText" />&nbsp;&nbsp;执法证号：
+                        <input id="zhenghao1" type="text" maxlength="15" size="29" style="color: black;" class="LongText" />
+                    </td>
+                </tr>
+                <tr>
+                    <td id="ext-gen2171" colspan="3" class="style2">
+                        执法人员签名：&nbsp;<input id="zhifaren2" type="text"
+                                            maxlength="15" size="13" style="color: black;" class="LongText" />&nbsp;&nbsp;执法证号：
+                        <input id="zhenghao2" type="text" maxlength="15" size="29" style="color: black;" class="LongText" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="style2">
+                        联&nbsp;&nbsp;系&nbsp;&nbsp;人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="lianxiren" type="text" maxlength="15" size="15" style="color: black;" class="LongText" />
+                        &nbsp;&nbsp;&nbsp;联系电话：&nbsp;
+                        <input id="lianxidianhua" type="text" maxlength="15" size="25" style="color: black;" class="LongText" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="TDALIGNRIGHT" colspan="3" class="style2">
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" colspan="3" class="style2">
+                        <input id="timedate" type="text" maxlength="15" readonly=readonly
+                               size="15" style="color: black;" class="LongText" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })" />
+                        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td class="TDALIGNRIGHT" colspan="3" class="style2">
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <td width="100" class="style2">
+                        当事人签名：
+                    </td>
+                    <td width="160">
+                        <input id="dangshiren" type="text" maxlength="15" size="12" style="color: black;" class="LongText" />
+                    </td>
+                    <td width="180">
+                        <input id="qianmingtime" type="text" maxlength="15" readonly=readonly size="15" style="color: black;" class="LongText" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="TDALIGNRIGHT" colspan="3">
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--endprint-->
+        <div class="frmbottom" align="center">
+            <asp:button id="Button1" text="保存" onclick="Button1_Click" class="button"
+                        onclientclick="return CheckDataValid('#form1');" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="打印" class="button" onclick="doPrint()" />
+        </div>
+    </form>
+
+     </body>
+    </html>

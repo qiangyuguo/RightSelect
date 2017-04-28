@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>SuperWebSocketNETServer</id>
+    <version>0.8</version>
+    <title>SuperWebSocket, a .NET WebSocket Server</title>
+    <authors>Kerry Jiang</authors>
+    <owners>Kerry Jiang</owners>
+    <licenseUrl>http://superwebsocket.codeplex.com/license</licenseUrl>
+    <projectUrl>http://superwebsocket.codeplex.com/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Main features SuperWebSocket already has:
+hixie-76/hybi-00, hybi-10, rfc6455 are supported 
+Linux support by Mono 2.10+ 
+SSL/TLS encryption transferring (wss) support 
+Sub protocol support 
+Support mutiple hosting environment like windows service, console application and web site 
+Support mutiple instances, you can run many websocket server instances on different ports in the same hosting application 
+Maximum concurrency connection number limitation support 
+Built-in JSON support 
+Message level encryption</description>
+    <summary>WebSocket is a technology providing for bi-directional, full-duplex communications channels, over a single Transmission Control Protocol (TCP) socket. It is designed to be implemented in web browsers</summary>
+    <releaseNotes>Upgrade SuperSocket to 1.5.3 which is much more stable
+Added handshake request validating api (WebSocketServer.ValidateHandshake(TWebSocketSession session, string origin))
+Fixed a bug that the m_Filters in the SubCommandBase can be null if the command's method LoadSubCommandFilters(IEnumerable&lt;SubCommandFilterAttribute&gt; globalFilters) is not invoked
+Fixed the compatibility issue on Origin getting in the different version protocols
+Marked ISubCommandFilterLoader as public
+Improved sample projects
+Improved test code</releaseNotes>
+    <tags>SuperWebSocket NET WebSocket  Server Supersocket</tags>
+    <dependencies>
+      <dependency id="log4net" version="2.0.3" />
+      <dependency id="Newtonsoft.Json" version="6.0.2" />
+    </dependencies>
+  </metadata>
+</package>

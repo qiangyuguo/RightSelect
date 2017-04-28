@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>积分明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //客户查询分类
+            $('#ddlClientQuery').combobox({
+                url: '../Client/Handler/ClientPointHandler.ashx?action=clientQueryListLoad',
+                onLoadSuccess: function () { //加载完成后,设置选中第一项
+                    $(this).combobox("select", "0");
+                }
+            });
+            //加载代理商列表
+            $("#ddlAgent").combobox({
+
+                url: '../Client/Handler/ClientPointHandler.ashx?action=agentListLoad',
+                onSelect: function (record) {
+                    $('#ddlSite').combobox({
+                        url: '../Client/Handler/ClientPointHandler.ashx?action=siteListLoad&&agentId=' + record.value
+                    }).combobox('clear');
+                }
+            });
+            $('#ddlSite').combobox({
+                url: '../Client/Handler/ClientPointHandler.ashx?action=siteListLoad'
+            });
+
+            $('#ddlsroState').combobox({
+                url: '../Client/Handler/ClientPointHandler.ashx?action=sroStateLoad'
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#ddlAgent").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    clientQuery: $("#ddlClientQuery").combobox("getValue"),
+                    clientQueryText: $("#tbClientQuery").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    sroState: $("#ddlsroState").combobox("getValue")
+                });
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Client/Handler/ClientPointHandler.ashx?action=gridLoad',
+                idField: 'flowid',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                columns: [[
+					{ title: '客户编号', field: 'clientid', width: gridWidth * 0.06, align: 'left' },
+					{ title: '客户名称', field: 'clientname', width: gridWidth * 0.06, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.09, align: 'left' },
+					{ title: '执法文书类型名称', field: 'sitename', width: gridWidth * 0.09, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.13, align: 'left' },
+					{ title: '上次积分', field: 'lastpoint', width: gridWidth * 0.06, align: 'right' },
+                    { title: '发生积分', field: 'point', width: gridWidth * 0.07, align: 'right' },
+                    { title: '剩余积分', field: 'remainingpoint', width: gridWidth * 0.08, align: 'right' },
+                    { title: '发生时间', field: 'changetime', width: gridWidth * 0.15, align: 'left' },
+                    { title: '来源方式', field: 'srcmode', width: gridWidth * 0.07, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "1")
+                                return '积分奖励';
+                            else if (value == "2")
+                                return '积分兑换';
+                            else if (value == "3")
+                                return '投注赠送';
+                            else if (value == "4")
+                                return '游戏奖励';
+                            else if (value == "5")
+                                return '游戏消耗';
+                            else if (value == "6")
+                                return '促销赠送';
+                        }
+                    },
+                    { title: '说明', field: 'description', width: gridWidth * 0.14, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+            //明细事件绑定
+            $("#btnDetail").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要查看的记录', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "积分明细", iconCls: "icon-ok" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').form('load', '../Client/Handler/ClientPointHandler.ashx?action=load&flowId=' + row.flowid);
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false" style="height: 300px;">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnDetail" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-detail',plain:true">
+                            查看</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlClientQuery" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 80px;">
+                        </select></div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientQuery" style="width: 140px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        发生日期:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlAgent" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        游戏:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlsroState" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                                style="width: 110px;"></select>
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 700px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        客户编号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="clientId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        客户名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="clientName" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        代理商编号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="agentId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        门店编号 ：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="siteId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        卡号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="cardId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        上次积分：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="lastPoint" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        发生积分：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="point" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        剩余积分：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="remainingPoint" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        游戏：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="gameId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        终端：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="terminalId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        来源方式：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="srcMode" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        来源流水号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="srcFlowId" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        操作人：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="operatorName" style="width: 190px;" disabled="disabled"
+                            class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        发生时间：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="createTime" style="width: 190px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        说明：
+                    </td>
+                    <td class="tdE" align="left" colspan="3">
+                        <input type="text" name="description" style="width: 532px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnCancel" class="easyui-linkbutton" data-options="iconCls:'icon-back'">
+                            返回</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

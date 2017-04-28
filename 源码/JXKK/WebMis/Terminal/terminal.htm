@@ -1,0 +1,335 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>终端查询</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //加载执法文书类型
+            $('#ddlSite').combobox({
+                url: '../Terminal/Handler/TerminalHandler.ashx?action=ddlSiteListLoad'
+            });
+            //加载终端状态列表
+            $("#ddlTerminalStatus").combobox({
+
+                url: '../Terminal/Handler/TerminalHandler.ashx?action=ddlStatusListLoad'
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 200;
+            $('#myDataGrid').datagrid({
+                url: '../Terminal/Handler/TerminalHandler.ashx?action=gridLoad',
+                queryParams: {
+                    terminalId: $("#tbTerminalId").val(),
+                    status: $("#ddlTerminalStatus").combobox("getValue"),
+                    supplierCode: $("#tbSupplierCode").val(),
+                    supplierBatch: $("#tbSupplierBatch").val()
+                },
+                idField: 'terminalid',
+                columns: [[
+					{ title: '终端号', field: 'terminalid', width: gridWidth * 0.08, align: 'left' },
+                    { title: '当前状态', field: 'status', width: gridWidth * 0.08, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '在库';
+                            else if (value == "1")
+                                return '使用';
+                            else if (value == "2")
+                                return '停用';
+                            else if (value == "3")
+                                return '维修';
+                            else
+                                return '作废';
+                        }
+                    },
+					{ title: '终端类型', field: 'terminaltype', width: gridWidth * 0.10, align: 'left' },
+                    { title: '执法文书类型', field: 'sitename', width: gridWidth * 0.12, align: 'left' },
+                    { title: '代理商', field: 'agentname', width: gridWidth * 0.12, align: 'left' },
+                    { title: '更新状态', field: 'updatestatus', width: gridWidth * 0.06, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '不更新';
+                            else if (value == "1")
+                                return '更新';
+                        }
+                    },
+                    { title: '版本', field: 'touchscreenversion', width: gridWidth * 0.06, align: 'left' },
+					{ title: '出厂时间', field: 'supplierdate', width: gridWidth * 0.16, align: 'left' },
+                    { title: '厂家代码', field: 'suppliercode', width: gridWidth * 0.10, align: 'left' },
+                    { title: '厂家批次号', field: 'supplierbatch', width: gridWidth * 0.10, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    terminalId: $("#tbTerminalId").val(),
+                    status: $("#ddlTerminalStatus").combobox("getValue"),
+                    supplierCode: $("#tbSupplierCode").val(),
+                    supplierBatch: $("#tbSupplierBatch").val()
+                });
+            });
+            //回收事件绑定
+            $("#btnRecovery").bind('click', function () {
+                $('#myWindow').window({ title: "终端回收", iconCls: "icon-add" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../Terminal/Handler/TerminalHandler.ashx?action=recycle');
+            });
+
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+            //使用事件绑定
+            $("#btnInStore").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                Opera(row, '在库', 0);
+            });
+            //使用事件绑定
+            $("#btnUse").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                Opera(row, '使用', 1);
+            });
+            //使用事件绑定
+            $("#btnStop").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                Opera(row, '停用', 2);
+            });
+            //维修事件绑定
+            $("#btnRepair").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                Opera(row, '维修', 3);
+            });
+            //作废事件绑定
+            $("#btnInvalid").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                Opera(row, '作废', 4);
+            });
+
+
+            //修改事件绑定
+            $("#btnIsUpdate").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要修改的记录', 'warning');
+                    return;
+                }
+                $('#myWindow1').window({ title: "终端是否更新", iconCls: "icon-edit" });
+                $('#myWindow1').window('open');
+                $('#myForm1').form('clear');
+                $('#myForm1').attr('action', '../Terminal/Handler/TerminalHandler.ashx?action=updateStatusEdit&terminalId=' + row.terminalid);
+                $('#myForm1').form('load', '../Terminal/Handler/TerminalHandler.ashx?action=load&terminalId=' + row.terminalid);
+            });
+
+            //关闭按钮事件
+            $('#btnCancel1').bind("click", function () {
+                $('#myWindow1').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave1').bind("click", function () {
+                $('#myForm1').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow1').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+
+        function Opera(row, name, status) {
+            if (row == null) {
+                $.messager.alert('提示', '请选择要' + name + '的记录', 'warning');
+                return;
+            }
+            $.messager.confirm("操作提示", "您确认要" + name + "“" + row.terminalid + "”终端吗？", function (bChoose) {
+                if (bChoose == true) {
+                    $.getJSON("../Terminal/Handler/TerminalHandler.ashx?action=edit", { terminalId: row.terminalid, status: status }, function (result) {
+                        if ($.SuccessCheck(result) == true) {//成功检查
+                            $.messager.alert("操作提示", result.message, "info", function () {
+                                $('#myDataGrid').datagrid("reload");
+                                $('#myDataGrid').datagrid("unselectAll");
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnIsUpdate" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">
+                            是否更新</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnRecovery" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-recovery',plain:true">
+                            回收</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnInStore" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-used',plain:true">
+                            在库</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnStop" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-stop',plain:true">
+                            停用</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnRepair" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-repair',plain:true">
+                            维修</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnInvalid" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-invalid',plain:true">
+                            作废</a>
+                    </div>
+                     <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 130px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbTerminalId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        状态:</div>
+                    <div style="float: left; padding: 2px;">
+                        <select id="ddlTerminalStatus" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        厂家代码</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbSupplierCode" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        厂家批次号</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbSupplierBatch" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        起始终端号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="startTerminalId" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        至：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="endTerminalId" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        数量：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="terminalNum" style="width: 153px;" maxlength="20" class="easyui-numberbox"
+                            data-options="required:true,min:0" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+    <div id="myWindow1" class="easyui-window divWindow" data-options="closed:true" style="width: 350px">
+        <form id="myForm1" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        更新状态：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="checkbox" name="updateStatus" style="width: 100px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave1" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel1" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

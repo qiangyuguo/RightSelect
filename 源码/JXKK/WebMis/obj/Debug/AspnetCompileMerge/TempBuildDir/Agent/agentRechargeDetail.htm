@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>保证金充值明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Agent/Handler/AgentRechargeDetailHandler.ashx?action=gridLoad',
+                queryParams: {
+                    agentId: "",
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                showFooter: true,
+                idField: 'flowid',
+                columns: [[
+                    { title: '代理商编号', field: 'agentid', width: gridWidth * 0.08, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '充值金额', field: 'fee', width: gridWidth * 0.09, align: 'right' },
+					{ title: '当前余额', field: 'balance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '银行账号', field: 'bankaccountid', width: gridWidth * 0.15, align: 'left' },
+                    { title: '操作人', field: 'operatorname', width: gridWidth * 0.10, align: 'left' },
+					{ title: '充值时间', field: 'createtime', width: gridWidth * 0.16, align: 'left' },
+					{ title: '说明', field: 'description', width: gridWidth * 0.20, align: 'left' }
+				]],
+                onLoadSuccess: function (data) {
+                    $.SuccessCheck(data); //成功检查
+                    $('#myDataGrid').datagrid('statistics');
+                },
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#tbAgentId").val(),
+                    agentName: $("#tbAgentName").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+        });
+
+        $.extend($.fn.datagrid.methods, {
+            statistics: function (jq) {
+                var opt = $(jq).datagrid('options').columns;
+                var rows = $("#myDataGrid").datagrid("getRows");
+                var footer = new Array();
+                footer['sum'] = "";
+                $.getJSON("../Agent/Handler/AgentRechargeDetailHandler.ashx?action=totalFee", {
+                    agentId: $("#tbAgentId").val(),
+                    agentName: $("#tbAgentName").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                }, function (result) {
+                    if ($.SuccessCheck(result) == true) {//成功检查
+                        footer['sum'] = '"fee":"<b>￥' + result + '</b>",';
+                        var footerObj = new Array();
+                        if (footer['sum'] != "") {
+                            var tmp = '{' + footer['sum'].substring(0, footer['sum'].length - 1) + "}";
+                            var obj = eval('(' + tmp + ')');
+                            if (obj[opt[0][0].field] == undefined) {
+                                footer['sum'] += '"' + opt[0][0].field + '":"<b>充值总计:</b>"';
+                                obj = eval('({' + footer['sum'] + '})');
+                            } else {
+                                obj[opt[0][0].field] = "<b>充值总计:</b>" + obj[opt[0][0].field];
+                            }
+                            footerObj.push(obj);
+                        }
+                        if (footerObj.length > 0) {
+                            $(jq).datagrid('reloadFooter', footerObj);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentId" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentName" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        查询日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right" style="width: 120px;">
+                        编号：
+                    </td>
+                    <td class="tdE" align="left" style="width: 305px;">
+                        <input type="text" name="flowId" disabled="disabled" value="系统自动生成" style="width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        所属代理商：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlAgent" class="easyui-combobox" name="agentId" data-options="editable:false,panelHeight:'auto'" style="width: 150px;"
+                            data-options="required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        充值金额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="fee" style="width: 150px;" maxlength="12" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        充值方式：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlHandleMode" class="easyui-combobox" name="handleMode" data-options="editable:false,panelHeight:'auto'" style="width: 150px;"
+                            data-options="required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        银行帐号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="bankAccountId" style="width: 150px;" maxlength="25" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        银行流水号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="bankFlowId" style="width: 150px;" maxlength="36" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        说明：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="description" style="width: 150px;" maxlength="50" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

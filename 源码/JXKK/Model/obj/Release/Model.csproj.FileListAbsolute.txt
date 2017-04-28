@@ -1,0 +1,6 @@
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\bin\Release\Model.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\bin\Release\Model.pdb
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\obj\Release\Com.ZY.JXKK.Model.Resource.Resource.resources
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\obj\Release\Model.csproj.GenerateResource.Cache
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\obj\Release\Model.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\Model\obj\Release\Model.pdb

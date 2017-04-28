@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>提现明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+	    $(document).ready(function () {
+            //加载快开厅列表
+            $("#ddlSite").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Client/ClientHttp.ashx?action=siteListLoad',
+            });
+	        //查询事件绑定
+	        $("#btnSearch").bind('click', function () {
+	            $('#myDataGrid').datagrid("load", {
+	                clientId: $("#tbClientId").val(),
+	                siteId: $("#ddlSite").combobox("getValue"),
+	                cardId: $("#tbCardId").val(),
+	                clientName: $("#tbClientName").val()
+	            });
+	        });
+
+	        //加载DataGrid
+	        var gridWidth = $("#mainCenter").width() - 25;
+	        $('#myDataGrid').datagrid({
+	            url: '../WebAction/Client/ClientTakeCashHttp.ashx?action=gridLoad',
+	            queryParams: {
+	                clientId: $("#tbClientId").val(),
+	                siteId: $("#ddlSite").combobox("getValue"),
+	                cardId: $("#tbCardId").val(),
+	                clientName: $("#tbClientName").val()
+	            },
+	            idField: 'flowId',
+                showFooter: true,
+	            columns: [[
+					{ title: '客户编号', field: 'clientid', width: gridWidth * 0.07, align: 'left' },
+					{ title: '客户名称', field: 'clientname', width: gridWidth * 0.07, align: 'left' },
+					{ title: '快开厅名称', field: 'sitename', width: gridWidth * 0.09, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.07, align: 'left' },
+					{ title: '上次余额', field: 'lastbalance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '提现金额', field: 'fee', width: gridWidth * 0.07, align: 'right' },
+                    { title: '当前余额', field: 'balance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '提现方式', field: 'handlemode', width: gridWidth * 0.07, align: 'left',
+                       formatter: function (value, rowData, rowIndex) {
+                            if (value == "1")
+                                return '现金';
+                            else if (value == "0")
+                                return '转账';
+                            else
+                                return '';
+                        }
+                    },
+                    { title: '创建时间', field: 'createtime', width: gridWidth * 0.16, align: 'left' },
+                    { title: '操作人', field: 'operatorname', width: gridWidth * 0.10, align: 'left' },
+                    { title: '说明', field: 'description', width: gridWidth * 0.16, align: 'left' }
+				]],
+                 onLoadSuccess: function (data) {
+                    $.SuccessCheck(data); //成功检查
+                    $('#myDataGrid').datagrid('statistics');
+                },
+	            toolbar: "#tb"
+	        });
+	    });
+
+        //获取提现总计
+        $.extend($.fn.datagrid.methods, {
+            statistics: function (jq) {
+                var opt = $(jq).datagrid('options').columns;
+                var rows = $("#myDataGrid").datagrid("getRows");
+                var footer = new Array();
+                footer['sum'] = "";
+                $.getJSON("../WebAction/Client/ClientTakeCashHttp.ashx?action=totalFee", {
+                    clientId: $("#tbClientId").val(),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    cardId: $("#tbCardId").val(),
+                    clientName: $("#tbClientName").val()
+                }, function (result) {
+                    if ($.SuccessCheck(result) == true) {//成功检查
+                        footer['sum'] = '"fee":"<b>' + result + '元</b>",';
+                        var footerObj = new Array();
+                        if (footer['sum'] != "") {
+                            var tmp = '{' + footer['sum'].substring(0, footer['sum'].length - 1) + "}";
+                            var obj = eval('(' + tmp + ')');
+                            if (obj[opt[0][0].field] == undefined) {
+                                footer['sum'] += '"' + opt[0][0].field + '":"<b>提现总计:</b>"';
+                                obj = eval('({' + footer['sum'] + '})');
+                            } else {
+                                obj[opt[0][0].field] = "<b>提现总计:</b>" + obj[opt[0][0].field];
+                            }
+                            footerObj.push(obj);
+                        }
+                        if (footerObj.length > 0) {
+                            $(jq).datagrid('reloadFooter', footerObj);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        快开厅:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        卡号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbCardId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbclientName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

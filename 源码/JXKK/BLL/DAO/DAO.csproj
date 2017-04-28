@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D1A38B81-3881-40B3-876E-CF567DF88536}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.ZY.JXKK.DAO</RootNamespace>
+    <AssemblyName>DAO</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agent\TBAgentDAO.cs" />
+    <Compile Include="Agent\TBSiteDAO.cs" />
+    <Compile Include="Agent\TBStaffDAO.cs" />
+    <Compile Include="Agent\TSAgentLogDAO.cs" />
+    <Compile Include="Agent\TSAgentModuleDAO.cs" />
+    <Compile Include="Agent\TSAgentRightDAO.cs" />
+    <Compile Include="Agent\TSAgentRoleDAO.cs" />
+    <Compile Include="Agent\TSAgentUserDAO.cs" />
+    <Compile Include="Agent\TTAgentAccDetailDAO.cs" />
+    <Compile Include="Agent\TTAgentRechargeDAO.cs" />
+    <Compile Include="Agent\TTAgentRechargeNoticeDAO.cs" />
+    <Compile Include="Agent\TTAgentTakeCashApplyDAO.cs" />
+    <Compile Include="Agent\TTAgentTakeCashDAO.cs" />
+    <Compile Include="Card\TBCardDAO.cs" />
+    <Compile Include="Card\TBCardLogDAO.cs" />
+    <Compile Include="Client\TBClientDAO.cs" />
+    <Compile Include="Client\TTClientAccDetailDAO.cs" />
+    <Compile Include="Client\TTClientPointDAO.cs" />
+    <Compile Include="Client\TTClientRechargeDAO.cs" />
+    <Compile Include="Client\TTClientTakeCashDAO.cs" />
+    <Compile Include="CommonDao.cs" />
+    <Compile Include="Lottery\TBNumNoticeDAO.cs" />
+    <Compile Include="Lottery\TTChaseOrderDAO.cs" />
+    <Compile Include="Lottery\TTLotteryOrderDAO.cs" />
+    <Compile Include="Manage\TSDeptDAO.cs" />
+    <Compile Include="Manage\TSLogDAO.cs" />
+    <Compile Include="Manage\TSModuleDAO.cs" />
+    <Compile Include="Manage\TSRightDAO.cs" />
+    <Compile Include="Manage\TSRoleDAO.cs" />
+    <Compile Include="Manage\TSUserDAO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Set\TBAreaDAO.cs" />
+    <Compile Include="Set\TBTypeDAO.cs" />
+    <Compile Include="Set\TSMaxDAO.cs" />
+    <Compile Include="Terminal\TBTerminalDAO.cs" />
+    <Compile Include="Terminal\TBTerminalLogDAO.cs" />
+    <Compile Include="UKey\TBUKeyDAO.cs" />
+    <Compile Include="UKey\TBUKeyLogDAO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{0740D83E-2AF2-49CE-93BD-4601A2F335E4}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{083F106A-89C2-4D1B-900B-D2A1ADBEF9DB}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{35E5F04C-BB0B-484A-90FD-BF6DA7C8C212}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

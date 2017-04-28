@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetLoginUserInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="strUserCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="strPassward" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLoginUserInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLoginUserInfoResult" type="tns:APIResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="APIResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Result" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Data" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TSUser">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userPwd" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="roleIds" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="deptId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="post" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="telephone" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FirstModule" type="tns:ArrayOfFirstModuleMenu" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFirstModuleMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FirstModuleMenu" nillable="true" type="tns:FirstModuleMenu" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FirstModuleMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SendModuleMenuList" type="tns:ArrayOfSecondModuleMenu" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSecondModuleMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SecondModuleMenu" nillable="true" type="tns:SecondModuleMenu" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SecondModuleMenu">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ControlsList" type="tns:ArrayOfControls" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ModuleName" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfControls">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Controls" nillable="true" type="tns:Controls" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Controls">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ControlName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ControlId" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ControlCode" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetLoginUserInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLoginUserInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetLoginUserInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLoginUserInfoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="RightWebServiceSoap">
+    <wsdl:operation name="GetLoginUserInfo">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">用户登录接口</wsdl:documentation>
+      <wsdl:input message="tns:GetLoginUserInfoSoapIn" />
+      <wsdl:output message="tns:GetLoginUserInfoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RightWebServiceSoap" type="tns:RightWebServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetLoginUserInfo">
+      <soap:operation soapAction="http://tempuri.org/GetLoginUserInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="RightWebServiceSoap12" type="tns:RightWebServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetLoginUserInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetLoginUserInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RightWebService">
+    <wsdl:port name="RightWebServiceSoap" binding="tns:RightWebServiceSoap">
+      <soap:address location="http://10.10.20.26:95/RightWebService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="RightWebServiceSoap12" binding="tns:RightWebServiceSoap12">
+      <soap12:address location="http://10.10.20.26:95/RightWebService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

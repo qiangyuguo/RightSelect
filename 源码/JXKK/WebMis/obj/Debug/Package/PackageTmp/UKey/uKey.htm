@@ -1,0 +1,167 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>加密狗查询</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载加密狗状态列表
+            $("#ddlUkeyStatus").combobox({
+
+                url: '../UKey/Handler/UKeyHandler.ashx?action=ddlStatusListLoad'
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 200;
+            $('#myDataGrid').datagrid({
+                url: '../UKey/Handler/UKeyHandler.ashx?action=gridLoad',
+                idField: 'ukeyid',
+                columns: [[
+					{ title: '加密狗编号', field: 'ukeyid', width: gridWidth * 0.20, align: 'left' },
+                    { title: '当前状态', field: 'status', width: gridWidth * 0.20, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '在库';
+                            else if (value == "1")
+                                return '已领';
+                            else if (value == "2")
+                                return '激活';
+                            else if (value == "3")
+                                return '维修';
+                            else
+                                return '作废';
+                        }
+                    },
+                    { title: '执法文书类型', field: 'sitename', width: gridWidth * 0.30, align: 'left' },
+                    { title: '代理商', field: 'agentname', width: gridWidth * 0.30, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    uKeyId: $("#tbUkeyId").val(),
+                    status: $("#ddlUkeyStatus").combobox("getValue"),
+                    siteName: $("#tbSiteName").val(),
+                    agentName: $("#tbAgentName").val()
+                });
+            });
+
+            //回收事件绑定
+            $("#btnRecovery").bind('click', function () {
+                $('#myWindow').window({ title: "加密狗回收", iconCls: "icon-add" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../UKey/Handler/UKeyHandler.ashx?action=recycle');
+            });
+
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                   <div style="float: left;">
+                        <a id="btnRecovery" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-recovery',plain:true">
+                            回收</a>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        加密狗编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbUkeyId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        状态:</div>
+                    <div style="float: left; padding: 2px;">
+                        <select id="ddlUkeyStatus" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型名称</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbSiteName" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商名称</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbAgentName" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        起始号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="startUKeyId" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        至：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="endUKeyId" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        数量：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="uKeyNum" style="width: 153px;" maxlength="20" class="easyui-numberbox"
+                            data-options="required:true,min:0" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

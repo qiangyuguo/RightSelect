@@ -1,0 +1,281 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>文书名称管理</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载文书模版列表
+            $("#ddlTemplate").combobox({
+
+                url: '../Enforcement/Handler/EnforcementNameHandler.ashx?action=TemplateListLoad'
+            });
+
+            //加载文书类型列表
+            $("#ddlEnforcementType").combobox({
+
+                url: '../Enforcement/Handler/EnforcementNameHandler.ashx?action=EnforcementTypeListLoad'
+            });
+
+            //加载文书类型列表
+            $("#ddlQEnforcementType").combobox({
+
+                url: '../Enforcement/Handler/EnforcementNameHandler.ashx?action=EnforcementTypeListLoad'
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 250;
+            
+            $('#myDataGrid').datagrid({
+                url: '../Enforcement/Handler/EnforcementNameHandler.ashx?action=gridLoad',
+                idField: 'EnforcementNameId',
+                columns: [[
+					{ title: '文书名称编号', field: 'enforcementnameid', width: gridWidth * 0.1, hight: gridWidth * 1.3, align: 'left' },
+                    { title: '文书名称', field: 'enforcementname', width: gridWidth * 0.1, align: 'left' },
+                    { title: '文书所属类型编号', field: 'enforcementtypeid', width: gridWidth * 0.1, align: 'left' },
+                    { title: '文书所属类型名称', field: 'enforcementtypename', width: gridWidth * 0.1, align: 'left' },
+
+                    {
+                        title: '是否为必填项', field: 'isempty', width: gridWidth * 0.05, align: 'left',
+
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "1")
+                                return '必填';
+                            else
+                                return '选填';
+                        }
+                    },
+                     { title: '文书所属模版', field: 'templatename', width: gridWidth * 0.1, align: 'left' },
+
+                      { title: '创建日期', field: 'createdate', width: gridWidth * 0.1, align: 'left' },
+                     //{ title: '填充人', field: 'FillingPerson', width: gridWidth * 0.2, align: 'left' },
+                     //{ title: '填充时间', field: 'FillingTime', width: gridWidth * 0.2, align: 'left' },
+                ]],
+                toolbar: "#tb"
+            });
+
+            //增加事件绑定
+            $("#btnAdd").bind('click', function () {
+                $("#btnSave").show();
+                $("#btnCancel").find("span").eq(1).html("取消");
+
+                $('#myWindow').window({ title: "文书名称", iconCls: "icon-add" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../Enforcement/Handler/EnforcementNameHandler.ashx?action=add');
+                $('#myForm').form('load', {
+                    EnforcementNameId: "系统自动生成"
+                });
+            });
+            //修改事件绑定
+            $("#btnEdit").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要修改的记录', 'warning');
+                    return;
+                }
+               
+                    $("#btnSave").show();
+                    $("#btnCancel").find("span").eq(1).html("取消");
+                    $('#myWindow').window({ title: "执法文书名称修改", iconCls: "icon-edit" });
+                
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../Enforcement/Handler/EnforcementNameHandler.ashx?action=edit&EnforcementNameId=' + row.EnforcementNameId);
+                $('#myForm').form('load', '../Enforcement/Handler/EnforcementNameHandler.ashx?action=load&EnforcementNameId=' + row.EnforcementNameId);
+            });
+
+            //删除事件绑定
+            $("#btnRemove").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要删除的记录', 'warning');
+                    return;
+                }
+                $.messager.confirm("操作提示", "您确认要删除“" + row.EnforcementName + "”文书名称吗？", function (bChoose) {
+                    if (bChoose == true) {
+                        $.getJSON("../Enforcement/Handler/EnforcementNameHandler.ashx?action=delete", { EnforcementNameId: row.EnforcementNameId }, function (result) {
+                            if ($.SuccessCheck(result) == true) {//成功检查
+                                $.messager.alert("操作提示", result.message, "info", function () {
+                                    $('#myDataGrid').datagrid("reload");
+                                    $('#myDataGrid').datagrid("unselectAll");
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    EnforcementNameId: $("#tbNameId").val(),
+                    EnforcementName: $("#tbName").val(),
+                    EnforcementTypeId: $("#ddlQEnforcementType").combobox("getValue")
+                });
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+
+                        var ddlEnforcementType = $("#ddlEnforcementType").combobox("getValue")
+                        if (ddlEnforcementType == "") {
+                            $.messager.alert('提示', '请选择文书所属类型', 'warning');
+                            return;
+                        }
+                        var ddlTemplate = $("#ddlTemplate").combobox("getValue")
+                        if (ddlTemplate == "") {
+                            $.messager.alert('提示', '请选择文书模版', 'warning');
+                            return;
+                        }
+
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">
+                            增加</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">
+                            修改</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">
+                            删除</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        文书类型:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlQEnforcementType" class="easyui-combobox" name="EnforcementType" data-options="editable:false,panelHeight:'auto'"
+                                style="width: 150px;" data-options="required:true"></select>
+                    </div>
+
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        文书名称编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbNameId" style="width: 120px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        文书名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbName" style="width: 120px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        所属文书类型：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlEnforcementType" class="easyui-combobox" name="EnforcementTypeId" data-options="editable:false,panelHeight:'auto'"
+                                style="width: 150px;" data-options="required:true"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right" style="width: 120px;">
+                        文书名称编号：
+                    </td>
+                    <td class="tdE" align="left" style="width: 305px;">
+                        <input type="text" disabled="disabled" name="EnforcementNameId" value="系统自动生成" style="width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        文书名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="EnforcementName"  style="width: 150px;" maxlength="30" class="easyui-validatebox"
+                               data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        是否必填项：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="checkbox" name="IsEmpty" />
+                    </td>
+                </tr>
+
+
+
+
+                <!--<tr>
+                    <td class="tdT" align="right">
+                        填充人：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="FillPerson" validtype="name" style="width: 150px;" maxlength="30" class="easyui-validatebox"
+                               data-options="required:true" />
+                    </td>
+                </tr>-->
+
+
+
+                <tr>
+                    <td class="tdT" align="right">
+                        文书模版：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlTemplate" class="easyui-combobox" name="EnforcementTemplateId" data-options="editable:false,panelHeight:'auto'"
+                                style="width: 150px;" data-options="required:true"></select>
+                    </td>
+                </tr>
+               
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

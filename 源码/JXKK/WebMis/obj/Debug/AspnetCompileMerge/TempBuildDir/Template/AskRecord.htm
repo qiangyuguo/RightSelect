@@ -1,0 +1,378 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>询问笔录</title>
+</head>
+<body>
+     
+        <form id="myForm" method="post" action="">
+            <div align="center">
+                <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="width:5%"></td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="center">
+                                            <span style="font-weight: bold; font-size: larger">询  问  笔  录</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="tdE">
+                                           时间：
+                                            <input type="text" name="CaseOpenDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                                   style="width: 200px;" />
+                                        </td>
+                                         
+                                        <td class="tdE">
+                                            至:<input type="text" name="CaseCloseDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                                   style="width: 200px;" />
+                                        </td>
+                                    </tr>
+
+                                    <tr >
+                                        <td>
+                                            地点
+                                            <input name="canAddress" type="text" class="txt" style="width: 500px"  />
+                                            
+                                        </td>
+                                    </tr>
+                                   
+                                     <tr >
+                                        <td>
+                                            <table style="width:100%;">
+                                                <tr>
+                                                    <td rowspan="2" style="width:60%">
+                                                        询问人 
+                                                        <input name="canaskman" type="text" class="txt" style="width: 200px" />
+                                                        单位
+                                                        <input name="canaskmanComp" type="text" class="txt" style="width: 200px" value="郴州市公路管理局" />
+                                                     </td>
+                                                    <td>
+                                                        执法证号
+                                                        <input name="canaskmanbook1" type="text" class="txt" style="width: 200px" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        执法证号 
+                                                        <input name="canaskmanbook2" type="text" class="txt" style="width: 200px" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            <table style="width:100%;">
+                                                <tr>
+                                                    <td rowspan="2" style="width:60%">
+                                                        记录人 
+                                                        <input name="canrecodman" type="text" class="txt" style="width: 200px" />
+                                                        单位
+                                                        <input name="canrecodmanComp" type="text" class="txt" style="width: 200px" value="郴州市公路管理局" />
+                                                    </td>
+                                                    <td>
+                                                        执法证号 
+
+                                                        <input name="canrecodmanbook1" type="text" class="txt" style="width: 200px" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        执法证号 
+                                                        <input name="canrecodmanbook2" type="text" class="txt" style="width: 200px" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            被询问人
+                                            <input name="canaskedman" type="text" class="txt" style="width: 100px" />
+                                            性别
+                                            <select id="canaskedmansex" class="easyui-combobox" name="canaskedmansex" data-options="editable:false,panelHeight:'auto'"
+                                                    style="width: 50px;" data-options="required:true">
+                                                <option>男</option>
+                                                <option>女</option>
+                                            </select>
+
+                                            年龄
+                                             
+
+                                        
+                                            <input type="text" name="canaskedmanold" maxlength="3" validtype="integer" class="easyui-numberbox"
+                                                   data-options="required:true" style="width: 200px" />
+
+                                            与本案件的关系 
+
+                                            <input type="text" name="canaskedmanrelation" type="text" class="txt" style="width: 120px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            工作单位
+                                             
+                                            <input type="text" name="canaskedmancomp" type="text" class="txt" style="width: 120px" />
+                                            电话
+                                            <input type="text" name="canaskedmantele" type="text" class="txt" style="width: 120px" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            家庭住址 
+                                            <input type="text" name="canaskedmanhome" type="text" class="txt" style="width: 120px" />
+                                            邮编
+                                            <input type="text" name="canaskedmanzip"  style="width: 120px"
+                                                   validtype="integer" class="easyui-numberbox"
+                                                   data-options="required:true" />
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            询问内容：
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            问：我们是
+                                            <input type="text" name="canmycomp" type="text" class="txt" style="width: 120px" value="郴州市" />
+                                            公路管理局路政执法人员，我叫
+                                            <input type="text" name="canmyname" type="text" class="txt" style="width: 120px"   />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            执法证号
+                                            <input type="text" name="canmybook1" type="text" class="txt" style="width: 120px" />、
+                                            <input type="text" name="canmybook2" type="text" class="txt" style="width: 120px" />
+                                            ；
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            
+                                            
+                                            <select id="canhe" class="easyui-combobox" name="canhe" data-options="editable:false,panelHeight:'auto'"
+                                                    style="width: 50px;" data-options="required:true">
+                                                <option>男</option>
+                                                <option>女</option>
+                                            </select>
+
+                                            叫
+                                            
+                                            <input type="text" name="canhename" type="text" class="txt" style="width: 100px" />
+                                            ，执法证号
+                                            <input type="text" name="canhebook1" type="text" class="txt" style="width: 150px" />、
+                                            <input type="text" name="canhebook2" type="text" class="txt" style="width: 80px" />
+                                           
+                                            <br />，这
+                                            是我们的执法证件。根据有关法律的规定，现依法对你询问调查，请你配合我们的<br />工作并如实回答我们提出的问题，作伪证要承担相应的法律责任，你听清楚了吗？
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            答： 
+                                            <input type="text" name="cananser1" type="text" class="txt" style="width: 85%" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            问：你驾驶的车辆牌号是多少？什么车型？轴数是多少？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答：我的车牌号是 
+                                           
+                                            <input type="text" name="canmycarno" type="text" class="txt" style="width: 130px" />
+                                            ,车辆型号为
+                                            
+                                            <input type="text" name="canmycarkind" type="text" class="txt" style="width: 150px" />
+                                            ,
+                                            轴数为
+                                            
+                                            <input type="text" name="canmycarnum" type="text" class="txt" style="width: 150px" />
+
+                                            轴。
+                                        </td>
+                                    </tr>
+                                    <tr >
+                                        <td>
+                                            问：你驾驶的车辆从什么地方来？装载的是什么货物？ 到什么地方去？在湖南省境<br />内行驶了多少里程？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            当事人签名：
+                                             
+                                            <input type="text" name="cansign1" type="text" class="txt" style="width: 180px" />
+
+                                            &nbsp;
+                                          
+                                            <input type="text" name="cansign2" type="text" class="txt" style="width: 180px" />
+
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答：我的车装运的是
+                                            
+                                            <input type="text" name="cancargoods" type="text" class="txt" style="width: 150px" />
+                                            ，从
+                                            
+                                            <input type="text" name="cancarfrom" type="text" class="txt" style="width: 130px" />
+
+                                            起运到
+                                         
+                                            <input type="text" name="cancarto" type="text" class="txt" style="width: 130px" />
+                                            ，在
+                                            湖南省境内已行驶
+                                            <input type="text" name="cancarlong" type="text" class="txt" style="width: 130px" />
+                                            公里。
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            问：你的车核定吨位是多少？现在实际装载货物多少吨？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答: 我的车核定吨位是
+                                           
+                                            <input type="text" name="cancarweight1" type="text" class="txt" style="width: 80px" />
+                                            吨，现在实际装载的货物是
+                                           
+                                            <input type="text" name="cancarweight2" type="text" class="txt" style="width: 80px" />
+                                            吨。
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            问：经检测，你驾驶的车辆车货
+                                            <input type="text" name="cancardesc" type="text" class="txt" style="width: 80px" />。
+                                           
+                                            <br />
+                                            请你看清楚
+                                            <select id="canreview1" class="easyui-combobox" name="canaskedmansex" data-options="editable:false,panelHeight:'auto'"
+                                                    style="width: 50px;" data-options="required:true">
+                                                <option>检测单</option>
+                                                <option>勘验笔录</option>
+                                            </select>
+
+                                            并在
+
+                                            <select id="canreview2" class="easyui-combobox" name="canaskedmansex" data-options="editable:false,panelHeight:'auto'"
+                                                    style="width: 50px;" data-options="required:true">
+                                                <option>检测单</option>
+                                                <option>勘验笔录</option>
+                                            </select>
+                                            上签字。
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            答: 
+                                            <input type="text" name="cananser2" type="text" class="txt" style="width: 200px" value="好的，看清楚了。" />。
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            问：
+                                            <select id="canyou" class="select" runat="server" style="width: 80px">
+                                                <option>你</option>
+                                                <option>你单位</option>
+                                            </select>在启运前是否到相关部门办理了超限运输手续？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答:
+                                            <input type="text" name="cananser3" type="text" class="txt" style="width: 500px" value="启运前我未到有关部门办理相关的超限运输手续。" />。
+                                             
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            问：这次运输是否受过有关部门的处理？如何处理的？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答:
+                                             
+                                            <input type="text" name="cananser4" type="text" class="txt" style="width: 500px" value="这次运输未受过有关部门的处理。" />。
+                                        </td>
+                                    </tr>
+
+
+                                    <tr  >
+                                        <td>
+                                            问：请你仔细地看一下以上记录，是否属实？是否还有补充的地方？
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            答: 
+                                            <input type="text" name="cananser5" type="text" class="txt" style="width: 500px"  />。
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            当事人签名：
+                                          
+                                            <input type="text" name="candsign1" type="text" class="txt" style="width: 200px" />
+                                            &nbsp;&nbsp;
+                                       
+
+                                             <input type="text" name="candsign2" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                                   style="width: 200px;" />
+
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            询问人签名：
+                                             
+                                            <input type="text" name="canasksign" type="text" class="txt" style="width: 80px" />
+                                        </td>
+                                    </tr>
+                                    <tr  >
+                                        <td>
+                                            记录人签名：
+                                           
+                                            <input type="text" name="canrecordsign" type="text" class="txt" style="width: 80px" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:5%"></td>
+                        </tr>
+
+                        <tr>
+                            <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                                <input type="button" value="保存" class="button" onclick="" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <input type="button" value="打印" class="button" onclick="WebPrintArea()" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="关闭" class="button" onclick="$('#enforementWindow').window('close');" />
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+           
+           
+        </form>
+        
+     
+      <script src="../Scripts/util.js" type="text/javascript"></script>
+</body>
+</html>

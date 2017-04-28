@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <form id="beginCaseReport">
+        <!--startprint-->
+        <div align="center" id="printArea" class="print">
+            <table>
+                <tr>
+                    <td align="center" colspan="3">
+                        <span style="font-weight: bold; font-size: larger">交通行政案件立案报告表</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%"></td>
+                    <td>
+                        <table border='1' cellspacing="0" cellpadding="0">
+                            <tr style="height: 32px">
+                                <td align="center" colspan="2">
+                                    立案机关
+                                </td>
+                                <td align="center" colspan="3">
+                                    <input id="lianjiguan" maxlength="17" type="text" class="NomorTextMust"
+                                           value="郴州市公路管理局" datacol="yes" err="该项必须填写" checkexpession="NotNull" style="width: 90%" />
+                                </td>
+                                <td align="center">
+                                    申请立案时间
+                                </td>
+                                <td align="center" colspan="2">
+                                     
+                                    <input type="text" name="lianshijian" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                           style="width: 80%;" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" colspan="2">
+                                    案由
+                                </td>
+                                <td align="center" colspan="3">
+                                    涉嫌<input id="shexian" type="text" value="车辆在公路上擅自超限行驶" class="NomorText"
+                                             style="width: 70%" datacol="yes" err="该项必须填写" checkexpession="NotNull" />案件
+                                </td>
+                                <td align="center">
+                                    车牌号码
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="chepaihao" maxlength="20" type="text" class="NomorText"
+                                           style="width: 80%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" rowspan="5">
+                                    当事人
+                                </td>
+                                <td align="center" rowspan="3">
+                                    公民
+                                </td>
+                                <td align="center">
+                                    姓名
+                                </td>
+                                <td align="center">
+                                    <input id="xingming" maxlength="7" type="text" class="NomorText" style="width: 100px" />
+                                </td>
+                                <td align="center">
+                                    性别
+                                </td>
+                                <td align="center">
+                                    <select id="xingbie" class="select" style="width: 77px">
+                                        <option>/</option>
+                                        <option>男</option>
+                                        <option>女</option>
+                                    </select>
+                                </td>
+                                <td align="center">
+                                    年龄
+                                </td>
+                                <td align="center">
+                                    <input type="text" name="nianling" maxlength="3" validtype="integer" class="easyui-numberbox"
+                                           data-options="required:true" style="width: 50px" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center">
+                                    工作单位
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="danwei" maxlength="7" type="text" class="NomorText" style="width: 90%" />
+                                </td>
+                                <td align="center">
+                                    电话
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="dianhua" maxlength="7" type="text" class="NomorText" style="width: 90%" />
+
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center">
+                                    住址
+                                </td>
+                                <td align="center" colspan="7">
+                                    <input id="zhuzhi" maxlength="7" type="text" class="NomorText" style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" rowspan="2">
+                                    法人或者其他组织
+                                </td>
+                                <td>
+                                    名称
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="mingcheng" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                                <td>
+                                    法定代表人
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="fadingdaibiao" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td>
+                                    地址
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="dizhi" maxlength="7" type="text" class="NomorText" style="width: 90%" />
+                                </td>
+                                <td>
+                                    电话
+                                </td>
+                                <td align="center" colspan="2">
+                                    <input id="dianhua2" maxlength="7" type="text" class="NomorText" style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" rowspan="4">
+                                    承办人
+                                </td>
+                                <td align="center" rowspan="2">
+                                    姓名
+                                </td>
+                                <td align="center" colspan="2" rowspan="2">
+                                    <input id="chengbanren1" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                                <td align="center" rowspan="2">
+                                    执法证号
+                                </td>
+                                <td align="center" colspan="3">
+                                    <input id="zhifazhenghao11" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" colspan="3">
+                                    <input id="zhifazhenghao12" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" rowspan="2">
+                                    姓名
+                                </td>
+                                <td align="center" colspan="2" rowspan="2">
+                                    <input id="chengbanren2" maxlength="7" value="" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                                <td align="center" rowspan="2">
+                                    执法证号
+                                </td>
+                                <td align="center" colspan="3">
+                                    <input id="zhifazhenghao21" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr style="height: 32px">
+                                <td align="center" colspan="3">
+                                    <input id="zhifazhenghao22" maxlength="7" type="text" class="NomorText"
+                                           style="width: 90%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    主要事实及立案理由
+                                </td>
+                                <td colspan="7">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当事人于<input id="dangshirenyu"
+                                                                                                     type="text" class="NomorText" />驾驶牌号为
+                                                <input id="paihaowei" maxlength="20" type="text" class="NomorText" />的车辆，涉嫌擅自在公路上超限行驶。
+                                                经检测，
+                                                <input id="xingwei" type="text" class="LongText" style="width: 220px" />
+                                                其行为违反了《中华人民共和国公路法》 第四十九条和第五十条、《公路安全保护条例》第三十三条第一款、《湖南省实施〈中华人民共和国公路 法〉办法》第二十条、交通运输部《路政管理规定》第十三条、《超限运输车辆行驶公路管理规定》第十
+                                                三条之规定，请求立案查处。
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                签名<input id="qianming1" maxlength="10" type="text" class="NomorText" />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                               
+                                                <input type="text" name="datetime1" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                                        />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    单位领导批示
+                                </td>
+                                <td colspan="7">
+                                    <table width="100%">
+                                        <tr>
+                                            <td align="center">
+                                                <textarea id="pishi" class="txtRemark" style="width: 95%; height: 100px;" readonly></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                签名<input id="qianming2" maxlength="7" type="text" class="NomorText" readonly />
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="text" name="datetime2" class="easyui-datebox" readonly="readonly" editable="fasle" data-options="validType:'date'"
+                                                        />
+
+                                           </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    备注
+                                </td>
+                                <td colspan="7" align="center">
+                                    <textarea id="beizhu" class="txtRemark" style="width: 95%; height: 100px;"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="width: 5%"></td>
+                </tr>
+            </table>
+        </div>
+        <!--endprint-->
+        <div class="frmbottom" align="center">
+            <input type="button" value="保存" class="button" onclick="" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="打印" class="button" onclick="WebPrintArea()" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="关闭" class="button" onclick="$('#enforementWindow').window('close');" />
+        </div>
+    </form>
+    <script src="../Scripts/util.js"></script>
+</body>
+</html>

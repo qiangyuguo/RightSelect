@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户查询</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载快开厅列表
+            $("#ddlSite").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Client/ClientHttp.ashx?action=siteListLoad'
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    clientId: $("#tbClientId").val(),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    cardId: $("#tbCardId").val(),
+                    clientName: $("#tbClientName").val()
+                });
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            debugger;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Client/ClientHttp.ashx?action=gridLoad',
+                queryParams: {
+                    clientId: $("#tbClientId").val(),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    cardId: $("#tbCardId").val(),
+                    clientName: $("#tbClientName").val()
+                },
+                idField: 'clientid',
+                columns: [[
+                    { title: '客户编号', field: 'clientid', width: gridWidth * 0.09, align: 'left' },
+                    { title: '客户名称', field: 'clientname', width: gridWidth * 0.13, align: 'left' },
+					{ title: '快开厅名称', field: 'sitename', width: gridWidth * 0.13, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.10, align: 'left' },
+					{ title: '账户余额', field: 'balance', width: gridWidth * 0.09, align: 'right' },
+					{ title: '冻结金额', field: 'lockfee', width: gridWidth * 0.09, align: 'right' },
+                    { title: '客户积分', field: 'points', width: gridWidth * 0.09, align: 'right' },
+					{ title: '使用状态', field: 'status', width: gridWidth * 0.09, align: 'left',
+					    formatter: function (value, rowData, rowIndex) {
+					        if (value == "0")
+					            return '激活';
+					        else
+					            return '<span style="color:red">封存</span>';
+					    }
+					},
+
+                    { title: '操作人', field: 'operatorname', width: gridWidth * 0.09, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+            //明细事件绑定
+            $("#btnDetail").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要查看的记录', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "客户明细", iconCls: "icon-ok" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').form('load', '../WebAction/Client/ClientHttp.ashx?action=load&clientId=' + row.clientid);
+            });
+
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnDetail" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true">
+                            查看</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        快开厅:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        卡号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbCardId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        姓名:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 700px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        充值总额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sumRecharge" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        提现总额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sumTakeCash" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        消费总额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sumConsume" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        返奖总额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sumReturnAward" style="width: 180px;" disabled="disabled"
+                            class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        大奖总额 ：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sumBigAward" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        创建时间：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="createTime" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        姓名：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="clientName" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        身份证号码：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="IDNumber" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        手机号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="telephone" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        推荐人卡号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="refererCardId" style="width: 180px;" disabled="disabled"
+                            class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        备注说明：
+                    </td>
+                    <td class="tdE" align="left" colspan="3">
+                        <input type="text" name="remark" style="width: 530px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnCancel" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">
+                            关闭</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

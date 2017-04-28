@@ -1,0 +1,270 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>用户管理</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //加载部门列表
+            $("#ddlQDept").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Manage/UserHttp.ashx?action=deptListLoad'
+            });
+            //加载部门列表
+            $("#ddlDept").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Manage/UserHttp.ashx?action=deptListLoad'
+            });
+
+            //加载角色列表
+            $("#ddlRole").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Manage/UserHttp.ashx?action=roleListLoad'
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 200;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Manage/UserHttp.ashx?action=gridLoad',
+                idField: 'userid',
+                columns: [[
+					{ title: '用户编号', field: 'userid', width: gridWidth * 0.15, align: 'left' },
+					{ title: '用户代码', field: 'usercode', width: gridWidth * 0.20, align: 'left' },
+					{ title: '用户名称', field: 'username', width: gridWidth * 0.20, align: 'left' },
+					{ title: '所属部门', field: 'deptname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '使用状态', field: 'status', width: gridWidth * 0.10, align: 'center',
+					    formatter: function (value, rowData, rowIndex) {
+					        if (value == "0")
+					            return '<span style="color:red">停用</span>';
+					        else
+					            return '正常';
+					    }
+
+					},
+                    { title: '职务', field: 'post', width: gridWidth * 0.20, align: 'left' },
+                    { title: '联系电话', field: 'telephone', width: gridWidth * 0.20, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+
+            //增加事件绑定
+            $("#btnAdd").bind('click', function () {
+                $('#myWindow').window({ title: "用户新增", iconCls: "icon-add" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../WebAction/Manage/UserHttp.ashx?action=add');
+                $('#myForm').form('load', {
+                    userId: "系统自动生成",
+                    status: "on"
+                });
+            });
+
+            //修改事件绑定
+            $("#btnEdit").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要修改的记录', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "用户修改", iconCls: "icon-edit" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../WebAction/Manage/UserHttp.ashx?action=edit&userId=' + row.userid);
+                $('#myForm').form('load', '../WebAction/Manage/UserHttp.ashx?action=load&userId=' + row.userid);
+            });
+
+            $('#myForm').form({
+                onLoadSuccess: function (data) {
+                    if ($.SuccessCheck(data) == true) {//成功检查
+                        data.roleIds = data.roleIds.split(",");
+                        $('#ddlRole').combobox('setValues', data.roleIds);
+                    }
+                }
+            });
+
+            //删除事件绑定
+            $("#btnRemove").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要删除的记录', 'warning');
+                    return;
+                }
+                $.messager.confirm("操作提示", "您确认要删除“" + row.username + "”用户吗？", function (bChoose) {
+                    if (bChoose == true) {
+                        $.getJSON("../WebAction/Manage/UserHttp.ashx?action=delete", { userId: row.userid }, function (result) {
+                            if ($.SuccessCheck(result) == true) {//成功检查
+                                $.messager.alert("操作提示", result.message, "info", function () {
+                                    $('#myDataGrid').datagrid("reload");
+                                    $('#myDataGrid').datagrid("unselectAll");
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    deptId: $("#ddlQDept").combobox("getValue"),
+                    userName: $("#tbQUserName").val()
+                });
+            });
+
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnAdd" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">
+                            增加</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">
+                            修改</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">
+                            删除</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        所属部门:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlQDept" class="easyui-combobox" style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        用户名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbQUserName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right" style="width: 120px;">
+                        用户编号：
+                    </td>
+                    <td class="tdE" align="left" style="width: 305px;">
+                        <input type="text" name="userId" disabled="disabled" value="系统自动生成" style="width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        用户名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="userName" style="width: 150px;" maxlength="15" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        登录帐号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="userCode" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        所属部门：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlDept" class="easyui-combobox" name="deptId" style="width: 150px;"
+                            data-options="required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        所属角色：
+                    </td>
+                    <td align="left" class="tdE">
+                        <select id="ddlRole" class="easyui-combobox" name="roleIds" style="width: 300px;"
+                            data-options="multiple:true,required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        使用状态：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="checkbox" name="status" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        职务：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="text" name="post" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        联系电话：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="text" name="telephone" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

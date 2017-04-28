@@ -1,0 +1,709 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{468A9636-D4AF-48EB-97CE-61D31DC58392}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.ZY.JXKK</RootNamespace>
+    <AssemblyName>WebMis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="default.htm" />
+    <Content Include="Global.asax" />
+    <Content Include="Reports\AgentAccDetailRT.aspx" />
+    <Content Include="Reports\AgentAccountRT.aspx" />
+    <Content Include="Reports\AgentRechargeRT.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="WebPage\Agent\agent.htm" />
+    <Content Include="WebPage\Agent\agentAudit.htm" />
+    <Content Include="WebPage\Agent\agentOam.htm" />
+    <Content Include="WebPage\Agent\agentAccDetail.htm" />
+    <Content Include="WebPage\Agent\agentTakeCashApply.htm" />
+    <Content Include="WebPage\Agent\agentLog.htm" />
+    <Content Include="WebPage\Agent\site.htm" />
+    <Content Include="WebPage\Agent\agentRecharge.htm" />
+    <Content Include="WebPage\Agent\agentTakeCash.htm" />
+    <Content Include="WebPage\Agent\siteAudit.htm" />
+    <Content Include="WebPage\Agent\siteOam.htm" />
+    <Content Include="WebPage\Agent\agentRechargeDetail.htm" />
+    <Content Include="WebPage\Agent\agentTakeCashDetail.htm" />
+    <Content Include="WebPage\Agent\agentRechargeNotice.htm" />
+    <Content Include="WebPage\Card\cardGrant.htm" />
+    <Content Include="WebPage\Card\cardStroage.htm" />
+    <Content Include="WebPage\Card\card.htm" />
+    <Content Include="WebPage\Card\cardLog.htm" />
+    <Content Include="WebPage\Client\client.htm" />
+    <Content Include="WebPage\Client\clientAccDetail.htm" />
+    <Content Include="WebPage\Client\clientPoint.htm" />
+    <Content Include="WebPage\Client\clientRecharge.htm" />
+    <Content Include="WebPage\Client\clientTakeCash.htm" />
+    <Content Include="WebPage\common.js" />
+    <Content Include="WebPage\desktop.htm" />
+    <Content Include="WebPage\js\jquery-1.11.1.min.js" />
+    <Content Include="WebPage\js\jquery.easyui.min.js" />
+    <Content Include="WebPage\js\json2.js" />
+    <Content Include="WebPage\js\util.js" />
+    <Content Include="WebPage\login.htm" />
+    <Content Include="WebPage\main.htm" />
+    <Content Include="WebPage\Manage\dept.htm" />
+    <Content Include="WebPage\Manage\log.htm" />
+    <Content Include="WebPage\Manage\module.htm" />
+    <Content Include="WebPage\Manage\right.htm" />
+    <Content Include="WebPage\Manage\role.htm" />
+    <Content Include="WebPage\Manage\user.htm" />
+    <Content Include="WebPage\Reports\reports.htm" />
+    <Content Include="WebPage\Set\area.htm" />
+    <Content Include="WebPage\Agent\agentModule.htm" />
+    <Content Include="WebPage\Agent\agentRight.htm" />
+    <Content Include="WebPage\password.htm" />
+    <Content Include="WebPage\Terminal\terminal.htm" />
+    <Content Include="WebPage\Terminal\terminalGrant.htm" />
+    <Content Include="WebPage\Terminal\terminalLog.htm" />
+    <Content Include="WebPage\Terminal\terminalStroage.htm" />
+    <Content Include="WebPage\themes\black\accordion.css" />
+    <Content Include="WebPage\themes\black\calendar.css" />
+    <Content Include="WebPage\themes\black\combo.css" />
+    <Content Include="WebPage\themes\black\combobox.css" />
+    <Content Include="WebPage\themes\black\datagrid.css" />
+    <Content Include="WebPage\themes\black\datalist.css" />
+    <Content Include="WebPage\themes\black\datebox.css" />
+    <Content Include="WebPage\themes\black\dialog.css" />
+    <Content Include="WebPage\themes\black\easyui.css" />
+    <Content Include="WebPage\themes\black\filebox.css" />
+    <Content Include="WebPage\themes\black\images\accordion_arrows.png" />
+    <Content Include="WebPage\themes\black\images\blank.gif" />
+    <Content Include="WebPage\themes\black\images\calendar_arrows.png" />
+    <Content Include="WebPage\themes\black\images\combo_arrow.png" />
+    <Content Include="WebPage\themes\black\images\datagrid_icons.png" />
+    <Content Include="WebPage\themes\black\images\datebox_arrow.png" />
+    <Content Include="WebPage\themes\black\images\layout_arrows.png" />
+    <Content Include="WebPage\themes\black\images\linkbutton_bg.png" />
+    <Content Include="WebPage\themes\black\images\loading.gif" />
+    <Content Include="WebPage\themes\black\images\menu_arrows.png" />
+    <Content Include="WebPage\themes\black\images\messager_icons.png" />
+    <Content Include="WebPage\themes\black\images\pagination_icons.png" />
+    <Content Include="WebPage\themes\black\images\panel_tools.png" />
+    <Content Include="WebPage\themes\black\images\searchbox_button.png" />
+    <Content Include="WebPage\themes\black\images\slider_handle.png" />
+    <Content Include="WebPage\themes\black\images\spinner_arrows.png" />
+    <Content Include="WebPage\themes\black\images\tabs_icons.png" />
+    <Content Include="WebPage\themes\black\images\tree_icons.png" />
+    <Content Include="WebPage\themes\black\images\validatebox_warning.png" />
+    <Content Include="WebPage\themes\black\layout.css" />
+    <Content Include="WebPage\themes\black\linkbutton.css" />
+    <Content Include="WebPage\themes\black\menu.css" />
+    <Content Include="WebPage\themes\black\menubutton.css" />
+    <Content Include="WebPage\themes\black\messager.css" />
+    <Content Include="WebPage\themes\black\numberbox.css" />
+    <Content Include="WebPage\themes\black\pagination.css" />
+    <Content Include="WebPage\themes\black\panel.css" />
+    <Content Include="WebPage\themes\black\progressbar.css" />
+    <Content Include="WebPage\themes\black\propertygrid.css" />
+    <Content Include="WebPage\themes\black\searchbox.css" />
+    <Content Include="WebPage\themes\black\slider.css" />
+    <Content Include="WebPage\themes\black\spinner.css" />
+    <Content Include="WebPage\themes\black\splitbutton.css" />
+    <Content Include="WebPage\themes\black\tabs.css" />
+    <Content Include="WebPage\themes\black\textbox.css" />
+    <Content Include="WebPage\themes\black\tooltip.css" />
+    <Content Include="WebPage\themes\black\tree.css" />
+    <Content Include="WebPage\themes\black\validatebox.css" />
+    <Content Include="WebPage\themes\black\window.css" />
+    <Content Include="WebPage\themes\bootstrap\accordion.css" />
+    <Content Include="WebPage\themes\bootstrap\calendar.css" />
+    <Content Include="WebPage\themes\bootstrap\combo.css" />
+    <Content Include="WebPage\themes\bootstrap\combobox.css" />
+    <Content Include="WebPage\themes\bootstrap\datagrid.css" />
+    <Content Include="WebPage\themes\bootstrap\datalist.css" />
+    <Content Include="WebPage\themes\bootstrap\datebox.css" />
+    <Content Include="WebPage\themes\bootstrap\dialog.css" />
+    <Content Include="WebPage\themes\bootstrap\easyui.css" />
+    <Content Include="WebPage\themes\bootstrap\filebox.css" />
+    <Content Include="WebPage\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="WebPage\themes\bootstrap\images\blank.gif" />
+    <Content Include="WebPage\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="WebPage\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="WebPage\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="WebPage\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="WebPage\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="WebPage\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="WebPage\themes\bootstrap\images\loading.gif" />
+    <Content Include="WebPage\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="WebPage\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="WebPage\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="WebPage\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="WebPage\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="WebPage\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="WebPage\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="WebPage\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="WebPage\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="WebPage\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="WebPage\themes\bootstrap\layout.css" />
+    <Content Include="WebPage\themes\bootstrap\linkbutton.css" />
+    <Content Include="WebPage\themes\bootstrap\menu.css" />
+    <Content Include="WebPage\themes\bootstrap\menubutton.css" />
+    <Content Include="WebPage\themes\bootstrap\messager.css" />
+    <Content Include="WebPage\themes\bootstrap\numberbox.css" />
+    <Content Include="WebPage\themes\bootstrap\pagination.css" />
+    <Content Include="WebPage\themes\bootstrap\panel.css" />
+    <Content Include="WebPage\themes\bootstrap\progressbar.css" />
+    <Content Include="WebPage\themes\bootstrap\propertygrid.css" />
+    <Content Include="WebPage\themes\bootstrap\searchbox.css" />
+    <Content Include="WebPage\themes\bootstrap\slider.css" />
+    <Content Include="WebPage\themes\bootstrap\spinner.css" />
+    <Content Include="WebPage\themes\bootstrap\splitbutton.css" />
+    <Content Include="WebPage\themes\bootstrap\tabs.css" />
+    <Content Include="WebPage\themes\bootstrap\textbox.css" />
+    <Content Include="WebPage\themes\bootstrap\tooltip.css" />
+    <Content Include="WebPage\themes\bootstrap\tree.css" />
+    <Content Include="WebPage\themes\bootstrap\validatebox.css" />
+    <Content Include="WebPage\themes\bootstrap\window.css" />
+    <Content Include="WebPage\themes\color.css" />
+    <Content Include="WebPage\themes\default\accordion.css" />
+    <Content Include="WebPage\themes\default\calendar.css" />
+    <Content Include="WebPage\themes\default\combo.css" />
+    <Content Include="WebPage\themes\default\combobox.css" />
+    <Content Include="WebPage\themes\default\datagrid.css" />
+    <Content Include="WebPage\themes\default\datalist.css" />
+    <Content Include="WebPage\themes\default\datebox.css" />
+    <Content Include="WebPage\themes\default\dialog.css" />
+    <Content Include="WebPage\themes\default\easyui.css" />
+    <Content Include="WebPage\themes\default\filebox.css" />
+    <Content Include="WebPage\themes\default\images\accordion_arrows.png" />
+    <Content Include="WebPage\themes\default\images\blank.gif" />
+    <Content Include="WebPage\themes\default\images\calendar_arrows.png" />
+    <Content Include="WebPage\themes\default\images\combo_arrow.png" />
+    <Content Include="WebPage\themes\default\images\datagrid_icons.png" />
+    <Content Include="WebPage\themes\default\images\datebox_arrow.png" />
+    <Content Include="WebPage\themes\default\images\layout_arrows.png" />
+    <Content Include="WebPage\themes\default\images\linkbutton_bg.png" />
+    <Content Include="WebPage\themes\default\images\loading.gif" />
+    <Content Include="WebPage\themes\default\images\menu_arrows.png" />
+    <Content Include="WebPage\themes\default\images\messager_icons.png" />
+    <Content Include="WebPage\themes\default\images\pagination_icons.png" />
+    <Content Include="WebPage\themes\default\images\panel_tools.png" />
+    <Content Include="WebPage\themes\default\images\searchbox_button.png" />
+    <Content Include="WebPage\themes\default\images\slider_handle.png" />
+    <Content Include="WebPage\themes\default\images\spinner_arrows.png" />
+    <Content Include="WebPage\themes\default\images\tabs_icons.png" />
+    <Content Include="WebPage\themes\default\images\tree_icons.png" />
+    <Content Include="WebPage\themes\default\images\validatebox_warning.png" />
+    <Content Include="WebPage\themes\default\layout.css" />
+    <Content Include="WebPage\themes\default\linkbutton.css" />
+    <Content Include="WebPage\themes\default\menu.css" />
+    <Content Include="WebPage\themes\default\menubutton.css" />
+    <Content Include="WebPage\themes\default\messager.css" />
+    <Content Include="WebPage\themes\default\numberbox.css" />
+    <Content Include="WebPage\themes\default\pagination.css" />
+    <Content Include="WebPage\themes\default\panel.css" />
+    <Content Include="WebPage\themes\default\progressbar.css" />
+    <Content Include="WebPage\themes\default\propertygrid.css" />
+    <Content Include="WebPage\themes\default\searchbox.css" />
+    <Content Include="WebPage\themes\default\slider.css" />
+    <Content Include="WebPage\themes\default\spinner.css" />
+    <Content Include="WebPage\themes\default\splitbutton.css" />
+    <Content Include="WebPage\themes\default\tabs.css" />
+    <Content Include="WebPage\themes\default\textbox.css" />
+    <Content Include="WebPage\themes\default\tooltip.css" />
+    <Content Include="WebPage\themes\default\tree.css" />
+    <Content Include="WebPage\themes\default\validatebox.css" />
+    <Content Include="WebPage\themes\default\window.css" />
+    <Content Include="WebPage\themes\gray\accordion.css" />
+    <Content Include="WebPage\themes\gray\calendar.css" />
+    <Content Include="WebPage\themes\gray\combo.css" />
+    <Content Include="WebPage\themes\gray\combobox.css" />
+    <Content Include="WebPage\themes\gray\datagrid.css" />
+    <Content Include="WebPage\themes\gray\datalist.css" />
+    <Content Include="WebPage\themes\gray\datebox.css" />
+    <Content Include="WebPage\themes\gray\dialog.css" />
+    <Content Include="WebPage\themes\gray\easyui.css" />
+    <Content Include="WebPage\themes\gray\filebox.css" />
+    <Content Include="WebPage\themes\gray\images\accordion_arrows.png" />
+    <Content Include="WebPage\themes\gray\images\blank.gif" />
+    <Content Include="WebPage\themes\gray\images\calendar_arrows.png" />
+    <Content Include="WebPage\themes\gray\images\combo_arrow.png" />
+    <Content Include="WebPage\themes\gray\images\datagrid_icons.png" />
+    <Content Include="WebPage\themes\gray\images\datebox_arrow.png" />
+    <Content Include="WebPage\themes\gray\images\layout_arrows.png" />
+    <Content Include="WebPage\themes\gray\images\linkbutton_bg.png" />
+    <Content Include="WebPage\themes\gray\images\loading.gif" />
+    <Content Include="WebPage\themes\gray\images\menu_arrows.png" />
+    <Content Include="WebPage\themes\gray\images\messager_icons.png" />
+    <Content Include="WebPage\themes\gray\images\pagination_icons.png" />
+    <Content Include="WebPage\themes\gray\images\panel_tools.png" />
+    <Content Include="WebPage\themes\gray\images\searchbox_button.png" />
+    <Content Include="WebPage\themes\gray\images\slider_handle.png" />
+    <Content Include="WebPage\themes\gray\images\spinner_arrows.png" />
+    <Content Include="WebPage\themes\gray\images\tabs_icons.png" />
+    <Content Include="WebPage\themes\gray\images\tree_icons.png" />
+    <Content Include="WebPage\themes\gray\images\validatebox_warning.png" />
+    <Content Include="WebPage\themes\gray\layout.css" />
+    <Content Include="WebPage\themes\gray\linkbutton.css" />
+    <Content Include="WebPage\themes\gray\menu.css" />
+    <Content Include="WebPage\themes\gray\menubutton.css" />
+    <Content Include="WebPage\themes\gray\messager.css" />
+    <Content Include="WebPage\themes\gray\numberbox.css" />
+    <Content Include="WebPage\themes\gray\pagination.css" />
+    <Content Include="WebPage\themes\gray\panel.css" />
+    <Content Include="WebPage\themes\gray\progressbar.css" />
+    <Content Include="WebPage\themes\gray\propertygrid.css" />
+    <Content Include="WebPage\themes\gray\searchbox.css" />
+    <Content Include="WebPage\themes\gray\slider.css" />
+    <Content Include="WebPage\themes\gray\spinner.css" />
+    <Content Include="WebPage\themes\gray\splitbutton.css" />
+    <Content Include="WebPage\themes\gray\tabs.css" />
+    <Content Include="WebPage\themes\gray\textbox.css" />
+    <Content Include="WebPage\themes\gray\tooltip.css" />
+    <Content Include="WebPage\themes\gray\tree.css" />
+    <Content Include="WebPage\themes\gray\validatebox.css" />
+    <Content Include="WebPage\themes\gray\window.css" />
+    <Content Include="WebPage\themes\icon.css" />
+    <Content Include="WebPage\themes\icons\back.png" />
+    <Content Include="WebPage\themes\icons\blank.gif" />
+    <Content Include="WebPage\themes\icons\cancel.png" />
+    <Content Include="WebPage\themes\icons\clear.png" />
+    <Content Include="WebPage\themes\icons\cut.png" />
+    <Content Include="WebPage\themes\icons\edit_add.png" />
+    <Content Include="WebPage\themes\icons\edit_remove.png" />
+    <Content Include="WebPage\themes\icons\filesave.png" />
+    <Content Include="WebPage\themes\icons\filter.png" />
+    <Content Include="WebPage\themes\icons\help.png" />
+    <Content Include="WebPage\themes\icons\large_chart.png" />
+    <Content Include="WebPage\themes\icons\large_clipart.png" />
+    <Content Include="WebPage\themes\icons\large_picture.png" />
+    <Content Include="WebPage\themes\icons\large_shapes.png" />
+    <Content Include="WebPage\themes\icons\large_smartart.png" />
+    <Content Include="WebPage\themes\icons\lock.png" />
+    <Content Include="WebPage\themes\icons\man.png" />
+    <Content Include="WebPage\themes\icons\mini_add.png" />
+    <Content Include="WebPage\themes\icons\mini_edit.png" />
+    <Content Include="WebPage\themes\icons\mini_refresh.png" />
+    <Content Include="WebPage\themes\icons\more.png" />
+    <Content Include="WebPage\themes\icons\no.png" />
+    <Content Include="WebPage\themes\icons\ok.png" />
+    <Content Include="WebPage\themes\icons\pencil.png" />
+    <Content Include="WebPage\themes\icons\print.png" />
+    <Content Include="WebPage\themes\icons\redo.png" />
+    <Content Include="WebPage\themes\icons\reload.png" />
+    <Content Include="WebPage\themes\icons\search.png" />
+    <Content Include="WebPage\themes\icons\sum.png" />
+    <Content Include="WebPage\themes\icons\tip.png" />
+    <Content Include="WebPage\themes\icons\undo.png" />
+    <Content Include="WebPage\themes\icos_20\ico_1.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_10.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_11.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_13.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_14.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_15.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_2.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_3.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_4.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_5.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_6.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_7.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_8.gif" />
+    <Content Include="WebPage\themes\icos_20\ico_9.gif" />
+    <Content Include="WebPage\themes\metro\accordion.css" />
+    <Content Include="WebPage\themes\metro\calendar.css" />
+    <Content Include="WebPage\themes\metro\combo.css" />
+    <Content Include="WebPage\themes\metro\combobox.css" />
+    <Content Include="WebPage\themes\metro\datagrid.css" />
+    <Content Include="WebPage\themes\metro\datalist.css" />
+    <Content Include="WebPage\themes\metro\datebox.css" />
+    <Content Include="WebPage\themes\metro\dialog.css" />
+    <Content Include="WebPage\themes\metro\easyui.css" />
+    <Content Include="WebPage\themes\metro\filebox.css" />
+    <Content Include="WebPage\themes\metro\images\accordion_arrows.png" />
+    <Content Include="WebPage\themes\metro\images\blank.gif" />
+    <Content Include="WebPage\themes\metro\images\calendar_arrows.png" />
+    <Content Include="WebPage\themes\metro\images\combo_arrow.png" />
+    <Content Include="WebPage\themes\metro\images\datagrid_icons.png" />
+    <Content Include="WebPage\themes\metro\images\datebox_arrow.png" />
+    <Content Include="WebPage\themes\metro\images\layout_arrows.png" />
+    <Content Include="WebPage\themes\metro\images\linkbutton_bg.png" />
+    <Content Include="WebPage\themes\metro\images\loading.gif" />
+    <Content Include="WebPage\themes\metro\images\menu_arrows.png" />
+    <Content Include="WebPage\themes\metro\images\messager_icons.png" />
+    <Content Include="WebPage\themes\metro\images\pagination_icons.png" />
+    <Content Include="WebPage\themes\metro\images\panel_tools.png" />
+    <Content Include="WebPage\themes\metro\images\searchbox_button.png" />
+    <Content Include="WebPage\themes\metro\images\slider_handle.png" />
+    <Content Include="WebPage\themes\metro\images\spinner_arrows.png" />
+    <Content Include="WebPage\themes\metro\images\tabs_icons.png" />
+    <Content Include="WebPage\themes\metro\images\tree_icons.png" />
+    <Content Include="WebPage\themes\metro\images\validatebox_warning.png" />
+    <Content Include="WebPage\themes\metro\layout.css" />
+    <Content Include="WebPage\themes\metro\linkbutton.css" />
+    <Content Include="WebPage\themes\metro\menu.css" />
+    <Content Include="WebPage\themes\metro\menubutton.css" />
+    <Content Include="WebPage\themes\metro\messager.css" />
+    <Content Include="WebPage\themes\metro\numberbox.css" />
+    <Content Include="WebPage\themes\metro\pagination.css" />
+    <Content Include="WebPage\themes\metro\panel.css" />
+    <Content Include="WebPage\themes\metro\progressbar.css" />
+    <Content Include="WebPage\themes\metro\propertygrid.css" />
+    <Content Include="WebPage\themes\metro\searchbox.css" />
+    <Content Include="WebPage\themes\metro\slider.css" />
+    <Content Include="WebPage\themes\metro\spinner.css" />
+    <Content Include="WebPage\themes\metro\splitbutton.css" />
+    <Content Include="WebPage\themes\metro\tabs.css" />
+    <Content Include="WebPage\themes\metro\textbox.css" />
+    <Content Include="WebPage\themes\metro\tooltip.css" />
+    <Content Include="WebPage\themes\metro\tree.css" />
+    <Content Include="WebPage\themes\metro\validatebox.css" />
+    <Content Include="WebPage\themes\metro\window.css" />
+    <Content Include="WebPage\themes\mobile.css" />
+    <Content Include="WebPage\themes\sysImage\bg.gif" />
+    <Content Include="WebPage\themes\sysImage\login\bg.gif" />
+    <Content Include="WebPage\themes\sysImage\login\center.gif" />
+    <Content Include="WebPage\themes\sysImage\login\center_0.gif" />
+    <Content Include="WebPage\themes\sysImage\login\center_1.gif" />
+    <Content Include="WebPage\themes\sysImage\login\left.gif" />
+    <Content Include="WebPage\themes\sysImage\login\left_0.gif" />
+    <Content Include="WebPage\themes\sysImage\login\left_1.gif" />
+    <Content Include="WebPage\themes\sysImage\login\login.gif" />
+    <Content Include="WebPage\themes\sysImage\login\password.gif" />
+    <Content Include="WebPage\themes\sysImage\login\reset.gif" />
+    <Content Include="WebPage\themes\sysImage\login\right.gif" />
+    <Content Include="WebPage\themes\sysImage\login\right_0.gif" />
+    <Content Include="WebPage\themes\sysImage\login\right_1.gif" />
+    <Content Include="WebPage\themes\sysImage\login\user.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_04.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_05.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_06.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_1.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_11.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_2.gif" />
+    <Content Include="WebPage\themes\sysImage\main\main_3.gif" />
+    <Content Include="WebPage\themes\sysImage\main\pass.gif" />
+    <Content Include="WebPage\themes\sysImage\main\pc.gif" />
+    <Content Include="WebPage\themes\sysImage\main\quit.gif" />
+    <Content Include="WebPage\themes\sysImage\main\sj.gif" />
+    <Content Include="WebPage\themes\sysImage\main\user.gif" />
+    <Content Include="WebPage\themes\system.css" />
+    <Content Include="WebPage\UKey\uKey.htm" />
+    <Content Include="WebPage\UKey\uKeyGrant.htm" />
+    <Content Include="WebPage\UKey\uKeyLog.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\AgentAccDetailRT.aspx.cs">
+      <DependentUpon>AgentAccDetailRT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentAccDetailRT.aspx.designer.cs">
+      <DependentUpon>AgentAccDetailRT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\AgentAccountRT.aspx.cs">
+      <DependentUpon>AgentAccountRT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentAccountRT.aspx.designer.cs">
+      <DependentUpon>AgentAccountRT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\AgentRechargeRT.aspx.cs">
+      <DependentUpon>AgentRechargeRT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\AgentRechargeRT.aspx.designer.cs">
+      <DependentUpon>AgentRechargeRT.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentAccDetailHttp.ashx.cs">
+      <DependentUpon>AgentAccDetailHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentAuditHttp.ashx.cs">
+      <DependentUpon>AgentAuditHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentHttp.ashx.cs">
+      <DependentUpon>AgentHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentLogHttp.ashx.cs">
+      <DependentUpon>AgentLogHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentModuleHttp.ashx.cs">
+      <DependentUpon>AgentModuleHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentOamHttp.ashx.cs">
+      <DependentUpon>AgentOamHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentRechargeDetailHttp.ashx.cs">
+      <DependentUpon>AgentRechargeDetailHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentRechargeHttp.ashx.cs">
+      <DependentUpon>AgentRechargeHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentRechargeNoticeHttp.ashx.cs">
+      <DependentUpon>AgentRechargeNoticeHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentRightHttp.ashx.cs">
+      <DependentUpon>AgentRightHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentTakeCashApplyHttp.ashx.cs">
+      <DependentUpon>AgentTakeCashApplyHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentTakeCashDetailHttp.ashx.cs">
+      <DependentUpon>AgentTakeCashDetailHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentTakeCashHttp.ashx.cs">
+      <DependentUpon>AgentTakeCashHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\AgentUserHttp.ashx.cs">
+      <DependentUpon>AgentUserHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\SiteAuditHttp.ashx.cs">
+      <DependentUpon>SiteAuditHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\SiteHttp.ashx.cs">
+      <DependentUpon>SiteHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Agent\SiteOamHttp.ashx.cs">
+      <DependentUpon>SiteOamHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Card\CardGrantHttp.ashx.cs">
+      <DependentUpon>CardGrantHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Card\CardHttp.ashx.cs">
+      <DependentUpon>CardHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Card\CardLogHttp.ashx.cs">
+      <DependentUpon>CardLogHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Client\ClientAccDetailHttp.ashx.cs">
+      <DependentUpon>ClientAccDetailHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Client\ClientHttp.ashx.cs">
+      <DependentUpon>ClientHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Client\ClientPointHttp.ashx.cs">
+      <DependentUpon>ClientPointHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Client\ClientRechargeHttp.ashx.cs">
+      <DependentUpon>ClientRechargeHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Client\ClientTakeCashHttp.ashx.cs">
+      <DependentUpon>ClientTakeCashHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\LoginHttp.ashx.cs">
+      <DependentUpon>LoginHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\MainHttp.ashx.cs">
+      <DependentUpon>MainHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\DeptHttp.ashx.cs">
+      <DependentUpon>DeptHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\LogHttp.ashx.cs">
+      <DependentUpon>LogHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\ModuleHttp.ashx.cs">
+      <DependentUpon>ModuleHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\RightHttp.ashx.cs">
+      <DependentUpon>RightHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\RoleHttp.ashx.cs">
+      <DependentUpon>RoleHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Manage\UserHttp.ashx.cs">
+      <DependentUpon>UserHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Set\AreaHttp.ashx.cs">
+      <DependentUpon>AreaHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Terminal\TerminalGrantHttp.ashx.cs">
+      <DependentUpon>TerminalGrantHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Terminal\TerminalHttp.ashx.cs">
+      <DependentUpon>TerminalHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Terminal\TerminalLogHttp.ashx.cs">
+      <DependentUpon>TerminalLogHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\Terminal\TerminalStoreHttp.ashx.cs">
+      <DependentUpon>TerminalStoreHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\UKey\UKeyGrantHttp.ashx.cs">
+      <DependentUpon>UKeyGrantHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\UKey\UKeyHttp.ashx.cs">
+      <DependentUpon>UKeyHttp.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="WebAction\UKey\UKeyLogHttp.ashx.cs">
+      <DependentUpon>UKeyLogHttp.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="WebPage\SalesManagement\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{391B0082-6CE2-44D2-9E36-6CB4C261CA68}</Project>
+      <Name>JXKK.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{0740D83E-2AF2-49CE-93BD-4601A2F335E4}</Project>
+      <Name>JXKK.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{083F106A-89C2-4D1B-900B-D2A1ADBEF9DB}</Project>
+      <Name>JXKK.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{35E5F04C-BB0B-484A-90FD-BF6DA7C8C212}</Project>
+      <Name>JXKK.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WebAction\Lottery\ChaseOrderHttp.ashx" />
+    <Content Include="WebAction\Lottery\LotteryOrderHttp.ashx" />
+    <Content Include="WebAction\Lottery\NumNoticeHttp.ashx" />
+    <Content Include="WebAction\Manage\LogHttp.ashx" />
+    <Content Include="WebAction\Manage\DeptHttp.ashx" />
+    <Content Include="WebAction\Manage\ModuleHttp.ashx" />
+    <Content Include="WebAction\Manage\RightHttp.ashx" />
+    <Content Include="WebAction\Manage\RoleHttp.ashx" />
+    <Content Include="WebAction\Manage\UserHttp.ashx" />
+    <Content Include="WebAction\LoginHttp.ashx" />
+    <Content Include="WebAction\MainHttp.ashx" />
+    <Content Include="WebAction\UKey\UKeyGrantHttp.ashx" />
+    <Content Include="WebAction\UKey\UKeyHttp.ashx" />
+    <Content Include="WebAction\UKey\UKeyLogHttp.ashx" />
+    <Content Include="WebAction\Terminal\TerminalGrantHttp.ashx" />
+    <Content Include="WebAction\Terminal\TerminalHttp.ashx" />
+    <Content Include="WebAction\Terminal\TerminalLogHttp.ashx" />
+    <Content Include="WebAction\Terminal\TerminalStoreHttp.ashx" />
+    <Content Include="WebAction\Set\AreaHttp.ashx" />
+    <Content Include="WebAction\Client\ClientAccDetailHttp.ashx" />
+    <Content Include="WebAction\Client\ClientHttp.ashx" />
+    <Content Include="WebAction\Client\ClientPointHttp.ashx" />
+    <Content Include="WebAction\Client\ClientRechargeHttp.ashx" />
+    <Content Include="WebAction\Client\ClientTakeCashHttp.ashx" />
+    <Content Include="WebAction\Card\CardGrantHttp.ashx" />
+    <Content Include="WebAction\Card\CardHttp.ashx" />
+    <Content Include="WebAction\Card\CardLogHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentAccDetailHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentAuditHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentLogHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentModuleHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentOamHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentRechargeDetailHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentRechargeHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentRechargeNoticeHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentRightHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentTakeCashApplyHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentTakeCashDetailHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentTakeCashHttp.ashx" />
+    <Content Include="WebAction\Agent\AgentUserHttp.ashx" />
+    <Content Include="WebAction\Agent\SiteAuditHttp.ashx" />
+    <Content Include="WebAction\Agent\SiteHttp.ashx" />
+    <Content Include="WebAction\Agent\SiteOamHttp.ashx" />
+    <None Include="WebPage\themes\icos_20\Thumbs.db" />
+    <None Include="WebPage\themes\sysImage\login\Thumbs.db" />
+    <None Include="WebPage\themes\sysImage\main\Thumbs.db" />
+    <None Include="WebPage\themes\sysImage\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\AgentAccDetail.rdlc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\AgentAccount.rdlc">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\AgentRecharge.rdlc">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16283</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/WebMis</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>账户明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //客户查询分类
+            $('#ddlClientQuery').combobox({
+                url: '../Client/Handler/ClientAccDetailHandler.ashx?action=clientQueryListLoad',
+                onLoadSuccess: function () { //加载完成后,设置选中第一项
+                    $(this).combobox("select", "0");
+                }
+            });
+            //加载代理商列表
+            $("#ddlAgent").combobox({
+                
+                url: '../Client/Handler/ClientAccDetailHandler.ashx?action=agentListLoad',
+                onSelect: function (record) {
+                    $('#ddlSite').combobox({
+                        url: '../Client/Handler/ClientAccDetailHandler.ashx?action=siteListLoad&&agentId=' + record.value
+                    }).combobox('clear');
+                }
+            });
+            $('#ddlSite').combobox({
+                url: '../Client/Handler/ClientAccDetailHandler.ashx?action=siteListLoad'
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#ddlAgent").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    clientQuery: $("#ddlClientQuery").combobox("getValue"),
+                    clientQueryText: $("#tbClientQuery").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Client/Handler/ClientAccDetailHandler.ashx?action=gridLoad',
+                idField: 'flowid',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                columns: [[
+					{ title: '客户编号', field: 'clientid', width: gridWidth * 0.06, align: 'left' },
+					{ title: '客户名称', field: 'clientname', width: gridWidth * 0.07, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.09, align: 'left' },
+					{ title: '执法文书类型名称', field: 'sitename', width: gridWidth * 0.09, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.13, align: 'left' },
+					{ title: '上次余额', field: 'lastbalance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '发生金额', field: 'fee', width: gridWidth * 0.07, align: 'right' },
+                    { title: '当前余额', field: 'balance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '来源方式', field: 'srcmode', width: gridWidth * 0.06, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "1")
+                                return '充值';
+                            else if (value == "2")
+                                return '提现';
+                            else if (value == "3")
+                                return '购彩';
+                            else if (value == "4")
+                                return '中奖';
+                            else if (value == "5")
+                                return '退款';
+                        }
+                    },
+                    { title: '发生时间', field: 'changetime', width: gridWidth * 0.14, align: 'left' },
+                    { title: '信息摘要', field: 'remark', width: gridWidth * 0.15, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false" style="height: 300px;">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlClientQuery" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 80px;">
+                        </select></div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientQuery" style="width: 140px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        发生日期:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlAgent" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

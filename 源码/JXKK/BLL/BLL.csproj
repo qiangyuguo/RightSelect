@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{391B0082-6CE2-44D2-9E36-6CB4C261CA68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.ZY.JXKK.BLL</RootNamespace>
+    <AssemblyName>BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agent\AgentAccDetailBLL.cs" />
+    <Compile Include="Agent\AgentBLL.cs" />
+    <Compile Include="Agent\AgentLogBLL.cs" />
+    <Compile Include="Agent\AgentModuleBLL.cs" />
+    <Compile Include="Agent\AgentPreRechgBLL.cs" />
+    <Compile Include="Agent\AgentRechargeBLL.cs" />
+    <Compile Include="Agent\AgentRechargeNoticeBLL.cs" />
+    <Compile Include="Agent\AgentRightBLL.cs" />
+    <Compile Include="Agent\AgentRoleBLL.cs" />
+    <Compile Include="Agent\AgentSettlementBLL.cs" />
+    <Compile Include="Agent\AgentTakeCashApplyBLL.cs" />
+    <Compile Include="Agent\AgentTakeCashBLL.cs" />
+    <Compile Include="Agent\AgentUserBLL.cs" />
+    <Compile Include="Agent\SiteBLL.cs" />
+    <Compile Include="Agent\StaffBLL.cs" />
+    <Compile Include="Card\CardBLL.cs" />
+    <Compile Include="Card\CardLogBLL.cs" />
+    <Compile Include="Case\CaseBLL.cs" />
+    <Compile Include="Case\AskRecordBLL.cs" />
+    <Compile Include="Case\chufashu01BLL.cs" />
+    <Compile Include="Client\ClientAccDetailBLL.cs" />
+    <Compile Include="Client\ClientBLL.cs" />
+    <Compile Include="Client\ClientPointBLL.cs" />
+    <Compile Include="Client\ClientRechargeBLL.cs" />
+    <Compile Include="Client\ClientTakeCashBLL.cs" />
+    <Compile Include="Client\ClientTakeCashToBankBLL.cs" />
+    <Compile Include="Client\ClientTradeBLL.cs" />
+    <Compile Include="Combobox.cs" />
+    <Compile Include="Enforcement\EnforcementNameBLL.cs" />
+    <Compile Include="Enforcement\EnforcementTypeBLL.cs" />
+    <Compile Include="EnumSelectListHelper.cs" />
+    <Compile Include="RightMenuBLL.cs" />
+    <Compile Include="ILogin.cs" />
+    <Compile Include="LoginAgentUser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LoginUser.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Lottery\ChaseOrderBLL.cs" />
+    <Compile Include="Lottery\ChasePlanBLL.cs" />
+    <Compile Include="Lottery\LotteryOrderBLL.cs" />
+    <Compile Include="Lottery\NumNoticeBLL.cs" />
+    <Compile Include="MainAgentBll.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainBll.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Manage\DeptBLL.cs" />
+    <Compile Include="Manage\LogBLL.cs" />
+    <Compile Include="Manage\ModuleBLL.cs" />
+    <Compile Include="Manage\RightBLL.cs" />
+    <Compile Include="Manage\RoleBLL.cs" />
+    <Compile Include="Manage\UserBLL.cs" />
+    <Compile Include="PointBet\PNumNoticeBLL.cs" />
+    <Compile Include="PointBet\PointOrderBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Set\AreaBLL.cs" />
+    <Compile Include="Set\GameBLL.cs" />
+    <Compile Include="Set\LotteryBLL.cs" />
+    <Compile Include="Set\MaxBLL.cs" />
+    <Compile Include="Set\TypeBLL.cs" />
+    <Compile Include="Terminal\TerminalBLL.cs" />
+    <Compile Include="Terminal\TerminalLogBLL.cs" />
+    <Compile Include="UKey\UKeyBLL.cs" />
+    <Compile Include="UKey\UKeyLogBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{D1A38B81-3881-40B3-876E-CF567DF88536}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{0740D83E-2AF2-49CE-93BD-4601A2F335E4}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DBO\DBO.csproj">
+      <Project>{42DE9F9F-F293-496F-B1CC-4EE58428C996}</Project>
+      <Name>DBO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Json\Json.csproj">
+      <Project>{B4EBE8FC-7E73-4C43-A7B3-D62AC269370B}</Project>
+      <Name>Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{083F106A-89C2-4D1B-900B-D2A1ADBEF9DB}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{35E5F04C-BB0B-484A-90FD-BF6DA7C8C212}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

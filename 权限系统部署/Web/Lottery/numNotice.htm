@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>开奖公告</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#ddlLotteryType').combobox({
+                url: '../Lottery/Handler/NumNoticeHandler.ashx?action=ddlLotteryTypeLoad',
+                onLoadSuccess: function () { //加载完成后,设置选中第一项
+                    $(this).combobox("select", "2");
+                }
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    period: $("#tbPeriod").val(),
+                    lotteryType: $("#ddlLotteryType").combobox("getValue"),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+
+                });
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Lottery/Handler/NumNoticeHandler.ashx?action=gridLoad',
+                queryParams: {
+                    lotteryType: 2
+                },
+                idField: 'flowid',
+                columns: [[
+                    { title: '期次', field: 'period', width: gridWidth * 0.12, align: 'left' },
+                    { title: '彩种', field: 'lotterytypename', width: gridWidth * 0.15, align: 'left' },
+                    { title: '开奖号码', field: 'numbers', width: gridWidth * 0.10, align: 'left' },
+                    { title: '开售时间', field: 'starttime', width: gridWidth * 0.17, align: 'left' },
+                    { title: '截止时间', field: 'endtime', width: gridWidth * 0.17, align: 'left' },
+                    { title: '开奖时间', field: 'publishtime', width: gridWidth * 0.17, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        期次:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbPeriod" style="width: 90px;" maxlength="16" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        彩种:</div>
+                    <div style="float: left; padding: 4px;">
+                     <select id="ddlLotteryType" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width: 110px;">
+                        </select>
+                    </div>
+<!--                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        游戏:</div>
+                    <div style="float: left; padding: 4px;">
+                     <select id="ddlGame" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width: 110px;">
+                        </select>
+                    </div>-->
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        起始日期:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;"/>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

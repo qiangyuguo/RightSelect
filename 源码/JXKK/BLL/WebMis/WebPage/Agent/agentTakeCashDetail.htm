@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>保证金提现明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            var today = new Date();
+            $('#tbStartDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            $('#tbEndDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Agent/AgentTakeCashDetailHttp.ashx?action=gridLoad',
+                queryParams: {
+                    agentId: "",
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                idField: 'flowid',
+                columns: [[
+                    { title: '代理商编号', field: 'agentid', width: gridWidth * 0.08, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '提现金额', field: 'fee', width: gridWidth * 0.07, align: 'right' },
+					{ title: '当前余额', field: 'balance', width: gridWidth * 0.07, align: 'right' },
+                    { title: '银行账号', field: 'bankaccountid', width: gridWidth * 0.17, align: 'left' },
+                    { title: '操作人', field: 'operatorname', width: gridWidth * 0.10, align: 'left' },
+					{ title: '创建时间', field: 'createtime', width: gridWidth * 0.16, align: 'left' },
+					{ title: '说明', field: 'description', width: gridWidth * 0.20, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#tbAgentId").val(),
+                    agentName: $("#tbAgentName").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentId" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentName" class="easyui-textbox" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        查询日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

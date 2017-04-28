@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>提现明细</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //客户查询分类
+            $('#ddlClientQuery').combobox({
+                url: '../Client/Handler/ClientTakeCashHandler.ashx?action=clientQueryListLoad',
+                onLoadSuccess: function () { //加载完成后,设置选中第一项
+                    $(this).combobox("select", "0");
+                }
+            });
+            //加载代理商列表
+            $("#ddlAgent").combobox({
+
+                url: '../Client/Handler/ClientTakeCashHandler.ashx?action=agentListLoad',
+                onSelect: function (record) {
+                    $('#ddlSite').combobox({
+                        url: '../Client/Handler/ClientTakeCashHandler.ashx?action=siteListLoad&&agentId=' + record.value
+                    }).combobox('clear');
+                }
+            });
+            $('#ddlSite').combobox({
+                url: '../Client/Handler/ClientHandler.ashx?action=siteListLoad'
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#ddlAgent").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    clientQuery: $("#ddlClientQuery").combobox("getValue"),
+                    clientQueryText: $("#tbClientQuery").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../Client/Handler/ClientTakeCashHandler.ashx?action=gridLoad',
+                idField: 'flowId',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                showFooter: true,
+                columns: [[
+					{ title: '客户编号', field: 'clientid', width: gridWidth * 0.06, align: 'left' },
+					{ title: '客户名称', field: 'clientname', width: gridWidth * 0.06, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.09, align: 'left' },
+					{ title: '执法文书类型名称', field: 'sitename', width: gridWidth * 0.09, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.12, align: 'left' },
+					{ title: '上次余额', field: 'lastbalance', width: gridWidth * 0.06, align: 'right' },
+                    { title: '提现金额', field: 'fee', width: gridWidth * 0.13, align: 'right' },
+                    { title: '当前余额', field: 'balance', width: gridWidth * 0.06, align: 'right' },
+                    { title: '提现方式', field: 'modename', width: gridWidth * 0.06, align: 'left' },
+                    { title: '发生时间', field: 'createtime', width: gridWidth * 0.15, align: 'left' },
+                    { title: '说明', field: 'description', width: gridWidth * 0.12, align: 'left' }
+				]],
+                onLoadSuccess: function (data) {
+                    $.SuccessCheck(data); //成功检查
+                    $('#myDataGrid').datagrid('statistics');
+                },
+                toolbar: "#tb"
+            });
+
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+            //明细事件绑定
+            $("#btnDetail").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要查看的记录', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "提现明细", iconCls: "icon-ok" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').form('load', '../Client/Handler/ClientTakeCashHandler.ashx?action=load&flowId=' + row.flowid);
+            });
+        });
+
+        //获取提现总计
+        $.extend($.fn.datagrid.methods, {
+            statistics: function (jq) {
+                var opt = $(jq).datagrid('options').columns;
+                var rows = $("#myDataGrid").datagrid("getRows");
+                var footer = new Array();
+                footer['sum'] = "";
+                $.getJSON("../Client/Handler/ClientTakeCashHandler.ashx?action=totalFee", {
+                    agentId: $("#ddlAgent").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    clientQuery: $("#ddlClientQuery").combobox("getValue"),
+                    clientQueryText: $("#tbClientQuery").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                }, function (result) {
+                    if ($.SuccessCheck(result) == true) {//成功检查
+                        footer['sum'] = '"fee":"<b>￥' + result + '</b>",';
+                        var footerObj = new Array();
+                        if (footer['sum'] != "") {
+                            var tmp = '{' + footer['sum'].substring(0, footer['sum'].length - 1) + "}";
+                            var obj = eval('(' + tmp + ')');
+                            if (obj[opt[0][0].field] == undefined) {
+                                footer['sum'] += '"' + opt[0][0].field + '":"<b>提现总计:</b>"';
+                                obj = eval('({' + footer['sum'] + '})');
+                            } else {
+                                obj[opt[0][0].field] = "<b>提现总计:</b>" + obj[opt[0][0].field];
+                            }
+                            footerObj.push(obj);
+                        }
+                        if (footerObj.length > 0) {
+                            $(jq).datagrid('reloadFooter', footerObj);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnDetail" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-detail',plain:true">
+                            查看</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlClientQuery" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 80px;">
+                        </select></div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientQuery" style="width: 140px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        起始日期:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlAgent" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 700px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right">
+                        客户编号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="clientId" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        客户名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="clientName" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        代理商名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="agentId" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        门店名称 ：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="siteId" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        卡号：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="cardId" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        上次余额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="lastBalance" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        发生金额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="fee" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        当前余额：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="balance" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        提现方式：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="handleMode" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        提现来源：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="sourceType" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        操作人：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="operatorName" style="width: 180px;" disabled="disabled"
+                            class="easyui-validatebox" />
+                    </td>
+                    <td class="tdT" align="right">
+                        发生时间：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="createTime" style="width: 180px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        说明：
+                    </td>
+                    <td class="tdE" align="left" colspan="3">
+                        <input type="text" name="description" style="width: 520px;" disabled="disabled" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnCancel" class="easyui-linkbutton" data-options="iconCls:'icon-back'">
+                            返回</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

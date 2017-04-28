@@ -1,0 +1,73 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>现场照片详细</title>
+</head>
+<body>
+    <form id="myForm" method="post" action="">
+        <div align="center" id="printArea">
+            <br />
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            <tr align="left" style="height:25px;">
+                                <td>
+                                    现场地点：<input id="didian" maxlength="100" runat="server" type="text" class="NomorText" style="width: 420px" />
+                                </td>
+                            </tr>
+                            <tr align="left" style="height:25px;">
+                                <td>
+                                    案件名称：<input id="anjianmingc" maxlength="100" runat="server" type="text" class="NomorText" style="width: 120px" />
+                                    涉嫌<input id="shexian" maxlength="100" runat="server" type="text" class="NomorText" style="width: 250px" />案
+                                </td>
+                            </tr>
+                            <tr align="left" style="height:25px;">
+                                <td>
+                                    拍摄时间：<input id="shijian1" maxlength="20" runat="server" type="text" class="NomorText" style="width: 190px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                                    &nbsp;至&nbsp;
+                                    <input id="shijian2" maxlength="20" runat="server" type="text" class="NomorText" style="width: 200px" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
+                                </td>
+                            </tr>
+                            <tr align="left" style="height:25px;">
+                                <td>
+                                    拍 照 人：<input id="paizhaoren" maxlength="50" runat="server" type="text" class="NomorText" style="width: 422px" />
+                                </td>
+                            </tr>
+                            <tr align="right" style="height:25px;">
+                                <td>
+                                    <input id="pagdate" maxlength="30" runat="server" type="text" class="NomorText" style="width: 90px" onfocus="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr style="height:45px;">
+                                <td>
+                                    <br />
+                                    <hr style="height:1px;border:none;border-top:1px solid #555555;" />
+                                </td>
+                            </tr>
+                            <tr align="left" style="height:25px;">
+                                <td>
+                                    本卷共<input id="yenum" maxlength="7" runat="server" type="text" class="NomorText" style="width: 50px" />页
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    照片<input id="zhangnum" maxlength="7" runat="server" type="text" class="NomorText" style="width: 50px" />张
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    本卷共<input id="fengnum" maxlength="7" runat="server" type="text" class="NomorText" style="width: 50px" />份
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!--endprint-->
+        <div class="frmbottom" align="center">
+            <asp:button id="Button1" text="保存" class="button" />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" value="打印" class="button" onclick="WebPrintArea()" />
+        </div>
+    </form>
+    <script src="../Scripts/util.js"  type="text/javascript"></script>
+    <script src="../Scripts/My97DatePicker/WdatePicker.js"  type="text/javascript"></script>
+</body>
+</html>

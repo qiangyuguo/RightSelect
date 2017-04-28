@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>快开厅维护</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //加载代理商列表
+            $("#ddlAgent").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Agent/SiteOamHttp.ashx?action=agentListLoad'
+            });
+
+            //加载审核状态列表
+            $("#ddlAuditStatus").combobox({
+                panelHeight: 150,
+                url: '../WebAction/Agent/SiteOamHttp.ashx?action=auditListLoad'
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Agent/SiteOamHttp.ashx?action=gridLoad',
+                queryParams: {
+                    siteName: $("#tbSiteName").val(),
+                    auditStatus: "1"
+                },
+                idField: 'agentId',
+                columns: [[
+					{ title: '快开厅编号', field: 'siteid', width: gridWidth * 0.09, align: 'left' },
+					{ title: '快开厅名称', field: 'sitename', width: gridWidth * 0.15, align: 'left' },
+					{ title: '代理商名称', field: 'agentname', width: gridWidth * 0.15, align: 'left' },
+					{ title: '联系人', field: 'contact', width: gridWidth * 0.11, align: 'left' },
+					{ title: '手机号码', field: 'telephone', width: gridWidth * 0.15, align: 'left' },
+					{ title: '使用状态', field: 'status', width: gridWidth * 0.10, align: 'left',
+					    formatter: function (value, rowData, rowIndex) {
+					        if (value == "0")
+					            return '<span style="color:red">停用</span>';
+					        else
+					            return '启用';
+					    }
+					},
+					{ title: '备注说明', field: 'remark', width: gridWidth * 0.25, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+
+
+            //修改事件绑定
+            $("#btnEdit").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要维护的记录', 'warning');
+                    return;
+                }
+                $('#myWindow').window({ title: "快开厅维护", iconCls: "icon-edit" });
+                $('#myWindow').window('open');
+                $('#myForm').form('clear');
+                $('#myForm').attr('action', '../WebAction/Agent/SiteOamHttp.ashx?action=edit&siteId=' + row.siteid);
+                $('#myForm').form('load', '../WebAction/Agent/SiteOamHttp.ashx?action=load&siteId=' + row.siteid);
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    siteId: $("#tbSiteId").val(),
+                    siteName: $("#tbSiteName").val(),
+                    auditStatus: "1"
+                });
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">
+                            维护</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        快开厅编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbSiteId" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        快开厅名称:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbSiteName" style="width: 90px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 450px">
+        <form id="myForm" method="post" action="">
+        <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+            <tbody>
+                <tr>
+                    <td class="tdT" align="right" style="width: 120px;">
+                        编号：
+                    </td>
+                    <td class="tdE" align="left" style="width: 305px;">
+                        <input type="text" name="siteId" disabled="disabled" value="系统自动生成" style="width: 150px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        名称：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="siteName" style="width: 150px;" maxlength="30" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        所属代理商：
+                    </td>
+                    <td class="tdE" align="left">
+                        <select id="ddlAgent" class="easyui-combobox" name="agentId" style="width: 150px;"
+                            data-options="required:true">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        联系人：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="contact" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        手机号码：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="telephone" style="width: 150px;" maxlength="20" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        详细地址：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="address" style="width: 150px;" maxlength="100" class="easyui-validatebox"
+                            data-options="required:true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" class="tdT">
+                        使用状态：
+                    </td>
+                    <td align="left" class="tdE">
+                        <input type="checkbox" name="status" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        备注说明 ：
+                    </td>
+                    <td class="tdE" align="left">
+                        <input type="text" name="remark" style="width: 150px;" maxlength="160" class="easyui-validatebox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</body>
+</html>

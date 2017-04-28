@@ -1,0 +1,68 @@
+﻿@import url('default/easyui.css');
+
+@import url('icon.css');
+/*===========初始化容器样式 start===================*/
+body,span,h1,h2,h3,h4,ul,li,img,p,b,textarea,input,select,form,a,table,tr,td,th
+	{
+	margin: 0;
+	padding: 0;
+	font-family: verdana, Arial, Helvetica, sans-serif, "宋体";
+	list-style-type: none;
+	font-size: 12px;
+	color: inherit;
+	z-index: inherit;
+}
+
+.my-datagrid-cell td {
+	border-right: 1px dotted #ccc;
+	border-left: 1px dotted #ccc;
+	border-top: 1px dotted #ccc;
+	border-bottom: 1px dotted #ccc;
+}
+
+.onMenu {
+	background: url(sysImage/bg.gif) no-repeat;
+}
+
+.selectMenu {
+	background: url(sysImage/bg.gif) no-repeat;
+}
+
+.divWindow {
+	padding-right: 5px;
+	padding-left: 5px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.tdB {
+	background-color: #f6f6f6
+}
+
+.tdT {
+	background-color: #eff1ff;
+	padding-right: 3px;
+	padding-left: 3px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+
+.tdE {
+	background-color: #FFFFFF;
+	padding-right: 3px;
+	padding-left: 3px;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+
+.tab {
+	background-color: #cccccc;
+}
+
+.text-align {
+	TEXT-ALIGN: center;
+}
+
+.cursor-hand {
+	CURSOR: hand;
+}

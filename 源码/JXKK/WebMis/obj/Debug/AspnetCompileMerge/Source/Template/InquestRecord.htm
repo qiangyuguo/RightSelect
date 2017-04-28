@@ -1,0 +1,196 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>勘验笔录</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+
+
+            $('#btnPrint').bind("click", function () {
+
+                alert('print');
+            });
+
+        });
+    </script>
+
+ 
+        <form id="myForm" method="post" action="">
+            <div align="center">
+                <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="width:5%"></td>
+                            <td></td>
+
+                        </tr>
+
+                        <tr>
+                            <td align="center">
+                                <span style="font-weight: bold; font-size: larger">勘 验 笔 录</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdE" align="left" colspan="2">
+
+                                案由
+                                <input type="text" name="txtReason" type="text" class="txt" style="width: 400px" />
+
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdE">
+                                勘验时间：
+                                <input type="text" name="KanYanDate" value="1990/01/01" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                       style="width: 200px;" />至
+                            </td>
+                            <td class="tdE">
+                                <input type="text" name="CaseOpenDate" value="1990/01/01" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                       style="width: 200px;" />
+                            </td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td class="tdE">
+                                勘验人：
+                                <input type="text" name="txtKanYanPerson" type="text" class="txt" style="width: 100px" />
+                                单位：
+                                <input type="text" name="txtKanYanUnit" type="text" class="txt" style="width: 100px" />
+                            </td>
+                            <td class="tdE">
+                                执法：
+                                <input type="text" name="txtZhiFa" type="text" class="txt" style="width: 100px" />
+                                证号：
+                                <input type="text" name="txtZhengHao" type="text" class="txt" style="width: 100px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdE">
+                                记录人：
+                                <input type="text" name="txtJiLuPerson" type="text" class="txt" style="width: 100px" />
+                                单位：
+                                <input type="text" name="txtJiLuUnit" type="text" class="txt" style="width: 100px" />
+                            </td>
+                            <td class="tdE">
+                                执法：
+                                <input type="text" name="txtZhiFa1" type="text" class="txt" style="width: 100px" />
+                                证号：
+                                <input type="text" name="txtZhengHao1" type="text" class="txt" style="width: 100px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdE">
+                                当事人：
+                                <input type="text" name="txtDangShiPerson" type="text" class="txt" style="width: 200px" />
+
+                            </td>
+                            <td class="tdE">
+                                地址\住址：
+                                <input type="text" name="txtAddress" type="text" class="txt" style="width: 200px" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdE">
+                                组织代表：
+                                <input type="text" name="txtZuZhiDaiBiao" type="text" class="txt" style="width: 100px" />
+
+                            </td>
+                            <td class="tdE">
+                                单位：
+                                <input type="text" name="txtDaiBiaoUnit" type="text" class="txt" style="width: 150px" />
+                                职位：
+                                <input type="text" name="txtDaiBiaoUnit" type="text" class="txt" style="width: 150px" />
+                            </td>
+                             
+                        </tr>
+                        <tr>
+                            <td class="tdE">
+                                勘验情况和结果：
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="tdE" align="left" colspan="2">
+                                <textarea id="txtKanYanResult" name="centerBetCodes" disabled="disabled" style="height: 100px;
+                               width: 520px;"></textarea>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td class="tdE">
+                                勘验人签名：
+                                <input type="text" name="txtKanYanRenQianMing" type="text" class="txt" style="width: 200px" />
+
+                            </td>
+                            <td class="tdE">
+                                记录人签名：
+                                <input type="text" name="txtJiLuRenQianMing" type="text" class="txt" style="width: 200px" />
+
+
+                            </td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="tdE">
+
+                                当事人/组织签名：
+                                <input type="text" name="txtDangShiRenQianMing" type="text" class="txt" style="width: 200px" />
+                            </td>
+                            <td class="tdE">
+
+                                被邀请人签名：
+                                <input type="text" name="txtBeiYaoQingRenQianMing" type="text" class="txt" style="width: 200px" />
+                            </td>
+
+
+                        </tr>
+
+                        <tr>
+                            <td></td>
+
+                            <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                                <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                                    保存
+                                </a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnPrint" class="easyui-linkbutton"
+                                                                   data-options="iconCls:'icon-cancel'">打印</a>
+                            </td>
+
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </form>
+     
+</body>
+</html>

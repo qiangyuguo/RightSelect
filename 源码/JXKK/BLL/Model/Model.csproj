@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{083F106A-89C2-4D1B-900B-D2A1ADBEF9DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.ZY.JXKK.Model</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agent\TBAgent.cs" />
+    <Compile Include="Agent\TBSite.cs" />
+    <Compile Include="Agent\TBStaff.cs" />
+    <Compile Include="Agent\TSAgentLog.cs" />
+    <Compile Include="Agent\TSAgentModule.cs" />
+    <Compile Include="Agent\TSAgentRight.cs" />
+    <Compile Include="Agent\TSAgentRole.cs" />
+    <Compile Include="Agent\TSAgentUser.cs" />
+    <Compile Include="Agent\TSLoginCache.cs" />
+    <Compile Include="Agent\TSLoginLog.cs" />
+    <Compile Include="Agent\TTAgentAccDetail.cs" />
+    <Compile Include="Agent\TTAgentRecharge.cs" />
+    <Compile Include="Agent\TTAgentRechargeNotice.cs" />
+    <Compile Include="Agent\TTAgentTakeCash.cs" />
+    <Compile Include="Agent\TBStaffClon.cs" />
+    <Compile Include="Agent\TTAgentTakeCashApply.cs" />
+    <Compile Include="Agent\TBAgentClon.cs" />
+    <Compile Include="Card\TBCard.cs" />
+    <Compile Include="Card\TBCardLog.cs" />
+    <Compile Include="Client\TBClient.cs" />
+    <Compile Include="Client\TTClientAccDetail.cs" />
+    <Compile Include="Client\TTClientPoint.cs" />
+    <Compile Include="Client\TTClientRecharge.cs" />
+    <Compile Include="Client\TTClientTakeCash.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Lottery\TBNumNotice.cs" />
+    <Compile Include="Lottery\TTChaseOrder.cs" />
+    <Compile Include="Lottery\TTLotteryOrder.cs" />
+    <Compile Include="Manage\TSDept.cs" />
+    <Compile Include="Manage\TSLog.cs" />
+    <Compile Include="Manage\TSModule.cs" />
+    <Compile Include="Manage\TSRight.cs" />
+    <Compile Include="Manage\TSRole.cs" />
+    <Compile Include="Manage\TSUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource\Resource.Designer.cs" />
+    <Compile Include="Set\TBArea.cs" />
+    <Compile Include="Set\TBGame.cs" />
+    <Compile Include="Set\TBLottery.cs" />
+    <Compile Include="Set\TBType.cs" />
+    <Compile Include="Set\TSMax.cs" />
+    <Compile Include="Terminal\TBTerminal.cs" />
+    <Compile Include="Terminal\TBTerminalLog.cs" />
+    <Compile Include="UKey\TBUKey.cs" />
+    <Compile Include="UKey\TBUKeyLog.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\Resource.resx" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

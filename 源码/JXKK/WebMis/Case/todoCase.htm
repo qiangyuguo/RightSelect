@@ -1,0 +1,704 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>待办案件</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSetup({
+
+                cache: false //关闭AJAX相应的缓存 
+
+            });
+
+            //加载文书类型列表
+            $("#caseType").combobox({
+                url: '../Enforcement/Handler/EnforcementTypeHandler.ashx?action=PunishmentTypeListLoad'
+            });
+            $('#tbCloseStartDate').datebox({
+                //value: "2015-01-01"
+            });
+            $('#tbCloseEndDate').datebox({
+                //value: getEndDate()
+            });
+            $('#tbOpenStartDate').datebox({
+                // value: "2015-01-01"
+            });
+            $('#tbOpenEndDate').datebox({
+                // value: getEndDate()
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 250;
+
+            $('#myDataGrid').datagrid({
+                url: '../Case/Handler/TodoCaseHandler.ashx?action=caseGridLoad',
+                queryParams: {
+                    openDateFrom: $("#tbOpenStartDate").datebox('getValue'),
+                    openDateTo: $("#tbOpenEndDate").datebox('getValue'),
+                    closeDateFrom: $("#tbCloseStartDate").datebox('getValue'),
+                    closeDateTo: $("#tbCloseEndDate").datebox('getValue'),
+                    tbCaseId: $("#caseNo").val(),
+                    tbCaseReason: $("#caseReason").val(),
+                    caseState: $("#caseState").val(),
+                    caseCarNo: $("#caseCarNo").val(),
+                    caseType: $("#caseType").combobox("getValue")
+                },
+                idField: 'CaseId',
+                columns: [[
+					{ title: '案卷号', field: 'caseid', width: gridWidth * 0.1, align: 'left' },
+                    { title: '车牌号码', field: 'casecarno', width: gridWidth * 0.05, align: 'left' },
+                    { title: '案件类别', field: 'casetypename', width: gridWidth * 0.1, align: 'left' },
+                    { title: '案件状态', field: 'casestatename', width: gridWidth * 0.1, align: 'left' },
+                     { title: '立案日期', field: 'caseopendate', width: gridWidth * 0.05, align: 'left', formatter: dateTimeFormatter },
+                     { title: '结案日期', field: 'caseclosedate', width: gridWidth * 0.05, align: 'left', formatter: dateTimeFormatter },
+                     { title: '执法机关', field: 'caseexecutive', width: gridWidth * 0.1, align: 'left' },
+                     { title: '站点名称', field: 'stationname', width: gridWidth * 0.1, align: 'left' },
+                     { title: '案由', field: 'casereason', width: gridWidth * 0.1, align: 'left' }, ]],
+                toolbar: "#tb"
+            });
+
+            function dateTimeFormatter(value, rowData, rowIndex) {
+                if (value == "1900/01/01") {
+                    return "";
+                }
+                return value;
+            }
+            //办理事件绑定
+            $("#processCaseBtn").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要办理的记录', 'warning');
+                    return;
+                }
+                $("#btnCancelTodo").find("span").eq(1).html("取消");
+
+                $('#processWindow').window({ title: "办理", iconCls: "icon-mini-edit" });
+                $('#processWindow').window('open');
+                $('#processWindow').form('clear');
+                var url = "../Case/Handler/TodoCaseHandler.ashx?action=edit&caseId=" + row.caseid;
+                $('#caseInfoForm').attr('action', url);
+                $('#caseInfoForm').form('load', "../Case/Handler/TodoCaseHandler.ashx?action=load&caseId=" + row.caseid);
+                $("#myTree").tree({
+                    url: '../Case/Handler/ProcessCaseHandler.ashx?action=treeLoad&caseId=' + row.caseid,
+                    onClick: function (node) {
+                        $('#enforcementGrid').datagrid("load", {
+                            caseId: $("#CaseId").val(),
+                            typeId: node.attributes["EnforcementTypeId"]
+                        });
+                    }
+                });
+                $('#enforcementGrid').datagrid({
+                    url: '../Case/Handler/ProcessCaseHandler.ashx?action=enforcementNameGridLoad&caseId=' + row.caseid,
+                    idField: 'id',
+                    fit: false,
+                    pagination: false,
+                    columns: [[
+                        { title: '文书名称编号', field: 'enforcementnameid', width: gridWidth * 0.1, hight: gridWidth * 1.3, align: 'left' },
+                        { title: '文书名称', field: 'enforcementname', width: gridWidth * 0.2, align: 'left' },
+                        { title: '文书类型编号', field: 'enforcementtypeid', width: gridWidth * 0.1, align: 'left' },
+                        //{ title: '文书所属类型名称', field: 'enforcementtypename', width: gridWidth * 0.1, align: 'left' },
+                        {
+                            title: '是否为必填项', field: 'isempty', width: gridWidth * 0.1, align: 'left',
+
+                            formatter: function (value, rowData, rowIndex) {
+                                if (value == "1")
+
+                                    return '<span style="color:red">必填</span>';
+                                else
+                                    return '<span style="color:blue">选填</span>';
+                            }
+                        },
+                          { title: '创建日期', field: 'createdate', width: gridWidth * 0.2, align: 'left' },
+                         {
+                             title: '操作', field: 'typestatu', width: gridWidth * 0.1, align: 'left',
+                             formatter: function (value, rowData, rowIndex) {
+                                 if (rowData.typestatu == "2" || rowData.typestatu == "3") {
+
+
+                                     if (rowData.statu == "1")  // window.location.href = "main.htm"
+                                         return '<a href=\'#\' onclick="EditEnforement(\'' + rowData.templatecode + '\',\'' + rowData.templatename + '\',\'' + row.caseid + '\',\'' + rowData.id + '\',\'' + rowData.enforcementtypeid + '\',\'' + rowData.height + '\',\'' + rowData.width + '\')" style=\'color:blue\'>新增</a>';
+
+                                     else
+                                         return '<a href=\'#\' onclick="EditEnforement(\'' + rowData.templatecode + '\',\'' + rowData.templatename + '\')" style=\'color:blue\'>修改</a>';
+                                 } else {
+                                     return '<a href=\'#\'></a>';
+                                 }
+                             }
+                         },
+                    ]],
+
+                });
+
+            });
+            $("#readOnlyBtn").bind("click", function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要办理的记录', 'warning');
+                    return;
+                }
+                $("#btnCancelTodo").find("span").eq(1).html("取消");
+
+                $('#caseReadonlyWindow').window({ title: "案件阅览", iconCls: "icon-mini-edit" });
+                $('#caseReadonlyWindow').window('open');
+                $("#readOnlyEnforement").html("");
+                $("#previewTree").tree({
+                    url: '../Case/Handler/ProcessCaseHandler.ashx?action=readOnlyTreeLoad&caseId=' + row.caseid,
+                    onClick: function (node) {
+
+                        //$("#readOnlyEnforement").load('/temp.html', {}, function (result) {
+                        //    var text = $("#readOnlyEnforement").text();
+                        //    // 这样就取出了temp.html 的文本内容了。
+                        //    // 
+                        //});
+                        document.cookie = "caseId=" + row.caseid;
+                        $("#readOnlyEnforement").load("../Template/" + node.attributes["TemplateCode"] + "ReadOnly.htm?date="+Date.now());
+                       // $('#jiaotongchufa').form('load', "../Template/Handler/chufashu01Handler.ashx?action=load&caseId=" + row.caseid);
+                       // console.log($('#jiaotongchufa').html());
+                    }
+                });
+            });
+            function EditCase() {
+                return function () {
+                    var row = $('#myDataGrid').datagrid('getSelected');
+                    if (row == null) {
+                        $.messager.alert('提示', '请选择要办理的记录', 'warning');
+                        return;
+                    }
+                    $("#btnSave").show();
+                    $("#btnCancel").find("span").eq(1).html("取消");
+
+                    $('#myWindow').window({ title: "修改基本信息", iconCls: "icon-mini-edit" });
+                    $('#myWindow').window('open');
+                    $('#myForm').form('clear');
+
+                    var url = "../Case/Handler/TodoCaseHandler.ashx?action=edit&caseId=" + row.caseid;
+                    $('#myForm').attr('action', url);
+                    $('#myForm').form('load', "../Case/Handler/TodoCaseHandler.ashx?action=load&caseId=" + row.caseid);
+                }
+
+            }
+            function loadsucc(data) {
+                console.log(data);
+                $("#myForm #CaseOpenDate").val(data.caseopendate);
+                $("#myForm #CaseOpenDate").attr("class", "easyui-datebox");
+            }
+            //修改事件绑定
+            $("#btnEdit").bind('click', EditCase());
+
+            //删除事件绑定
+            $("#btnRemove").bind('click', function () {
+                var row = $('#myDataGrid').datagrid('getSelected');
+                if (row == null) {
+                    $.messager.alert('提示', '请选择要删除的记录', 'warning');
+                    return;
+                }
+                $.messager.confirm("操作提示", "您确认要删除[" + row.caseid + "]号案件吗？", function (bChoose) {
+                    if (bChoose == true) {
+                        $.getJSON("../Case/Handler/TodoCaseHandler.ashx?action=delete", { caseId: row.caseid }, function (result) {
+                            if ($.SuccessCheck(result) == true) {//成功检查
+                                $.messager.alert("操作提示", result.message, "info", function () {
+                                    $('#myDataGrid').datagrid("reload");
+                                    $('#myDataGrid').datagrid("unselectAll");
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    openDateFrom: $("#tbOpenStartDate").datebox('getValue'),
+                    openDateTo: $("#tbOpenEndDate").datebox('getValue'),
+                    closeDateFrom: $("#tbCloseStartDate").datebox('getValue'),
+                    closeDateTo: $("#tbCloseEndDate").datebox('getValue'),
+                    tbCaseId: $("#caseNo").val(),
+                    tbCaseReason: $("#caseReason").val(),
+                    caseState: $("#caseState").val(),
+                    caseCarNo: $("#caseCarNo").val(),
+                    caseType: $("#caseType").combobox("getValue")
+                });
+            });
+            //关闭按钮事件
+            $('#btnCancel').bind("click", function () {
+                $('#myWindow').window('close');
+            });
+            $('#btnCancelTodo').bind("click", function () {
+                $('#processWindow').window('close');
+            });
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myWindow').window('close'); //关闭当前窗口
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+        });
+        function refreshFunction() {
+            // console.log($('#enforcementGrid'));
+            var row = $('#myDataGrid').datagrid('getSelected');
+            if (row == null) {
+                $.messager.alert('提示', '请选择要办理的记录', 'warning');
+                return;
+            }
+            $("#myTree").tree("reload");
+            $('#enforcementGrid').datagrid("load", {
+                caseId: row.caseid,
+                typeId: ""
+            });
+        }
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false"></table>
+        </div>
+    </div>
+    <div class="temp" style="display:none">
+        <input type="button" style="display:none" onclick="refreshFunction()" id="refreshBtn" />
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        案  卷  号  :
+                    </div>
+                    <div style="float: left; padding: 6px; padding-left:10px;">
+                        <input type="text" id="caseNo" style="width: 120px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        案件类别:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="caseType" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'" style="width: 120px;"></select>
+                    </div>
+
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        案由:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="caseReason" style="width: 120px;" maxlength="30" />
+                    </div>
+
+
+
+                </td>
+
+
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        案件状态 :
+                    </div>
+                    <div style="float: left; padding: 4px; padding-left:10px;">
+                        <input type="text" id="caseState" style="width: 120px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        车牌号码:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="caseCarNo" style="width: 120px;" maxlength="30" />
+                    </div>
+
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询
+                        </a>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        立案日期从:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbOpenStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 120px; " />
+                    </div>
+                    <div style="float: left; padding: 6px; padding-left: 10px; vertical-align: middle">
+                        到:
+                    </div>
+                    <div style="float: left; padding: 4px;   padding-left:35px;">
+                        <input type="text" id="tbOpenEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 120px;" />
+                    </div>
+                </td>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        结案日期从:
+                    </div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbCloseStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 120px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; padding-left: 15px; vertical-align: middle">
+                        到:
+                    </div>
+                    <div style="float: left; padding: 4px; padding-left: 35px; ">
+                        <input type="text" id="tbCloseEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 120px;" />
+                    </div>
+
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <div style="float: left;">
+                        <a id="processCaseBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            办理
+                        </a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnEdit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-lock',plain:true">
+                            基本信息
+                        </a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="readOnlyBtn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-detail',plain:true">
+                            案件阅览
+                        </a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                        <a id="btnRemove" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true">
+                            删除
+                        </a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 670px">
+        <form id="myForm" method="post" action="">
+            <table class="tab" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="tdT" align="right">
+                        案由：
+                    </td>
+                    <td class="tdE" colspan="3">
+                        <input name="CaseReason" type="text" style="width: 500px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        案卷号:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseId" maxlength="7" type="text" readonly="readonly" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        车牌号:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseCarNo" type="text" readonly=readonly style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        案件来源:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseFrom" maxlength="7" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        当事人姓名:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonName" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        当事人性别:
+                    </td>
+                    <td class="tdE">
+                        <select id="CasePersonSex" class="easyui-combobox" name="CasePersonSex" style="width: 106px">
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </td>
+                    <td class="tdT" align="right">
+                        当事人年龄:
+                    </td>
+                    <td class="tdE">
+                        <input type="text" name="CasePersonAge" maxlength="3" validtype="integer" class="easyui-numberbox"
+                               data-options="required:true" style="width: 200px" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        当事人住址:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonAddress" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        组织代表:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonRepresentative" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        单位名称:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonCompanyName" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        法人名称:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonCompanyLegalPerson" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        法定代表人:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonCompanyLegalRepresentative" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        委托代理人:
+                    </td>
+                    <td class="tdE">
+                        <input name="CasePersonCompanyLegalAgent" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        立案日期:
+                    </td>
+                    <td class="tdE">
+                        <!--<input type="text" name="CaseOpenDateForPage" class="easyui-datebox" data-options="validType:'date'"
+                               style="width: 200px;" />-->
+                        <!--<input type="text" name="CaseOpenDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 200px;" />-->
+                        <!--<input type="text" name="CaseOpenDate"   editable="fasle" data-options="validType:'date'"
+                               style="width: 200px;" />-->
+                        <input name="CaseOpenDate" style="width: 200px" class="Wdate" onclick="WdatePicker()" />
+
+                    </td>
+                    <td class="tdT" align="right">
+                        结案日期:
+                    </td>
+                    <td class="tdE">
+                        <!--<input type="text" name="CaseCloseDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 200px;" />-->
+                        <input name="CaseCloseDate" style="width: 200px" class="Wdate" onclick="WdatePicker()" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        归档日期:
+                    </td>
+                    <td class="tdE">
+                        <!--<input type="text" name="CaseFillingDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                               style="width: 200px;" />-->
+                        <input name="CaseFillingDate" style="width: 200px" class="Wdate" onclick="WdatePicker()" />
+
+                    </td>
+                    <td class="tdT" align="right">
+                        保存期限:
+                    </td>
+                    <td class="tdE">
+
+                        <input type="text" name="CaseExpirationDate" maxlength="3" validtype="integer" class="easyui-numberbox"
+                               data-options="required:true" style="width: 200px" />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        承办单位:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseExecutive" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        站点名称:
+                    </td>
+                    <td class="tdE">
+                        <input name="StationName" type="text" readonly="readonly" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        承办人一:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonOne" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        执法证号一:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonOneEnforcementNumberOne" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        承办人二:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonTwo" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        执法证号二:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonOneEnforcementNumberTwo" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        承办人三:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonThree" type="text" style="width: 200px" />
+                    </td>
+                    <td class="tdT" align="right">
+                        执法证号三:
+                    </td>
+                    <td class="tdE">
+                        <input name="CaseProcessPersonOneEnforcementNumberThree" type="text" style="width: 200px" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tdT" align="right">
+                        结果:
+                    </td>
+                    <td class="tdE" colspan="3">
+                        <textarea name="CaseResult" style="width: 552px; height: 100px;"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" class="tdE" colspan="4" style="height: 35px" valign="middle">
+                        <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                            确定
+                        </a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                                           data-options="iconCls:'icon-cancel'">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="processWindow" class="easyui-window divWindow" data-options="closed:true" style="width:1000px;height:600px;padding-right: 0px;padding-left: 0px;padding-bottom: 0px;padding-top: 0px;">
+        <div style="width: 985px;height: 30px;border-bottom-style: inset; background:#F4F4F4">
+            <form id="caseInfoForm">
+                <table>
+                    <tr>
+                        <td>
+                            <div style="float: left; padding: 6px; vertical-align: middle">
+                                案卷号:
+                            </div>
+                            <div style="float: left; padding: 4px;">
+                                <!--<input type="text" id="caseNo" style="width: 90px;" maxlength="30" />-->
+                                <!--<label name="CaseId"></label>-->
+                                <input type="text" disabled="disabled" name="CaseId" style="border: none;background: none;margin-top: 3px;" />
+                            </div>
+                            <div style="float: left; padding: 6px; vertical-align: middle">
+                                案件类别:
+                            </div>
+                            <div style="float: left; padding: 4px;">
+                                <!--<label name="CaseTypeName"></label>-->
+                                <input type="text" disabled="disabled" name="CaseTypeName" style="border: none;background: none;margin-top: 3px;" />
+
+                            </div>
+                            <div style="float: left; padding: 6px; vertical-align: middle">
+                                案由:
+                            </div>
+                            <div style="float: left; padding: 4px;">
+                                <!--<label name="CaseReason"></label>-->
+                                <input type="text" disabled="disabled" name="CaseReason" style="border: none;background: none;margin-top: 3px;" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+        <div>
+            <div style="width: 200px;height: 498px;border-right-style: inset; float:left" data-options="fit:false">
+                <ul id="myTree"></ul>
+
+            </div>
+            <div style="float:left;width:700px">
+
+                <table id="enforcementGrid" data-options="border:false"></table>
+            </div>
+        </div>
+
+
+        <div style="text-align:center;border-top-style:inset;clear:left; ">
+            <a href="#" id="btnApplyCase" class="easyui-linkbutton"
+               data-options="iconCls:'icon-ok'">申请立案</a>
+        </div>
+
+        <script>
+            function EditEnforement(templateCode, templateName, val,nameId, typeId,  height, width) {
+                var dialogHeight = 600;
+                var dialogWidth = 800;
+                if (height != "" && height != null && height != undefined) {
+                    dialogHeight = height;
+                }
+                if (width != "" && width != null && width != undefined) {
+                    dialogWidth = width;
+                }
+                $('#enforementWindow').dialog({
+                    title: templateName,
+                    width: dialogWidth,
+                    height: dialogHeight,
+                    closed: false,
+                    cache: false,
+                    queryParams: { caseId: val, typeId: typeId, nameId: nameId },
+                    href: '../Template/' + templateCode + '.htm',
+                    modal: true
+                });
+            }
+        </script>
+    </div>
+    <div id="enforementWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 670px">
+    </div>
+    <div id="caseReadonlyWindow" class="easyui-window divWindow" data-options="closed:true" style="width:1000px;height:600px;">
+        <div>
+            <div style="width: 200px;height: 498px;border-right-style: inset; float:left" data-options="fit:false">
+                <ul id="previewTree"></ul>
+
+            </div>
+            <div style="float:left;width:700px">
+                <div id="readOnlyEnforement">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+</body>
+</html>

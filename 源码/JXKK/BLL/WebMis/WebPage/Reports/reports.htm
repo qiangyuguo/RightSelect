@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>新增代理商</title>
+</head>
+<body>
+    <script type="text/javascript">
+        function queryAgentAccDetail() {
+            showMyWindow("代理商账户明细",
+                    '../Reports/AgentAccDetailRT.aspx',
+                    840, 540);
+        }
+        function queryAgentAccount() {
+            showMyWindow("代理商账户",
+                    '../Reports/AgentAccountRT.aspx',
+                    840, 540);
+        }
+        function queryAgentRecharge() {
+            showMyWindow("代理商充值",
+                    '../Reports/AgentRechargeRT.aspx',
+                    840, 540);
+        }  
+        $(function () {
+            $('body').append('<div id="myWindowReports" class="easyui-dialog" closed="true"></div>');
+        });
+        function showMyWindow(title, href, width, height, modal, minimizable, maximizable) {
+            $('#myWindowReports').window(
+                        {
+                            title: title,
+                            width: width === undefined ? 800 : width,
+                            height: height === undefined ? 600 : height,
+                            content: '<iframe scrolling="yes" frameborder="0"  src="'
+                                    + href
+                                    + '" style="width:100%;height:98%;"></iframe>',
+                            modal: modal === undefined ? true : modal,
+                            minimizable: minimizable === undefined ? false
+                                    : minimizable,
+                            maximizable: maximizable === undefined ? false
+                                    : maximizable,
+                            shadow: false,
+                            cache: false,
+                            closed: false,
+                            collapsible: false,
+                            resizable: false,
+                            loadingMessage: '正在加载数据，请稍等片刻......'
+                        });
+        }
+    </script>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+
+                    <div style="float: left;">
+                        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" onclick="queryAgentAccDetail()">代理商账户明细</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left;">
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" onclick="queryAgentAccount()">代理商账户</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                     <div style="float: left;">
+                       <a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" onclick="queryAgentRecharge()">代理商充值</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

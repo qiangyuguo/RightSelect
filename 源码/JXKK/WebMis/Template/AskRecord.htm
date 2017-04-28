@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>询问笔录</title>
+
+    <script type="text/javascript">
+
+        function doPrint()
+        {
+            bdhtml = window.document.body.innerHTML;
+            sprnstr = "<!--startprint-->";
+            eprnstr = "<!--endprint-->";
+            prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr) + 17);
+            prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));
+            window.document.body.innerHTML = prnhtml;
+            window.print();
+            window.document.body.innerHTML = bdhtml;
+        }
+        var hkey_root, hkey_path, hkey_key
+        hkey_root = "HKEY_CURRENT_USER"
+        hkey_path = "\Software\Microsoft\Internet Explorer\PageSetup\ "
+        function pagesetup_null()
+        {
+            try
+            {
+                var RegWsh = new ActiveXObject("WScript.Shell")
+                hkey_key = "header"
+                RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "")
+                hkey_key = "footer"
+                RegWsh.RegWrite(hkey_root + hkey_path + hkey_key, "")
+            } catch (e) { }
+        }
+
+        //选择执法人员
+        function ShowTree(w, h, txt1, txt2) {
+            //var s = 'dialogWidth:300px;dialogHeight:200px;dialogLeft:300px;dialogTop:150px;center:yes;help:yes;resizable:yes;status:no '
+            var url = "/OfficeBookFlow/SelPerson.aspx";
+            openWin(url, w, h, txt1, txt2);
+        }
+        function openWin(u, w, h, txt1, txt2) {
+            var l = (screen.width - w) / 2;
+            var t = (screen.height - h) / 2;
+            var s = 'dialogWidth=' + w + 'px; dialogHeight=' + h + 'px; dialogTop=' + t + 'px; dialogLeft=' + l;
+            s += 'px;center:yes;help:yes;resizable:yes;status:no ';
+            var val = showModalDialog(u, 'SelPerson', s);
+            if (val != undefined) {
+                if (val.length == 2) {
+                    $("#" + txt1).val(val[0]);
+                    $("#" + txt2).val(val[1]);
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            $("#canaskman").click(function () {
+                ShowTree(300, 200, "canaskman", "canaskmanbook1");
+            });
+            $("#canrecodman").click(function () {
+                ShowTree(300, 200, "canrecodman", "canrecodmanbook1");
+            });
+
+
+            $("#canmyname").click(function () {
+                ShowTree(300, 200, "canmyname", "canmybook1");
+            });
+
+            $("#canhename").click(function () {
+                ShowTree(300, 200, "canhename", "canhebook1");
+            });
+        })
+
+
+        
+        $(function () {
+            var caseId=getQueryParam("caseId");
+            $('#askRecordForm').attr('action', "../Template/Handler/AskRecordHandler.ashx?action=addOrUpdate");
+            $('#askRecordForm').form('load', "../Template/Handler/AskRecordHandler.ashx?action=load&caseId=" +caseId);
+            //$('#jiaotongchufaBtnSave').bind("click", function () {
+            //    alert(99);
+            //});
+        });
+            function submitfunction() {
+                $('#askRecordForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#enforementWindow').window('close'); //关闭当前窗口
+                                $('#refreshBtn').click();
+                            });
+                        }
+                    
+                    }
+                });
+            }
+            function getQueryParam(name) {
+                var obj = $('#enforementWindow').dialog('options');
+                var queryParams = obj["queryParams"];
+
+                return queryParams[name];
+            }
+           
+         
+    </script>
+    <script src="../Scripts/My97DatePicker/WdatePicker.js"></script>
+
+</head>
+<body>
+     
+        <form id="askRecordForm" method="post" action="">
+          
+            <input style="display:none" type="text" name="CaseId" />
+            <input style="display:none" type="text" name="jdid" />
+            
+              
+                <!--startprint-->
+                <div align="center">
+                    <table>
+                        <tr>
+                            <td style="width:5%"></td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td align="center">
+                                            <span style="font-weight: bold; font-size: larger">询  问  笔  录</span>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            时间
+                                            <input id="cantime1"  readonly=readonly type="text" class="LongTextMust" style="width: 40%" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" datacol="yes" err="该项必须填写" checkexpession="NotNull" />
+                                            &nbsp;至&nbsp;
+                                            <input id="cantime2"  readonly=readonly type="text" class="LongTextMust" style="width: 40%" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" datacol="yes" err="该项必须填写" checkexpession="NotNull" />
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            地点<asp:TextBox ID="canAddress"  class="LongText" Width="85%"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left">
+                                        <td>
+                                            <table style="width:100%;">
+                                                <tr>
+                                                    <td rowspan="2" style="width:60%">
+                                                        询问人<asp:TextBox ID="canaskman"  class="LongText" Width="23%"></asp:TextBox>
+                                                        单位<asp:TextBox ID="canaskmanComp"  class="LongText" Width="50%" value="郴州市公路管理局"></asp:TextBox>
+                                                    </td>
+                                                    <td>
+                                                        执法证号<asp:TextBox ID="canaskmanbook1"  class="LongText" Width="50%"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        执法证号<asp:TextBox ID="canaskmanbook2"  class="LongText" Width="50%"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr align="left">
+                                        <td>
+                                            <table style="width:100%;">
+                                                <tr>
+                                                    <td rowspan="2" style="width:60%">
+                                                        记录人<asp:TextBox ID="canrecodman"  class="LongText" Width="23%"></asp:TextBox>
+                                                        单位<asp:TextBox ID="canrecodmanComp"  class="LongText" Width="50%" value="郴州市公路管理局"></asp:TextBox>
+                                                    </td>
+                                                    <td>
+                                                        执法证号<asp:TextBox ID="canrecodmanbook1"  class="LongText" Width="50%"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        执法证号<asp:TextBox ID="canrecodmanbook2"  class="LongText" Width="50%"></asp:TextBox>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            被询问人<asp:TextBox ID="canaskedman"  class="LongText" Width="50px"></asp:TextBox>性别
+                                            <select id="canaskedmansex" class="select"  style="width: 50px">
+                                                <option>男</option>
+                                                <option>女</option>
+                                            </select>
+                                            年龄<asp:TextBox ID="canaskedmanold"  class="LongText" Width="30px"></asp:TextBox>
+                                            与本案件的关系<asp:TextBox ID="canaskedmanrelation"  class="LongText"
+                                                                Width="120px" Height="16px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            工作单位<asp:TextBox ID="canaskedmancomp"  class="LongText" Width="40%"></asp:TextBox>电话
+                                            <asp:TextBox ID="canaskedmantele"  class="LongText" Width="34%"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            家庭住址<asp:TextBox ID="canaskedmanhome"  class="LongText" Width="40%"></asp:TextBox>邮编
+                                            <asp:TextBox ID="canaskedmanzip"  class="LongText" Width="34%"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            询问内容：
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：我们是<asp:TextBox ID="canmycomp"  class="LongText" Width="25%" Text="郴州市"></asp:TextBox>公路管理局路政执法人员，我叫
+                                            <asp:TextBox ID="canmyname"  class="LongText" Width="15%"></asp:TextBox>
+
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            执法证号<asp:TextBox ID="canmybook1"  class="LongText"></asp:TextBox>、<asp:TextBox ID="canmybook2"  class="LongText"></asp:TextBox>；
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            <select id="canhe" class="select"  style="width: 50px">
+                                                <option>他</option>
+                                                <option>她</option>
+                                            </select>叫<asp:TextBox ID="canhename"  class="LongText" Width="100px"></asp:TextBox>，执法证号<asp:TextBox ID="canhebook1"  class="LongText" Width="150px"></asp:TextBox>、<asp:TextBox ID="canhebook2"  class="LongText" Width="80px"></asp:TextBox>
+                                            <br />，这
+                                            是我们的执法证件。根据有关法律的规定，现依法对你询问调查，请你配合我们的<br />工作并如实回答我们提出的问题，作伪证要承担相应的法律责任，你听清楚了吗？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答：<asp:TextBox ID="cananser1"  class="LongText" Width="85%"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：你驾驶的车辆牌号是多少？什么车型？轴数是多少？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答：我的车牌号是 <asp:TextBox ID="canmycarno"  class="LongText" Width="130px"></asp:TextBox>,车辆型号为 <asp:TextBox ID="canmycarkind"  class="LongText" Width="150px"></asp:TextBox>,
+                                            轴数为<asp:TextBox ID="canmycarnum"  class="LongText" Width="45px"></asp:TextBox>轴。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：你驾驶的车辆从什么地方来？装载的是什么货物？ 到什么地方去？在湖南省境<br />内行驶了多少里程？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            当事人签名：<asp:TextBox ID="cansign1"  class="LongText" Width="180px"></asp:TextBox>
+                                            &nbsp;<asp:TextBox ID="cansign2"  class="LongText" Width="180px"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答：我的车装运的是<asp:TextBox ID="cancargoods"  class="LongText" Width="150px"></asp:TextBox>，从
+                                            <asp:TextBox ID="cancarfrom"  class="LongText" Width="130px"></asp:TextBox>起运到
+                                            <asp:TextBox ID="cancarto"  class="LongText" Width="130px"></asp:TextBox>，在
+                                            湖南省境内已行驶
+                                            <asp:TextBox ID="cancarlong"  class="LongText" Width="60px"></asp:TextBox>公里。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：你的车核定吨位是多少？现在实际装载货物多少吨？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答: 我的车核定吨位是<asp:TextBox ID="cancarweight1"  class="LongText" Width="80px"></asp:TextBox>吨，现在实际装载的货物是<asp:TextBox ID="cancarweight2"  class="LongText" Width="80px"></asp:TextBox>吨。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：经检测，你驾驶的车辆车货<asp:TextBox ID="cancardesc"  class="LongText" Width="58%"></asp:TextBox>。
+                                            <br />
+                                            请你看清楚
+                                            <select id="canreview1" class="select"  style="width: 100px">
+                                                <option>检测单</option>
+                                                <option>勘验笔录</option>
+                                            </select>
+                                            并在
+                                            <select id="canreview2" class="select"  style="width: 100px">
+                                                <option>检测单</option>
+                                                <option>勘验笔录</option>
+                                            </select>
+                                            上签字。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答: <asp:TextBox ID="cananser2"  class="LongText" Width="80%" Text="好的，看清楚了。"></asp:TextBox>。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：
+                                            <select id="canyou" class="select"  style="width: 80px">
+                                                <option>你</option>
+                                                <option>你单位</option>
+                                            </select>在启运前是否到相关部门办理了超限运输手续？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答: <asp:TextBox ID="cananser3"  class="LongText" Width="80%" Text="启运前我未到有关部门办理相关的超限运输手续。"></asp:TextBox>。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：这次运输是否受过有关部门的处理？如何处理的？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答: <asp:TextBox ID="cananser4"  class="LongText" Width="80%" Text="这次运输未受过有关部门的处理。"></asp:TextBox>。
+                                        </td>
+                                    </tr>
+
+
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            问：请你仔细地看一下以上记录，是否属实？是否还有补充的地方？
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            答: <asp:TextBox ID="cananser5"  class="LongText" Width="80%"></asp:TextBox>。
+                                        </td>
+                                    </tr>
+                                    <tr align="left" style="height:90px">
+                                        <td>
+                                            当事人签名：<asp:TextBox ID="candsign1"  class="LongText"></asp:TextBox>
+                                            &nbsp;&nbsp;<asp:TextBox ID="candsign2"  class="LongText" onclick="WdatePicker({dateFmt: &#39;yyyy-MM-dd &#39; })"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            询问人签名：<asp:TextBox ID="canasksign"  class="LongText"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr align="left" class="style1">
+                                        <td>
+                                            记录人签名：<asp:TextBox ID="canrecordsign"  class="LongText"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width:5%"></td>
+                        </tr>
+                    </table>
+                </div>
+                <!--endprint-->
+                <div class="frmbottom">
+                    <asp:Button ID="Button1"  Text="保存" onclick="Button1_Click" class="button" OnClientClick="return CheckDataValid('#form1');" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" value="打印" class="button" onclick="doPrint()" />
+                </div>
+            </form>
+           
+         
+     
+      <script src="../Scripts/util.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,859 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{468A9636-D4AF-48EB-97CE-61D31DC58392}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Com.ZY.JXKK</RootNamespace>
+    <AssemblyName>WebMis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="NPOI, Version=2.1.3.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NPOI 2.2.0.0\dotnet4\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Agent\agent.htm" />
+    <Content Include="Agent\agentAccDetail.htm" />
+    <Content Include="Agent\agentAudit.htm" />
+    <Content Include="Agent\agentCommissionPay.htm" />
+    <Content Include="Agent\agentLog.htm" />
+    <Content Include="Agent\agentModule.htm" />
+    <Content Include="Agent\agentOam.htm" />
+    <Content Include="Agent\agentPreRecharge.htm" />
+    <Content Include="Agent\agentRecharge.htm" />
+    <Content Include="Agent\agentRechargeDetail.htm" />
+    <Content Include="Agent\agentRechargeNotice.htm" />
+    <Content Include="Agent\agentRight.htm" />
+    <Content Include="Agent\agentSettlement.htm" />
+    <Content Include="Agent\agentTakeCash.htm" />
+    <Content Include="Agent\agentTakeCashApply.htm" />
+    <Content Include="Agent\agentTakeCashDetail.htm" />
+    <Content Include="Agent\site.htm" />
+    <Content Include="Agent\siteAudit.htm" />
+    <Content Include="Agent\siteOam.htm" />
+    <Content Include="Card\card.htm" />
+    <Content Include="Card\cardGrant.htm" />
+    <Content Include="Card\cardLog.htm" />
+    <Content Include="Card\cardStroage.htm" />
+    <Content Include="Case\Case.htm" />
+    <Content Include="Case\processCase.htm" />
+    <Content Include="Case\todoCase.htm" />
+    <Content Include="Client\client.htm" />
+    <Content Include="Client\clientAccDetail.htm" />
+    <Content Include="Client\clientPoint.htm" />
+    <Content Include="Client\clientRecharge.htm" />
+    <Content Include="Client\clientTakeCash.htm" />
+    <Content Include="Client\clientTakeCashToBank.htm" />
+    <Content Include="Client\clientTrade.htm" />
+    <Content Include="default.htm" />
+    <Content Include="desktop.htm" />
+    <Content Include="Enforcement\EnforcementName.htm" />
+    <Content Include="Enforcement\EnforcementType.htm" />
+    <Content Include="Global.asax" />
+    <Content Include="login.htm" />
+    <Content Include="Lottery\chaseOrder.htm" />
+    <Content Include="Lottery\lotteryOrder.htm" />
+    <Content Include="Lottery\numNotice.htm" />
+    <Content Include="Lottery\winningLotteryOrder.htm" />
+    <Content Include="main.htm" />
+    <Content Include="Manage\dept.htm" />
+    <Content Include="Manage\log.htm" />
+    <Content Include="Manage\module.htm" />
+    <Content Include="Manage\right.htm" />
+    <Content Include="Manage\role.htm" />
+    <Content Include="Manage\user.htm" />
+    <Content Include="password.htm" />
+    <Content Include="PointBet\PointOrder.htm" />
+    <Content Include="PointBet\PNumNotice.htm" />
+    <Content Include="PointBet\WinningPointOrder.htm" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\jquery.easyui.min.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\mine.list.js" />
+    <Content Include="Scripts\My97DatePicker\calendar.js" />
+    <Content Include="Scripts\My97DatePicker\config.js" />
+    <Content Include="Scripts\My97DatePicker\lang\en.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="Scripts\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="Scripts\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="Scripts\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\default\img.gif" />
+    <Content Include="Scripts\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\My97DatePicker\WdatePicker.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\en.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\zh-cn.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\lang\zh-tw.js" />
+    <Content Include="Scripts\My97DatePicker\开发包\readme.txt" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\datePicker.gif" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\default\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\default\img.gif" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\WdatePicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\bg.jpg" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\datepicker.css" />
+    <Content Include="Scripts\My97DatePicker\开发包\skin\whyGreen\img.gif" />
+    <Content Include="Scripts\util.js" />
+    <Content Include="Set\area.htm" />
+    <Content Include="StatisticsReport\ClientR.htm" />
+    <Content Include="StatisticsReport\ClientTakeCashR.htm" />
+    <Content Include="StatisticsReport\SalesInvoiceSummaryR.htm" />
+    <Content Include="StatisticsReport\TradingDataR.htm" />
+    <Content Include="StatisticsReport\WinPrizeR.htm" />
+    <Content Include="Styles\themes\black\accordion.css" />
+    <Content Include="Styles\themes\black\calendar.css" />
+    <Content Include="Styles\themes\black\combo.css" />
+    <Content Include="Styles\themes\black\combobox.css" />
+    <Content Include="Styles\themes\black\datagrid.css" />
+    <Content Include="Styles\themes\black\datalist.css" />
+    <Content Include="Styles\themes\black\datebox.css" />
+    <Content Include="Styles\themes\black\dialog.css" />
+    <Content Include="Styles\themes\black\easyui.css" />
+    <Content Include="Styles\themes\black\filebox.css" />
+    <Content Include="Styles\themes\black\images\accordion_arrows.png" />
+    <Content Include="Styles\themes\black\images\blank.gif" />
+    <Content Include="Styles\themes\black\images\calendar_arrows.png" />
+    <Content Include="Styles\themes\black\images\combo_arrow.png" />
+    <Content Include="Styles\themes\black\images\datagrid_icons.png" />
+    <Content Include="Styles\themes\black\images\datebox_arrow.png" />
+    <Content Include="Styles\themes\black\images\layout_arrows.png" />
+    <Content Include="Styles\themes\black\images\linkbutton_bg.png" />
+    <Content Include="Styles\themes\black\images\loading.gif" />
+    <Content Include="Styles\themes\black\images\menu_arrows.png" />
+    <Content Include="Styles\themes\black\images\messager_icons.png" />
+    <Content Include="Styles\themes\black\images\pagination_icons.png" />
+    <Content Include="Styles\themes\black\images\panel_tools.png" />
+    <Content Include="Styles\themes\black\images\searchbox_button.png" />
+    <Content Include="Styles\themes\black\images\slider_handle.png" />
+    <Content Include="Styles\themes\black\images\spinner_arrows.png" />
+    <Content Include="Styles\themes\black\images\tabs_icons.png" />
+    <Content Include="Styles\themes\black\images\tree_icons.png" />
+    <Content Include="Styles\themes\black\images\validatebox_warning.png" />
+    <Content Include="Styles\themes\black\layout.css" />
+    <Content Include="Styles\themes\black\linkbutton.css" />
+    <Content Include="Styles\themes\black\menu.css" />
+    <Content Include="Styles\themes\black\menubutton.css" />
+    <Content Include="Styles\themes\black\messager.css" />
+    <Content Include="Styles\themes\black\numberbox.css" />
+    <Content Include="Styles\themes\black\pagination.css" />
+    <Content Include="Styles\themes\black\panel.css" />
+    <Content Include="Styles\themes\black\progressbar.css" />
+    <Content Include="Styles\themes\black\propertygrid.css" />
+    <Content Include="Styles\themes\black\searchbox.css" />
+    <Content Include="Styles\themes\black\slider.css" />
+    <Content Include="Styles\themes\black\spinner.css" />
+    <Content Include="Styles\themes\black\splitbutton.css" />
+    <Content Include="Styles\themes\black\tabs.css" />
+    <Content Include="Styles\themes\black\textbox.css" />
+    <Content Include="Styles\themes\black\tooltip.css" />
+    <Content Include="Styles\themes\black\tree.css" />
+    <Content Include="Styles\themes\black\validatebox.css" />
+    <Content Include="Styles\themes\black\window.css" />
+    <Content Include="Styles\themes\bootstrap\accordion.css" />
+    <Content Include="Styles\themes\bootstrap\calendar.css" />
+    <Content Include="Styles\themes\bootstrap\combo.css" />
+    <Content Include="Styles\themes\bootstrap\combobox.css" />
+    <Content Include="Styles\themes\bootstrap\datagrid.css" />
+    <Content Include="Styles\themes\bootstrap\datalist.css" />
+    <Content Include="Styles\themes\bootstrap\datebox.css" />
+    <Content Include="Styles\themes\bootstrap\dialog.css" />
+    <Content Include="Styles\themes\bootstrap\easyui.css" />
+    <Content Include="Styles\themes\bootstrap\filebox.css" />
+    <Content Include="Styles\themes\bootstrap\images\accordion_arrows.png" />
+    <Content Include="Styles\themes\bootstrap\images\blank.gif" />
+    <Content Include="Styles\themes\bootstrap\images\calendar_arrows.png" />
+    <Content Include="Styles\themes\bootstrap\images\combo_arrow.png" />
+    <Content Include="Styles\themes\bootstrap\images\datagrid_icons.png" />
+    <Content Include="Styles\themes\bootstrap\images\datebox_arrow.png" />
+    <Content Include="Styles\themes\bootstrap\images\layout_arrows.png" />
+    <Content Include="Styles\themes\bootstrap\images\linkbutton_bg.png" />
+    <Content Include="Styles\themes\bootstrap\images\loading.gif" />
+    <Content Include="Styles\themes\bootstrap\images\menu_arrows.png" />
+    <Content Include="Styles\themes\bootstrap\images\messager_icons.png" />
+    <Content Include="Styles\themes\bootstrap\images\pagination_icons.png" />
+    <Content Include="Styles\themes\bootstrap\images\panel_tools.png" />
+    <Content Include="Styles\themes\bootstrap\images\searchbox_button.png" />
+    <Content Include="Styles\themes\bootstrap\images\slider_handle.png" />
+    <Content Include="Styles\themes\bootstrap\images\spinner_arrows.png" />
+    <Content Include="Styles\themes\bootstrap\images\tabs_icons.png" />
+    <Content Include="Styles\themes\bootstrap\images\tree_icons.png" />
+    <Content Include="Styles\themes\bootstrap\images\validatebox_warning.png" />
+    <Content Include="Styles\themes\bootstrap\layout.css" />
+    <Content Include="Styles\themes\bootstrap\linkbutton.css" />
+    <Content Include="Styles\themes\bootstrap\menu.css" />
+    <Content Include="Styles\themes\bootstrap\menubutton.css" />
+    <Content Include="Styles\themes\bootstrap\messager.css" />
+    <Content Include="Styles\themes\bootstrap\numberbox.css" />
+    <Content Include="Styles\themes\bootstrap\pagination.css" />
+    <Content Include="Styles\themes\bootstrap\panel.css" />
+    <Content Include="Styles\themes\bootstrap\progressbar.css" />
+    <Content Include="Styles\themes\bootstrap\propertygrid.css" />
+    <Content Include="Styles\themes\bootstrap\searchbox.css" />
+    <Content Include="Styles\themes\bootstrap\slider.css" />
+    <Content Include="Styles\themes\bootstrap\spinner.css" />
+    <Content Include="Styles\themes\bootstrap\splitbutton.css" />
+    <Content Include="Styles\themes\bootstrap\tabs.css" />
+    <Content Include="Styles\themes\bootstrap\textbox.css" />
+    <Content Include="Styles\themes\bootstrap\tooltip.css" />
+    <Content Include="Styles\themes\bootstrap\tree.css" />
+    <Content Include="Styles\themes\bootstrap\validatebox.css" />
+    <Content Include="Styles\themes\bootstrap\window.css" />
+    <Content Include="Styles\themes\color.css" />
+    <Content Include="Styles\themes\default\accordion.css" />
+    <Content Include="Styles\themes\default\calendar.css" />
+    <Content Include="Styles\themes\default\combo.css" />
+    <Content Include="Styles\themes\default\combobox.css" />
+    <Content Include="Styles\themes\default\datagrid.css" />
+    <Content Include="Styles\themes\default\datalist.css" />
+    <Content Include="Styles\themes\default\datebox.css" />
+    <Content Include="Styles\themes\default\dialog.css" />
+    <Content Include="Styles\themes\default\easyui.css" />
+    <Content Include="Styles\themes\default\filebox.css" />
+    <Content Include="Styles\themes\default\images\accordion_arrows.png" />
+    <Content Include="Styles\themes\default\images\blank.gif" />
+    <Content Include="Styles\themes\default\images\calendar_arrows.png" />
+    <Content Include="Styles\themes\default\images\combo_arrow.png" />
+    <Content Include="Styles\themes\default\images\datagrid_icons.png" />
+    <Content Include="Styles\themes\default\images\datebox_arrow.png" />
+    <Content Include="Styles\themes\default\images\layout_arrows.png" />
+    <Content Include="Styles\themes\default\images\linkbutton_bg.png" />
+    <Content Include="Styles\themes\default\images\loading.gif" />
+    <Content Include="Styles\themes\default\images\menu_arrows.png" />
+    <Content Include="Styles\themes\default\images\messager_icons.png" />
+    <Content Include="Styles\themes\default\images\pagination_icons.png" />
+    <Content Include="Styles\themes\default\images\panel_tools.png" />
+    <Content Include="Styles\themes\default\images\searchbox_button.png" />
+    <Content Include="Styles\themes\default\images\slider_handle.png" />
+    <Content Include="Styles\themes\default\images\spinner_arrows.png" />
+    <Content Include="Styles\themes\default\images\tabs_icons.png" />
+    <Content Include="Styles\themes\default\images\tree_icons.png" />
+    <Content Include="Styles\themes\default\images\validatebox_warning.png" />
+    <Content Include="Styles\themes\default\layout.css" />
+    <Content Include="Styles\themes\default\linkbutton.css" />
+    <Content Include="Styles\themes\default\menu.css" />
+    <Content Include="Styles\themes\default\menubutton.css" />
+    <Content Include="Styles\themes\default\messager.css" />
+    <Content Include="Styles\themes\default\numberbox.css" />
+    <Content Include="Styles\themes\default\pagination.css" />
+    <Content Include="Styles\themes\default\panel.css" />
+    <Content Include="Styles\themes\default\progressbar.css" />
+    <Content Include="Styles\themes\default\propertygrid.css" />
+    <Content Include="Styles\themes\default\searchbox.css" />
+    <Content Include="Styles\themes\default\slider.css" />
+    <Content Include="Styles\themes\default\spinner.css" />
+    <Content Include="Styles\themes\default\splitbutton.css" />
+    <Content Include="Styles\themes\default\tabs.css" />
+    <Content Include="Styles\themes\default\textbox.css" />
+    <Content Include="Styles\themes\default\tooltip.css" />
+    <Content Include="Styles\themes\default\tree.css" />
+    <Content Include="Styles\themes\default\validatebox.css" />
+    <Content Include="Styles\themes\default\window.css" />
+    <Content Include="Styles\themes\gray\accordion.css" />
+    <Content Include="Styles\themes\gray\calendar.css" />
+    <Content Include="Styles\themes\gray\combo.css" />
+    <Content Include="Styles\themes\gray\combobox.css" />
+    <Content Include="Styles\themes\gray\datagrid.css" />
+    <Content Include="Styles\themes\gray\datalist.css" />
+    <Content Include="Styles\themes\gray\datebox.css" />
+    <Content Include="Styles\themes\gray\dialog.css" />
+    <Content Include="Styles\themes\gray\easyui.css" />
+    <Content Include="Styles\themes\gray\filebox.css" />
+    <Content Include="Styles\themes\gray\images\accordion_arrows.png" />
+    <Content Include="Styles\themes\gray\images\blank.gif" />
+    <Content Include="Styles\themes\gray\images\calendar_arrows.png" />
+    <Content Include="Styles\themes\gray\images\combo_arrow.png" />
+    <Content Include="Styles\themes\gray\images\datagrid_icons.png" />
+    <Content Include="Styles\themes\gray\images\datebox_arrow.png" />
+    <Content Include="Styles\themes\gray\images\layout_arrows.png" />
+    <Content Include="Styles\themes\gray\images\linkbutton_bg.png" />
+    <Content Include="Styles\themes\gray\images\loading.gif" />
+    <Content Include="Styles\themes\gray\images\menu_arrows.png" />
+    <Content Include="Styles\themes\gray\images\messager_icons.png" />
+    <Content Include="Styles\themes\gray\images\pagination_icons.png" />
+    <Content Include="Styles\themes\gray\images\panel_tools.png" />
+    <Content Include="Styles\themes\gray\images\searchbox_button.png" />
+    <Content Include="Styles\themes\gray\images\slider_handle.png" />
+    <Content Include="Styles\themes\gray\images\spinner_arrows.png" />
+    <Content Include="Styles\themes\gray\images\tabs_icons.png" />
+    <Content Include="Styles\themes\gray\images\tree_icons.png" />
+    <Content Include="Styles\themes\gray\images\validatebox_warning.png" />
+    <Content Include="Styles\themes\gray\layout.css" />
+    <Content Include="Styles\themes\gray\linkbutton.css" />
+    <Content Include="Styles\themes\gray\menu.css" />
+    <Content Include="Styles\themes\gray\menubutton.css" />
+    <Content Include="Styles\themes\gray\messager.css" />
+    <Content Include="Styles\themes\gray\numberbox.css" />
+    <Content Include="Styles\themes\gray\pagination.css" />
+    <Content Include="Styles\themes\gray\panel.css" />
+    <Content Include="Styles\themes\gray\progressbar.css" />
+    <Content Include="Styles\themes\gray\propertygrid.css" />
+    <Content Include="Styles\themes\gray\searchbox.css" />
+    <Content Include="Styles\themes\gray\slider.css" />
+    <Content Include="Styles\themes\gray\spinner.css" />
+    <Content Include="Styles\themes\gray\splitbutton.css" />
+    <Content Include="Styles\themes\gray\tabs.css" />
+    <Content Include="Styles\themes\gray\textbox.css" />
+    <Content Include="Styles\themes\gray\tooltip.css" />
+    <Content Include="Styles\themes\gray\tree.css" />
+    <Content Include="Styles\themes\gray\validatebox.css" />
+    <Content Include="Styles\themes\gray\window.css" />
+    <Content Include="Styles\themes\icon.css" />
+    <Content Include="Styles\themes\icons\activation.png" />
+    <Content Include="Styles\themes\icons\back.png" />
+    <Content Include="Styles\themes\icons\blank.gif" />
+    <Content Include="Styles\themes\icons\cancel.png" />
+    <Content Include="Styles\themes\icons\clear.png" />
+    <Content Include="Styles\themes\icons\cut.png" />
+    <Content Include="Styles\themes\icons\deposit.png" />
+    <Content Include="Styles\themes\icons\detail.png" />
+    <Content Include="Styles\themes\icons\draw.png" />
+    <Content Include="Styles\themes\icons\edit_add.png" />
+    <Content Include="Styles\themes\icons\edit_remove.png" />
+    <Content Include="Styles\themes\icons\filesave.png" />
+    <Content Include="Styles\themes\icons\filter.png" />
+    <Content Include="Styles\themes\icons\help.png" />
+    <Content Include="Styles\themes\icons\invalid.png" />
+    <Content Include="Styles\themes\icons\large_chart.png" />
+    <Content Include="Styles\themes\icons\large_clipart.png" />
+    <Content Include="Styles\themes\icons\large_picture.png" />
+    <Content Include="Styles\themes\icons\large_shapes.png" />
+    <Content Include="Styles\themes\icons\large_smartart.png" />
+    <Content Include="Styles\themes\icons\lock.png" />
+    <Content Include="Styles\themes\icons\lost.png" />
+    <Content Include="Styles\themes\icons\man.png" />
+    <Content Include="Styles\themes\icons\mini_add.png" />
+    <Content Include="Styles\themes\icons\mini_edit.png" />
+    <Content Include="Styles\themes\icons\mini_refresh.png" />
+    <Content Include="Styles\themes\icons\more.png" />
+    <Content Include="Styles\themes\icons\no.png" />
+    <Content Include="Styles\themes\icons\ok.png" />
+    <Content Include="Styles\themes\icons\pay.png" />
+    <Content Include="Styles\themes\icons\pencil.png" />
+    <Content Include="Styles\themes\icons\print.png" />
+    <Content Include="Styles\themes\icons\recovery.png" />
+    <Content Include="Styles\themes\icons\redo.png" />
+    <Content Include="Styles\themes\icons\reload.png" />
+    <Content Include="Styles\themes\icons\repair.png" />
+    <Content Include="Styles\themes\icons\search.png" />
+    <Content Include="Styles\themes\icons\settlement.png" />
+    <Content Include="Styles\themes\icons\staybinding.png" />
+    <Content Include="Styles\themes\icons\stop.png" />
+    <Content Include="Styles\themes\icons\sum.png" />
+    <Content Include="Styles\themes\icons\tip.png" />
+    <Content Include="Styles\themes\icons\undo.png" />
+    <Content Include="Styles\themes\icons\used.png" />
+    <Content Include="Styles\themes\icos_20\ico_1.gif" />
+    <Content Include="Styles\themes\icos_20\ico_10.gif" />
+    <Content Include="Styles\themes\icos_20\ico_11.gif" />
+    <Content Include="Styles\themes\icos_20\ico_13.gif" />
+    <Content Include="Styles\themes\icos_20\ico_14.gif" />
+    <Content Include="Styles\themes\icos_20\ico_15.gif" />
+    <Content Include="Styles\themes\icos_20\ico_2.gif" />
+    <Content Include="Styles\themes\icos_20\ico_3.gif" />
+    <Content Include="Styles\themes\icos_20\ico_4.gif" />
+    <Content Include="Styles\themes\icos_20\ico_5.gif" />
+    <Content Include="Styles\themes\icos_20\ico_6.gif" />
+    <Content Include="Styles\themes\icos_20\ico_7.gif" />
+    <Content Include="Styles\themes\icos_20\ico_8.gif" />
+    <Content Include="Styles\themes\icos_20\ico_9.gif" />
+    <Content Include="Styles\themes\metro\accordion.css" />
+    <Content Include="Styles\themes\metro\calendar.css" />
+    <Content Include="Styles\themes\metro\combo.css" />
+    <Content Include="Styles\themes\metro\combobox.css" />
+    <Content Include="Styles\themes\metro\datagrid.css" />
+    <Content Include="Styles\themes\metro\datalist.css" />
+    <Content Include="Styles\themes\metro\datebox.css" />
+    <Content Include="Styles\themes\metro\dialog.css" />
+    <Content Include="Styles\themes\metro\easyui.css" />
+    <Content Include="Styles\themes\metro\filebox.css" />
+    <Content Include="Styles\themes\metro\images\accordion_arrows.png" />
+    <Content Include="Styles\themes\metro\images\blank.gif" />
+    <Content Include="Styles\themes\metro\images\calendar_arrows.png" />
+    <Content Include="Styles\themes\metro\images\combo_arrow.png" />
+    <Content Include="Styles\themes\metro\images\datagrid_icons.png" />
+    <Content Include="Styles\themes\metro\images\datebox_arrow.png" />
+    <Content Include="Styles\themes\metro\images\layout_arrows.png" />
+    <Content Include="Styles\themes\metro\images\linkbutton_bg.png" />
+    <Content Include="Styles\themes\metro\images\loading.gif" />
+    <Content Include="Styles\themes\metro\images\menu_arrows.png" />
+    <Content Include="Styles\themes\metro\images\messager_icons.png" />
+    <Content Include="Styles\themes\metro\images\pagination_icons.png" />
+    <Content Include="Styles\themes\metro\images\panel_tools.png" />
+    <Content Include="Styles\themes\metro\images\searchbox_button.png" />
+    <Content Include="Styles\themes\metro\images\slider_handle.png" />
+    <Content Include="Styles\themes\metro\images\spinner_arrows.png" />
+    <Content Include="Styles\themes\metro\images\tabs_icons.png" />
+    <Content Include="Styles\themes\metro\images\tree_icons.png" />
+    <Content Include="Styles\themes\metro\images\validatebox_warning.png" />
+    <Content Include="Styles\themes\metro\layout.css" />
+    <Content Include="Styles\themes\metro\linkbutton.css" />
+    <Content Include="Styles\themes\metro\menu.css" />
+    <Content Include="Styles\themes\metro\menubutton.css" />
+    <Content Include="Styles\themes\metro\messager.css" />
+    <Content Include="Styles\themes\metro\numberbox.css" />
+    <Content Include="Styles\themes\metro\pagination.css" />
+    <Content Include="Styles\themes\metro\panel.css" />
+    <Content Include="Styles\themes\metro\progressbar.css" />
+    <Content Include="Styles\themes\metro\propertygrid.css" />
+    <Content Include="Styles\themes\metro\searchbox.css" />
+    <Content Include="Styles\themes\metro\slider.css" />
+    <Content Include="Styles\themes\metro\spinner.css" />
+    <Content Include="Styles\themes\metro\splitbutton.css" />
+    <Content Include="Styles\themes\metro\tabs.css" />
+    <Content Include="Styles\themes\metro\textbox.css" />
+    <Content Include="Styles\themes\metro\tooltip.css" />
+    <Content Include="Styles\themes\metro\tree.css" />
+    <Content Include="Styles\themes\metro\validatebox.css" />
+    <Content Include="Styles\themes\metro\window.css" />
+    <Content Include="Styles\themes\mobile.css" />
+    <Content Include="Styles\themes\sysImage\bg.gif" />
+    <Content Include="Styles\themes\sysImage\btnbg.jpg" />
+    <Content Include="Styles\themes\sysImage\login\bg.gif" />
+    <Content Include="Styles\themes\sysImage\login\center.gif" />
+    <Content Include="Styles\themes\sysImage\login\center_0_0.jpg" />
+    <Content Include="Styles\themes\sysImage\login\center_1.gif" />
+    <Content Include="Styles\themes\sysImage\login\left.gif" />
+    <Content Include="Styles\themes\sysImage\login\left_0_0.jpg" />
+    <Content Include="Styles\themes\sysImage\login\left_1.gif" />
+    <Content Include="Styles\themes\sysImage\login\login.gif" />
+    <Content Include="Styles\themes\sysImage\login\password.gif" />
+    <Content Include="Styles\themes\sysImage\login\reset.gif" />
+    <Content Include="Styles\themes\sysImage\login\right.gif" />
+    <Content Include="Styles\themes\sysImage\login\right_0.gif" />
+    <Content Include="Styles\themes\sysImage\login\right_0_0.jpg" />
+    <Content Include="Styles\themes\sysImage\login\right_0_meitu_1.jpg" />
+    <Content Include="Styles\themes\sysImage\login\right_1.gif" />
+    <Content Include="Styles\themes\sysImage\login\user.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_04.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_05.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_06.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_11.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_1_1.jpg" />
+    <Content Include="Styles\themes\sysImage\main\main_2.gif" />
+    <Content Include="Styles\themes\sysImage\main\main_3.gif" />
+    <Content Include="Styles\themes\sysImage\main\pass.gif" />
+    <Content Include="Styles\themes\sysImage\main\pc.gif" />
+    <Content Include="Styles\themes\sysImage\main\quit.gif" />
+    <Content Include="Styles\themes\sysImage\main\sj.gif" />
+    <Content Include="Styles\themes\sysImage\main\user.gif" />
+    <Content Include="Styles\themes\system.css" />
+    <Content Include="Template\BeginCaseReport.htm" />
+    <Content Include="Template\chufashu01.htm" />
+    <Content Include="Template\chufashu01ReadOnly.htm" />
+    <Content Include="Template\LivePic.htm" />
+    <Content Include="Template\InquestRecord.htm" />
+    <Content Include="Template\TheNoticeToStopTheVehicle.htm" />
+    <Content Include="Template\CheckList.htm" />
+    <Content Include="Template\AskRecord.htm" />
+    <Content Include="Template\KouChe.htm" />
+    <Content Include="Template\ChuFaShenPi.htm" />
+    <Content Include="Terminal\terminal.htm" />
+    <Content Include="Terminal\terminalGrant.htm" />
+    <Content Include="Terminal\terminalLog.htm" />
+    <Content Include="Terminal\terminalOnline.htm" />
+    <Content Include="Terminal\terminalStroage.htm" />
+    <Content Include="UKey\uKey.htm" />
+    <Content Include="UKey\uKeyGrant.htm" />
+    <Content Include="UKey\uKeyLog.htm" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Agent\Handler\AgentAccDetailHandler.ashx.cs">
+      <DependentUpon>AgentAccDetailHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentAuditHandler.ashx.cs">
+      <DependentUpon>AgentAuditHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentCommissionPayHandler.ashx.cs">
+      <DependentUpon>AgentCommissionPayHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentHandler.ashx.cs">
+      <DependentUpon>AgentHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentLogHandler.ashx.cs">
+      <DependentUpon>AgentLogHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentModuleHandler.ashx.cs">
+      <DependentUpon>AgentModuleHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentOamHandler.ashx.cs">
+      <DependentUpon>AgentOamHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentPreRechgHandler.ashx.cs">
+      <DependentUpon>AgentPreRechgHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentRechargeDetailHandler.ashx.cs">
+      <DependentUpon>AgentRechargeDetailHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentRechargeHandler.ashx.cs">
+      <DependentUpon>AgentRechargeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentRechargeNoticeHandler.ashx.cs">
+      <DependentUpon>AgentRechargeNoticeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentRightHandler.ashx.cs">
+      <DependentUpon>AgentRightHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentSettlementHandler.ashx.cs">
+      <DependentUpon>AgentSettlementHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentTakeCashApplyHandler.ashx.cs">
+      <DependentUpon>AgentTakeCashApplyHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentTakeCashDetailHandler.ashx.cs">
+      <DependentUpon>AgentTakeCashDetailHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentTakeCashHandler.ashx.cs">
+      <DependentUpon>AgentTakeCashHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\AgentUserHandler.ashx.cs">
+      <DependentUpon>AgentUserHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\SiteAuditHandler.ashx.cs">
+      <DependentUpon>SiteAuditHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\SiteHandler.ashx.cs">
+      <DependentUpon>SiteHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Agent\Handler\SiteOamHandler.ashx.cs">
+      <DependentUpon>SiteOamHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Card\Handler\CardGrantHandler.ashx.cs">
+      <DependentUpon>CardGrantHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Card\Handler\CardHandler.ashx.cs">
+      <DependentUpon>CardHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Card\Handler\CardLogHandler.ashx.cs">
+      <DependentUpon>CardLogHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Case\Handler\CaseHandler.ashx.cs">
+      <DependentUpon>CaseHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Case\Handler\ProcessCaseHandler.ashx.cs">
+      <DependentUpon>ProcessCaseHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Case\Handler\TodoCaseHandler.ashx.cs">
+      <DependentUpon>TodoCaseHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientAccDetailHandler.ashx.cs">
+      <DependentUpon>ClientAccDetailHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientHandler.ashx.cs">
+      <DependentUpon>ClientHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientPointHandler.ashx.cs">
+      <DependentUpon>ClientPointHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientRechargeHandler.ashx.cs">
+      <DependentUpon>ClientRechargeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientTakeCashHandler.ashx.cs">
+      <DependentUpon>ClientTakeCashHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientTakeCashToBankHandler.ashx.cs">
+      <DependentUpon>ClientTakeCashToBankHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\Handler\ClientTradeHandler.ashx.cs">
+      <DependentUpon>ClientTradeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Enforcement\Handler\EnforcementNameHandler.ashx.cs">
+      <DependentUpon>EnforcementNameHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Enforcement\Handler\EnforcementTypeHandler.ashx.cs">
+      <DependentUpon>EnforcementTypeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Lottery\Handler\ChaseOrderHandler.ashx.cs">
+      <DependentUpon>ChaseOrderHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Lottery\Handler\LotteryOrderHandler.ashx.cs">
+      <DependentUpon>LotteryOrderHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Lottery\Handler\NumNoticeHandler.ashx.cs">
+      <DependentUpon>NumNoticeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Lottery\Handler\WinningLotteryOrderHandler.ashx.cs">
+      <DependentUpon>WinningLotteryOrderHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\DeptHandler.ashx.cs">
+      <DependentUpon>DeptHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\LogHandler.ashx.cs">
+      <DependentUpon>LogHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\ModuleHandler.ashx.cs">
+      <DependentUpon>ModuleHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\RightHandler.ashx.cs">
+      <DependentUpon>RightHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\RoleHandler.ashx.cs">
+      <DependentUpon>RoleHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Manage\Handler\UserHandler.ashx.cs">
+      <DependentUpon>UserHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PointBet\Handler\PointOrderHandler.ashx.cs">
+      <DependentUpon>PointOrderHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PointBet\Handler\PNumNoticeHandler.ashx.cs">
+      <DependentUpon>PNumNoticeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PointBet\Handler\WinningPointOrderHandler.ashx.cs">
+      <DependentUpon>WinningPointOrderHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Set\Handler\AreaHandler.ashx.cs">
+      <DependentUpon>AreaHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsReport\Handler\ClientHandler.ashx.cs">
+      <DependentUpon>ClientHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsReport\Handler\ClientTakeCashHandler.ashx.cs">
+      <DependentUpon>ClientTakeCashHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsReport\Handler\SalesInvoiceSummaryHandler.ashx.cs">
+      <DependentUpon>SalesInvoiceSummaryHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsReport\Handler\TradingDataHandler.ashx.cs">
+      <DependentUpon>TradingDataHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsReport\Handler\WinPrizeHandler.ashx.cs">
+      <DependentUpon>WinPrizeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Sys\Handler\LoginHandler.ashx.cs">
+      <DependentUpon>LoginHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Sys\Handler\MainHandler.ashx.cs">
+      <DependentUpon>MainHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Handler\AskRecordHandler.ashx.cs">
+      <DependentUpon>AskRecordHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Handler\chufashu01Handler.ashx.cs">
+      <DependentUpon>chufashu01Handler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Terminal\Handler\TerminalGrantHandler.ashx.cs">
+      <DependentUpon>TerminalGrantHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Terminal\Handler\TerminalHandler.ashx.cs">
+      <DependentUpon>TerminalHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Terminal\Handler\TerminalLogHandler.ashx.cs">
+      <DependentUpon>TerminalLogHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Terminal\Handler\TerminalOnlineHandler.ashx.cs">
+      <DependentUpon>TerminalOnlineHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Terminal\Handler\TerminalStoreHandler.ashx.cs">
+      <DependentUpon>TerminalStoreHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UKey\Handler\UKeyGrantHandler.ashx.cs">
+      <DependentUpon>UKeyGrantHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UKey\Handler\UKeyHandler.ashx.cs">
+      <DependentUpon>UKeyHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UKey\Handler\UKeyLogHandler.ashx.cs">
+      <DependentUpon>UKeyLogHandler.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{391B0082-6CE2-44D2-9E36-6CB4C261CA68}</Project>
+      <Name>JXKK.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{0740D83E-2AF2-49CE-93BD-4601A2F335E4}</Project>
+      <Name>JXKK.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{083F106A-89C2-4D1B-900B-D2A1ADBEF9DB}</Project>
+      <Name>JXKK.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{35E5F04C-BB0B-484A-90FD-BF6DA7C8C212}</Project>
+      <Name>JXKK.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Agent\Handler\AgentAccDetailHandler.ashx" />
+    <Content Include="Agent\Handler\AgentAuditHandler.ashx" />
+    <Content Include="Agent\Handler\AgentCommissionPayHandler.ashx" />
+    <Content Include="Agent\Handler\AgentHandler.ashx" />
+    <Content Include="Agent\Handler\AgentLogHandler.ashx" />
+    <Content Include="Agent\Handler\AgentModuleHandler.ashx" />
+    <Content Include="Agent\Handler\AgentOamHandler.ashx" />
+    <Content Include="Agent\Handler\AgentPreRechgHandler.ashx" />
+    <Content Include="Agent\Handler\AgentRechargeDetailHandler.ashx" />
+    <Content Include="Agent\Handler\AgentRechargeHandler.ashx" />
+    <Content Include="Agent\Handler\AgentRechargeNoticeHandler.ashx" />
+    <Content Include="Agent\Handler\AgentRightHandler.ashx" />
+    <Content Include="Agent\Handler\AgentSettlementHandler.ashx" />
+    <Content Include="Agent\Handler\AgentTakeCashApplyHandler.ashx" />
+    <Content Include="Agent\Handler\AgentTakeCashDetailHandler.ashx" />
+    <Content Include="Agent\Handler\AgentTakeCashHandler.ashx" />
+    <Content Include="Agent\Handler\AgentUserHandler.ashx" />
+    <Content Include="Agent\Handler\SiteAuditHandler.ashx" />
+    <Content Include="Agent\Handler\SiteHandler.ashx" />
+    <Content Include="Agent\Handler\SiteOamHandler.ashx" />
+    <Content Include="UKey\Handler\UKeyGrantHandler.ashx" />
+    <Content Include="UKey\Handler\UKeyHandler.ashx" />
+    <Content Include="UKey\Handler\UKeyLogHandler.ashx" />
+    <Content Include="Card\Handler\CardGrantHandler.ashx" />
+    <Content Include="Card\Handler\CardHandler.ashx" />
+    <Content Include="Card\Handler\CardLogHandler.ashx" />
+    <Content Include="Client\Handler\ClientAccDetailHandler.ashx" />
+    <Content Include="Client\Handler\ClientHandler.ashx" />
+    <Content Include="Client\Handler\ClientPointHandler.ashx" />
+    <Content Include="Client\Handler\ClientRechargeHandler.ashx" />
+    <Content Include="Client\Handler\ClientTakeCashHandler.ashx" />
+    <Content Include="Lottery\Handler\ChaseOrderHandler.ashx" />
+    <Content Include="Lottery\Handler\LotteryOrderHandler.ashx" />
+    <Content Include="Lottery\Handler\NumNoticeHandler.ashx" />
+    <Content Include="Lottery\Handler\WinningLotteryOrderHandler.ashx" />
+    <Content Include="Manage\Handler\DeptHandler.ashx" />
+    <Content Include="Manage\Handler\LogHandler.ashx" />
+    <Content Include="Manage\Handler\ModuleHandler.ashx" />
+    <Content Include="Manage\Handler\RightHandler.ashx" />
+    <Content Include="Manage\Handler\RoleHandler.ashx" />
+    <Content Include="Manage\Handler\UserHandler.ashx" />
+    <Content Include="Set\Handler\AreaHandler.ashx" />
+    <Content Include="StatisticsReport\Handler\ClientHandler.ashx" />
+    <Content Include="StatisticsReport\Handler\ClientTakeCashHandler.ashx" />
+    <Content Include="StatisticsReport\Handler\SalesInvoiceSummaryHandler.ashx" />
+    <Content Include="StatisticsReport\Handler\TradingDataHandler.ashx" />
+    <Content Include="StatisticsReport\Handler\WinPrizeHandler.ashx" />
+    <Content Include="Terminal\Handler\TerminalGrantHandler.ashx" />
+    <Content Include="Terminal\Handler\TerminalHandler.ashx" />
+    <Content Include="Terminal\Handler\TerminalLogHandler.ashx" />
+    <Content Include="Terminal\Handler\TerminalOnlineHandler.ashx" />
+    <Content Include="Terminal\Handler\TerminalStoreHandler.ashx" />
+    <Content Include="PointBet\Handler\PointOrderHandler.ashx" />
+    <Content Include="PointBet\Handler\PNumNoticeHandler.ashx" />
+    <Content Include="PointBet\Handler\WinningPointOrderHandler.ashx" />
+    <Content Include="Client\Handler\ClientTradeHandler.ashx" />
+    <Content Include="Client\Handler\ClientTakeCashToBankHandler.ashx" />
+    <Content Include="Enforcement\Handler\EnforcementTypeHandler.ashx" />
+    <Content Include="Enforcement\Handler\EnforcementNameHandler.ashx" />
+    <Content Include="Case\Handler\CaseHandler.ashx" />
+    <Content Include="Case\Handler\TodoCaseHandler.ashx" />
+    <Content Include="Case\Handler\ProcessCaseHandler.ashx" />
+    <None Include="Properties\PublishProfiles\WebMis.pubxml" />
+    <None Include="Styles\themes\icos_20\Thumbs.db" />
+    <Content Include="Sys\Handler\LoginHandler.ashx" />
+    <Content Include="Sys\Handler\MainHandler.ashx" />
+    <Content Include="Template\Handler\AskRecordHandler.ashx" />
+    <Content Include="Template\Handler\chufashu01Handler.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>16283</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/WebMis</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

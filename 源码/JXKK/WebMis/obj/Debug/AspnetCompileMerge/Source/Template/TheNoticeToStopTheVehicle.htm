@@ -1,0 +1,187 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>责令车辆停驶通知书</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            //确定按钮事件
+            $('#btnSave').bind("click", function () {
+                $('#myForm').form('submit', {
+                    success: function (data) {
+                        var objRes = eval("(" + data + ")");
+                        if ($.SuccessCheck(objRes) == true) {//成功检查
+                            $.messager.alert("操作提示", objRes.message, "info", function () {
+                                $('#myDataGrid').datagrid("reload");
+                            });
+                        }
+                    }
+                });
+            });
+
+
+            $('#btnPrint').bind("click", function () {
+
+                alert('print');
+            });
+
+        });
+    </script>
+
+ 
+        <form id="myForm" method="post" action="">
+            <div align="center">
+                <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                    <tbody>
+                        <tr>
+                            <td style="width:5%"></td>
+                            <td></td>
+
+                        </tr>
+
+                        <tr>
+                            <td align="center">
+                                <span style="font-weight: bold; font-size: larger">责 令 车 辆 停 驶 通 知 书</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="center">
+                                （
+
+                                <input name="col01" type="text" class="txt" style="width: 45px" />
+                                ）
+                                路政超限停驶 （
+
+                                <input name="col02" type="text" class="txt" style="width: 55px" />
+                                ）
+                                第 （
+                                <input name="col03" type="text" class="txt" style="width: 55px" />
+                                ）号
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <input name="col04" type="text" maxlength="20" class="txt" style="width: 200px" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+
+                                <select id="col05" class="easyui-combobox" name="canaskedmansex" data-options="editable:false,panelHeight:'auto'"
+                                        style="width: 77px;" data-options="required:true">
+                                    <option>你</option>
+                                    <option>你单位</option>
+                                </select>
+
+
+                                于
+
+                                <input type="text" name="col06" value="1990/01/01" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                       style="width: 200px;" />
+                                驾驶牌号为
+
+                                <input name="col07" type="text" maxlength="20" class="txt" style="width: 100px" />
+                                的车辆，
+                                涉嫌在
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+
+                                <input name="col08" type="text" maxlength="20" class="txt" style="width: 80px" />
+                                线公路上擅自超限行驶。经检测,
+
+                                <input name="col09" type="text" maxlength="20" class="txt" style="width: 220px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ，对公路造成较大损害。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据《中华人民共和国公路法》第七十六条第（五）项和第八十五条第二款、《湖南省
+                                <br />
+                                实施〈中华人民共和国公路法〉 办法》第三十五条、交通运输部 《 路政管理规定 》 第三十
+                                <br />
+                                八条、《超限运输车辆行驶公路管理规定 》第二十三条之规定 ， 现责令
+
+
+                                <select id="col10" class="easyui-combobox" name="canaskedmansex" data-options="editable:false,panelHeight:'auto'"
+                                        style="width: 77px;" data-options="required:true">
+                                    <option>你</option>
+                                    <option>你单位</option>
+                                </select>
+
+
+                                将
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                该车停放在
+                                <input name="col11" type="text" maxlength="20" class="txt" style="width: 220px" />
+                                ，并 于
+                                <input name="col12" type="text" maxlength="20" class="txt" style="width: 70px" />
+                                前到
+                                <br />
+                                <input name="col13" type="text" maxlength="20" class="txt" style="width: 70px" />
+                                接受处理。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;对本责令停驶行政行为不服的，可以在收到本通知书之日起六十日内向郴州市人民政府
+                                <br />
+                                或郴州市交通运输局申请复议或在三个月内依法向人民法院起诉。在法定期限内不申请复议<br />
+                                ，不起诉，又不接受处理的，将依法处理。
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                执法人员签名：
+
+                                <input name="col14" type="text" maxlength="20" class="txt" style="width: 70px" />
+                                执法证号：
+                                <input name="col15" type="text" maxlength="20" class="txt" style="width: 70px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                执法人员签名：
+
+                                <input name="col16" type="text" maxlength="20" class="txt" style="width: 70px" />
+                                执法证号：
+                                <input name="col17" type="text" maxlength="20" class="txt" style="width: 70px" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                当 事 人签 名：
+
+                                <input name="col18" type="text" maxlength="20" class="txt" style="width: 70px" />
+                                日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期：
+
+                                <input type="text" name="col19" value="1990/01/01" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                                       style="width: 200px;" />
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </form>
+    <script src="../Scripts/util.js" type="text/javascript"></script>
+    <script src="../Scripts/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+</body>
+</html>

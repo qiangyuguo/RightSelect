@@ -1,0 +1,150 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>部门管理</title>
+</head>
+<body>
+
+    <script type="text/javascript">
+		$(document).ready(function(){
+			//加载DataGrid
+			var gridWidth = $("#mainCenter").width()-200;
+			$('#myDataGrid').datagrid({
+			    url: '../Manage/Handler/DeptHandler.ashx?action=gridLoad',
+				idField:'deptid',
+				columns:[[
+					{title:'部门编号',field:'deptid',width:gridWidth*0.10,align:'left'},
+					{title:'部门名称',field:'deptname',width:gridWidth*0.30,align:'left'},
+					{title:'联系电话',field:'telephone',width:gridWidth*0.30,align:'left'},
+					{title:'使用状态',field:'status',width:gridWidth*0.10,align:'center',
+						formatter:function(value,rowData,rowIndex){
+							if(value=="0")
+								return '<span style="color:red">停用</span>';
+							else
+								return '正常';
+						}
+					}
+				]],
+				toolbar:[{
+					text:'增加',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#myWindow').window({title:"部门新增",iconCls:"icon-add"});
+						$('#myWindow').window('open');
+						$('#myForm').form('clear');
+						$('#myForm').attr('action', '../Manage/Handler/DeptHandler.ashx?action=add');
+						$('#myForm').form('load',{
+							deptId:"系统自动生成",
+							status:"on"
+						});
+					}
+				},'-',{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function() {
+						var row = $('#myDataGrid').datagrid('getSelected');
+						if(row==null){
+							$.messager.alert('提示','请选择要修改的记录','warning');
+							return;
+						}
+						$('#myWindow').window({title:"部门修改",iconCls:"icon-edit"});
+						$('#myWindow').window('open');
+						$('#myForm').form('clear');
+						$('#myForm').attr('action', '../Manage/Handler/DeptHandler.ashx?action=edit&deptId=' + row.deptid);
+						$('#myForm').form('load', '../Manage/Handler/DeptHandler.ashx?action=load&deptId=' + row.deptid);
+					}
+				},'-',{
+					text:'删除',
+					iconCls:'icon-remove',
+					handler:function(){
+						var row = $('#myDataGrid').datagrid('getSelected');
+						if(row==null){
+							$.messager.alert('提示','请选择要删除的记录','warning');
+							return;
+						}
+						$.messager.confirm("操作提示","您确认要删除“" +row.deptname + "”部门吗？",function(bChoose){
+							if(bChoose==true){
+							    $.getJSON("../Manage/Handler/DeptHandler.ashx?action=delete", { deptId: row.deptid }, function (result) {
+									if($.SuccessCheck(result)==true){//成功检查
+										$.messager.alert("操作提示",result.message,"info",function(){
+											$('#myDataGrid').datagrid("reload");
+											$('#myDataGrid').datagrid("unselectAll");
+										});
+									}
+								});    
+							}
+						});
+					}
+				}]
+			});
+			
+			//关闭按钮事件
+		    $('#btnCancel').bind("click",function(){
+		    	$('#myWindow').window('close');
+		    });
+		    
+			//确定按钮事件
+			$('#btnSave').bind("click",function(){
+				$('#myForm').form('submit',{
+					success:function(data){
+						var objRes = eval("(" + data + ")");
+						if($.SuccessCheck(objRes)==true){//成功检查
+							$.messager.alert("操作提示",objRes.message,"info",function(){
+								$('#myWindow').window('close');//关闭当前窗口
+								$('#myDataGrid').datagrid("reload");
+							});
+						}
+					}
+				});
+			});
+		});
+    </script>
+
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 300px">
+        <form id="myForm" method="post" action="">
+            <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td class="tdT" align="right" style="width: 120px">
+                            部门编号：</td>
+                        <td class="tdE" align="left" style="width: 155px">
+                             <input type="text" name="deptId" disabled="disabled" value="系统自动生成"
+                                style="width: 150px;" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            部门名称：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="deptName" validtype="name" style="width: 150px;" maxlength="15" class="easyui-validatebox"
+                                data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="tdT">
+                            使用状态：</td>
+                        <td align="left" class="tdE">
+                            <input type="checkbox" name="status" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            联系电话：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="telephone" style="width: 150px;" maxlength="40" /></td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                            <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                                确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                    data-options="iconCls:'icon-cancel'">取消</a><input id="htbOrgId" type="hidden" name="orgId" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

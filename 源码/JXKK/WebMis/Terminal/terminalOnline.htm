@@ -1,0 +1,114 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>终端在线</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+//            var today = new Date();
+//            $('#tbStartDate').datebox({
+//                value: today.format('yyyy-MM-dd')
+//            });
+//            $('#tbEndDate').datebox({
+//                value: today.format('yyyy-MM-dd')
+//            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 200;
+            $('#myDataGrid').datagrid({
+                url: '../Terminal/Handler/TerminalOnlineHandler.ashx?action=gridLoad',
+                idField: 'terminalid',
+                columns: [[
+					{ title: '终端号', field: 'terminalid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '在离线', field: 'onlinestatus', width: gridWidth * 0.08, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '在线';
+                            else if (value == "1")
+                                return '<span style="color:red">离线</span>';
+                        }
+                    },
+                    { title: '代理商编号', field: 'agentid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '代理商名称', field: 'agentname', width: gridWidth * 0.14, align: 'left' },
+                    { title: '执法文书名称编号', field: 'siteid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '执法文书类型名称', field: 'sitename', width: gridWidth * 0.14, align: 'left' },
+					{ title: '最新心跳时间', field: 'checktime', width: gridWidth * 0.22, align: 'left' }
+
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    agentId: $("#tbAgentId").val(),
+                    siteId: $("#tbSiteId").val(),
+                    terminalId: $("#tbTerminalId").val(),
+                    onlineStatus: $("#ddlOnlineStatus").combobox("getValue"),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAgentId" style="width: 110px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书名称编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbSiteId" style="width: 110px;" maxlength="30" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbTerminalId" style="width: 110px;" maxlength="30" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        在线状态:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlOnlineStatus" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'">
+                            <option value="">全部</option>
+                            <option value="0">在线</option>
+                            <option value="1">离线</option>
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        心跳时间:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

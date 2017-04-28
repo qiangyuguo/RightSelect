@@ -1,0 +1,10 @@
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\DBO.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\DBO.pdb
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\Data.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\Model.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\Oracle.ManagedDataAccess.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\Data.pdb
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\bin\Release\Model.pdb
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\obj\Release\DBO.csprojResolveAssemblyReference.cache
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\obj\Release\DBO.dll
+F:\WorkSpaces\KKPro\Fast3\SourceCode\accountSystem\Web\JXKK\DBO\obj\Release\DBO.pdb

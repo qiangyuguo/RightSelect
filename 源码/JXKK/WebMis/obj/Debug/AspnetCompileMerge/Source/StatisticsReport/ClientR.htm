@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户信息报表</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //加载代理商列表
+            $("#ddlAgent").combobox({
+                url: '../StatisticsReport/Handler/ClientHandler.ashx?action=agentListLoad',
+                onSelect: function (record) {
+                    $('#ddlSite').combobox({
+                        url: '../StatisticsReport/Handler/ClientHandler.ashx?action=siteListLoad&agentId=' + record.value
+                    }).combobox('clear');
+                }
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../StatisticsReport/Handler/ClientHandler.ashx?action=gridLoad',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                columns: [[
+                    { title: '客户编号', field: 'clientid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '客户名称', field: 'clientname', width: gridWidth * 0.15, align: 'left' },
+                    { title: '执法文书类型', field: 'sitename', width: gridWidth * 0.15, align: 'left' },
+                    { title: '卡号', field: 'cardid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '账户余额￥', field: 'balance', width: gridWidth * 0.14, align: 'right' },
+                    { title: '冻结金额￥', field: 'lockfee', width: gridWidth * 0.14, align: 'right' },
+                    { title: '状态', field: 'status', width: gridWidth * 0.14, align: 'left',
+                        formatter: function (value, rowData, rowIndex) {
+                            if (value == "0")
+                                return '激活';
+                            else if (value == "1")
+                                return '<span style="color:red">封存</span>';
+                        } 
+                    }
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    agentId: $("#ddlAgent").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    status: $("#ddlStatus").combobox("getValue")
+                });
+            });
+            //输出Excel
+            $("#btnToExcel").bind('click', function () {
+                var startDate = $("#tbStartDate").datebox('getValue');
+                var endDate = $("#tbEndDate").datebox('getValue');
+                var agentId = $("#ddlAgent").combobox("getValue");
+                var siteId = $("#ddlSite").combobox("getValue");
+                var status = $("#ddlStatus").combobox("getValue");
+                location.href = "../StatisticsReport/Handler/ClientHandler.ashx?action=ToExcel&startDate=" + startDate + "&endDate=" + endDate + "&agentId=" + agentId + "&siteId=" + siteId + "&status=" + status + "";
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnToExcel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            ToExcel</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlAgent" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                     <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                     <div style="float: left; padding: 6px; vertical-align: middle">
+                        使用状态</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlStatus" name="ddlStatus" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'">
+                            <option value="">全部</option>
+                            <option value="0">激活</option>
+                            <option value="1">封存</option>
+                        </select>
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>&nbsp;&nbsp; <span style="color:Red">注:最大行数不能超过65536行</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

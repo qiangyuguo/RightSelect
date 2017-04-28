@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>客户提现报表</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../StatisticsReport/Handler/ClientTakeCashHandler.ashx?action=gridLoad',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                columns: [[
+                    { title: '客户编号', field: 'clientid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '提现金额￥', field: 'fee', width: gridWidth * 0.15, align: 'right' },
+                    { title: '提现方式', field: 'handlemode', width: gridWidth * 0.15, align: 'left' },
+                    { title: '提现时间', field: 'createtime', width: gridWidth * 0.14, align: 'left' },
+                    { title: '提现单号', field: 'flowid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '代理商', field: 'agentid', width: gridWidth * 0.14, align: 'left' },
+                    { title: '操作员', field: 'operatorname', width: gridWidth * 0.14, align: 'left' }
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    agentId : $("#tbAagentId").val(),
+                    clientId : $("#tbClientId").val()
+                });
+            });
+            //输出Excel
+            $("#btnToExcel").bind('click', function () {
+                var startDate = $("#tbStartDate").datebox('getValue');
+                var endDate = $("#tbEndDate").datebox('getValue');
+                var agentId = $("#tbAagentId").val();
+                var clientId = $("#tbClientId").val();
+                location.href = "../StatisticsReport/Handler/ClientTakeCashHandler.ashx?action=ToExcel&startDate=" + startDate + "&endDate=" + endDate + "&agentId=" + agentId + "&clientId=" + clientId + "";
+            });
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnToExcel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            ToExcel</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbAagentId" style="width: 115px;" />
+                    </div>
+                     <div style="float: left; padding: 6px; vertical-align: middle">
+                        客户编号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbClientId" style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>&nbsp;&nbsp; <span style="color:Red">注:最大行数不能超过65536行</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

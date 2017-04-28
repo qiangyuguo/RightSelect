@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            $('#tbStartDate').datebox({
+                value: getStartDate()
+            });
+            $('#tbEndDate').datebox({
+                value: getEndDate()
+            });
+
+            //加载市区县执法文书类型列表
+            $("#ddlCity").combobox({
+
+                url: '../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=cityListLoad',
+                onSelect: function (recordCity) {
+                    $('#ddlSite').combobox({
+                        url: '../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=siteListLoad&cityId=' + recordCity.value
+                    }).combobox('clear');
+                    $('#ddlCounty').combobox({
+                        url: '../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=countyListLoad&cityId=' + recordCity.value
+                    }).combobox('clear');
+                }
+            });
+            $('#ddlCounty').combobox({
+                onSelect: function (recordCounty) {
+                    $('#ddlSite').combobox({
+                        url: '../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=siteListLoad&countyId=' + recordCounty.value
+                    }).combobox('clear');
+                }
+            });
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=gridLoad',
+                queryParams: {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                showFooter: true,
+                columns: [[
+                    { title: '日期', field: 'dateday', width: gridWidth * 0.16, align: 'left' },
+                    { title: '预存款余额￥', field: 'advancebalance', width: gridWidth * 0.14, align: 'left' },
+                    { title: '销售总额￥', field: 'sumbetfee', width: gridWidth * 0.14, align: 'left' },
+                    { title: '佣金金额￥', field: 'commissionfee', width: gridWidth * 0.14, align: 'left' },
+                    { title: '中奖金额￥', field: 'awardamount', width: gridWidth * 0.14, align: 'left' },
+                    { title: '提现金额￥', field: 'sumtakecashfee', width: gridWidth * 0.14, align: 'left' },
+                    { title: '退款金额￥', field: 'refundamount', width: gridWidth * 0.14, align: 'left' }
+				]],
+                onLoadSuccess: function (data) {
+                    $.SuccessCheck(data); //成功检查
+                    $('#myDataGrid').datagrid('statistics');
+                },
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    cityId: $("#ddlCity").combobox("getValue"),
+                    countyId: $("#ddlCounty").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    agentId: $("#tbAgentId").val(),
+                    terminalId: $("#tbTerminalId").val()
+                });
+            });
+            //输出Excel
+            $("#btnToExcel").bind('click', function () {
+                var startDate = $("#tbStartDate").datebox('getValue');
+                var endDate = $("#tbEndDate").datebox('getValue');
+                var cityId = $("#ddlCity").combobox("getValue");
+                var countyId = $("#ddlCounty").combobox("getValue");
+                var siteId = $("#ddlSite").combobox("getValue");
+                var agentId = $("#tbAgentId").val();
+                var terminalId = $("#tbTerminalId").val();
+                location.href = "../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=ToExcel&startDate=" + startDate + "&endDate=" + endDate + "&cityId=" + cityId + "&countyId=" + countyId + "&siteId=" + siteId + "&agentId=" + agentId + "&terminalId=" + terminalId;
+            });
+        });
+
+        $.extend($.fn.datagrid.methods, {
+            statistics: function (jq) {
+                var opt = $(jq).datagrid('options').columns;
+                var rows = $("#myDataGrid").datagrid("getRows");
+                var footer = new Array();
+                footer['sum'] = "";
+                $.getJSON("../StatisticsReport/Handler/SalesInvoiceSummaryHandler.ashx?action=totalSale", {
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue'),
+                    cityId: $("#ddlCity").combobox("getValue"),
+                    countyId: $("#ddlCounty").combobox("getValue"),
+                    siteId: $("#ddlSite").combobox("getValue"),
+                    agentId: $("#tbAgentId").val(),
+                    terminalId: $("#tbTerminalId").val()
+                }, function (result) {
+                    if ($.SuccessCheck(result) == true) {//成功检查
+                        footer['sum'] += '"sumbetfee":"<b>￥' + result.totalSumbetfee + '</b>",';
+                        footer['sum'] += '"commissionfee":"<b>￥' + result.totalCommissionFee + '</b>",';
+                        footer['sum'] += '"awardamount":"<b>￥' + result.totalAwardAmount + '</b>",';
+                        footer['sum'] += '"sumtakecashfee":"<b>￥' + result.totalSumTakeCashFee + '</b>",';
+                        footer['sum'] += '"refundamount":"<b>￥' + result.totalRefundAmount + '</b>",';
+                        debugger;
+                        var footerObj = new Array();
+                        if (footer['sum'] != "") {
+                            var tmp = '{' + footer['sum'].substring(0, footer['sum'].length - 1) + "}";
+                            var obj = eval('(' + tmp + ')');
+                            if (obj[opt[0][0].field] == undefined) {
+                                footer['sum'] += '"' + opt[0][0].field + '":"<b>合计:</b>",';
+                                obj = eval('({' + footer['sum'] + '})');
+                            } else {
+                                obj[opt[0][0].field] += "<b>合计:</b>," + obj[opt[0][0].field];
+                            }
+                            footerObj.push(obj);
+                        }
+                        if (footerObj.length > 0) {
+                            $(jq).datagrid('reloadFooter', footerObj);
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center'">
+            <table id="myDataGrid" data-options="border:false">
+            </table>
+        </div>
+    </div>
+    <div id="tb">
+       <table>
+            <tr>
+                <td>
+                    <div style="float: left;">
+                        <a id="btnToExcel" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-settlement',plain:true">
+                            ToExcel</a>
+                    </div>
+                    <div class="datagrid-btn-separator">
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" editable="fasle" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        市:</div>
+                    <div style="float: left; padding: 4px;">
+                        <select id="ddlCity" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                     <div style="float: left; padding: 6px; vertical-align: middle">
+                        区县:</div>
+                    <div style="float: left; padding: 4px;">
+                         <select id="ddlCounty" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        执法文书类型:</div>
+                    <div style="float: left; padding: 4px;">
+                         <select id="ddlSite" class="easyui-combobox" data-options="editable:false,panelHeight:'auto'"
+                            style="width: 110px;">
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                <div style="float: left; padding: 6px; vertical-align: middle">
+                        代理商编号:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbAgentId"  style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbTerminalId"  style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>&nbsp;&nbsp; <span style="color:Red">注:最大行数不能超过65536行</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

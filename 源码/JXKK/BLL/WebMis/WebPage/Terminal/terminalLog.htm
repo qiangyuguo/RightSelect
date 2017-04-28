@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>终端日志</title>
+</head>
+<body>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //初始化查询日期
+            var today = new Date();
+            $('#tbStartDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+            $('#tbEndDate').datebox({
+                value: today.format('yyyy-MM-dd')
+            });
+
+            //加载DataGrid
+            var gridWidth = $("#mainCenter").width() - 25;
+            $('#myDataGrid').datagrid({
+                url: '../WebAction/Terminal/TerminalLogHttp.ashx?action=gridLoad',
+                queryParams: {
+                    terminalId: $("#tbTerminalId").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                },
+                idField: 'logid',
+                columns: [[
+					{ title: '终端号', field: 'terminalid', width: gridWidth * 0.09, align: 'left' },
+					{ title: '操作类型', field: 'operatetype', width: gridWidth * 0.20, align: 'left',
+					    formatter: function (value, rowData, rowIndex) {
+					        if (value == "0")
+					            return '入库';
+					        else if (value == "1")
+					            return '发放';
+					        else if (value == "2")
+					            return '维修';
+					        else if (value == "3")
+					            return '回库';
+					        else
+					            return '作废';
+					    }
+					},
+					{ title: '操作时间', field: 'operatetime', width: gridWidth * 0.20, align: 'left' },
+					{ title: '操作人名称', field: 'operatorname', width: gridWidth * 0.20, align: 'left' },
+                    { title: '操作说明', field: 'summary', width: gridWidth * 0.40, align: 'center' },
+				]],
+                toolbar: "#tb"
+            });
+
+            //查询事件绑定
+            $("#btnSearch").bind('click', function () {
+                $('#myDataGrid').datagrid("load", {
+                    terminalId: $("#tbTerminalId").val(),
+                    startDate: $("#tbStartDate").datebox('getValue'),
+                    endDate: $("#tbEndDate").datebox('getValue')
+                });
+            });
+        });
+    </script>
+    <div id="tb">
+        <table>
+            <tr>
+                <td>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        终端号:</div>
+                    <div style="float: left; padding: 4px;">
+                        <input type="text" id="tbTerminalId" style="width: 90px;" maxlength="20" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        查询日期:</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbStartDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding: 6px; vertical-align: middle">
+                        至</div>
+                    <div style="float: left; padding: 2px;">
+                        <input type="text" id="tbEndDate" class="easyui-datebox" data-options="validType:'date'"
+                            style="width: 115px;" />
+                    </div>
+                    <div style="float: left; padding-left: 6px;">
+                        <a id="btnSearch" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">
+                            查询</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table id="myDataGrid">
+    </table>
+</body>
+</html>

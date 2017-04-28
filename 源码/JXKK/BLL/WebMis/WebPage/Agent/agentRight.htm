@@ -1,0 +1,70 @@
+﻿<!DOCTYPE body PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>权限分配</title>
+</head>
+<body>
+
+    <script type="text/javascript">
+		$(document).ready(function(){
+			//加载角色列表
+			$("#ddlRole").combobox({
+				panelHeight:150,
+				url:'../WebAction/Agent/AgentRightHttp.ashx?action=roleList',
+				onSelect:function(rec){
+					$("#myTree").tree({
+					    url: '../WebAction/Agent/AgentRightHttp.ashx?action=treeLoad&roleId=' + rec.value
+					});
+				}
+			});
+			
+			//加载树
+			$("#myTree").tree({
+			    url: '../WebAction/Agent/AgentRightHttp.ashx?action=treeLoad&roleId=xx',
+				checkbox:true
+			});	   
+			
+			$("#btnSave").bind('click',function(){
+				var roleId = $("#ddlRole").combobox('getValue');
+				if(roleId==""){
+					$.messager.alert("操作提示","请选择角色","warning");
+					return;
+				}
+				var nodes = $('#myTree').tree('getChecked');
+				var moduleIds = '';
+				for(var i=0; i<nodes.length; i++){
+					if (moduleIds != '')
+						moduleIds += ',';
+					moduleIds += nodes[i].attributes["moduleId"];
+				}
+	               $.getJSON("../WebAction/Agent/AgentRightHttp.ashx?action=save", { roleId: roleId, moduleIds: moduleIds }, function (data) {
+					if($.SuccessCheck(data)==false)//成功检查
+			    		return;
+			    	$.messager.alert("操作提示",data.message,"info");
+				});
+			});
+		});	
+    </script>
+
+    <div class="easyui-panel" data-options="fit:true,tools:'#tb'">
+        <div id="tb" class="datagrid-toolbar">
+            <div style="float: left; padding: 6px; vertical-align: middle">
+                当前角色:</div>
+            <div style="float: left; padding: 3px">
+                <select id="ddlRole" class="easyui-combobox" name="roleId" style="width: 150px;">
+                </select>
+            </div>
+            <div class="datagrid-btn-separator">
+            </div>
+            <div style="float: left;">
+                <a id="btnSave" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true">
+                    保存</a>
+            </div>
+        </div>
+        <br />
+        <br />
+        <ul id="myTree">
+        </ul>
+    </div>
+</body>
+</html>

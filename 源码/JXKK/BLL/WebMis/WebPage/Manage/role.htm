@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>角色管理</title>
+</head>
+<body>
+
+    <script type="text/javascript">	
+		$(document).ready(function(){
+			//加载DataGrid
+			var gridWidth = $("#mainCenter").width()-25;
+			$('#myDataGrid').datagrid({
+			    url: '../WebAction/Manage/RoleHttp.ashx?action=gridLoad',
+				idField:'roleid',
+				columns:[[
+					{title:'角色编号',field:'roleid',width:gridWidth*0.25,align:'left'},
+					{title:'角色名称',field:'rolename',width:gridWidth*0.50,align:'left'},
+					{title:'使用状态',field:'status',width:gridWidth*0.25,align:'center',
+						formatter:function(value,rowData,rowIndex){
+							if(value=="0")
+								return '<span style="color:red">停用</span>';
+							else
+								return '正常';
+						}
+					}
+				]],
+				toolbar:[{
+					text:'增加',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#myWindow').window({title:"角色新增",iconCls:"icon-add"});
+						$('#myWindow').window('open');
+						$('#myForm').form('clear');
+						$('#myForm').attr('action', '../WebAction/Manage/RoleHttp.ashx?action=add');
+						$('#myForm').form('load',{
+							roleId:"系统自动生成",
+							status:"on"
+						});
+					}
+				},'-',{
+					text:'修改',
+					iconCls:'icon-edit',
+					handler:function() {
+						var row = $('#myDataGrid').datagrid('getSelected');
+						if(row==null){
+							$.messager.alert('提示','请选择要修改的记录','warning');
+							return;
+						}
+						$('#myWindow').window({title:"角色修改",iconCls:"icon-edit"});
+						$('#myWindow').window('open');
+						$('#myForm').form('clear');
+						$('#myForm').attr('action', '../WebAction/Manage/RoleHttp.ashx?action=edit&roleId=' + row.roleid);
+						$('#myForm').form('load', '../WebAction/Manage/RoleHttp.ashx?action=load&roleId=' + row.roleid);
+					}
+				},'-',{
+					text:'删除',
+					iconCls:'icon-remove',
+					handler:function(){
+						var row = $('#myDataGrid').datagrid('getSelected');
+						if(row==null){
+							$.messager.alert('提示','请选择要删除的记录','warning');
+							return;
+						}
+						$.messager.confirm("操作提示","您确认要删除“" +row.rolename + "”角色吗？",function(bChoose){
+							if(bChoose==true){
+							    $.getJSON("../WebAction/Manage/RoleHttp.ashx?action=delete", { roleId: row.roleid }, function (result) {
+									if($.SuccessCheck(result)==true){//成功检查
+										$.messager.alert("操作提示",result.message,"info",function(){
+											$('#myDataGrid').datagrid("reload");
+											$('#myDataGrid').datagrid("unselectAll");
+										});
+									}
+								});    
+							}
+						});
+					}
+				}]
+			});
+			
+			//关闭按钮事件
+		    $('#btnCancel').bind("click",function(){
+		    	$('#myWindow').window('close');
+		    });
+		    
+			//确定按钮事件
+			$('#btnSave').bind("click",function(){
+				$('#myForm').form('submit',{
+					success:function(data){
+						var objRes = eval("(" + data + ")");
+						if($.SuccessCheck(objRes)==true){//成功检查
+							$.messager.alert("操作提示",objRes.message,"info",function(){
+								$('#myWindow').window('close');//关闭当前窗口
+								$('#myDataGrid').datagrid("reload");
+							});
+						}
+					}
+				});
+			});
+		});
+    </script>
+
+    <table id="myDataGrid">
+    </table>
+    <div id="myWindow" class="easyui-window divWindow" data-options="closed:true" style="width: 300px">
+        <form id="myForm" method="post" action="">
+            <table class="tab" cellspacing="1" cellpadding="1" width="100%" border="0">
+                <tbody>
+                    <tr>
+                        <td class="tdT" align="right" style="width: 120px">
+                            角色编号：</td>
+                        <td class="tdE" align="left" style="width: 155px">
+                            <input type="text" name="roleId" disabled="disabled" value="系统自动生成"
+                                style="width: 150px;" /></td>
+                    </tr>
+                    <tr>
+                        <td class="tdT" align="right">
+                            角色名称：</td>
+                        <td class="tdE" align="left">
+                            <input type="text" name="roleName" style="width: 150px;" maxlength="15"
+                                class="easyui-validatebox" data-options="required:true" /></td>
+                    </tr>
+                    <tr>
+                        <td align="right" class="tdT">
+                            使用状态：</td>
+                        <td align="left" class="tdE">
+                            <input type="checkbox" name="status" /></td>
+                    </tr>
+                    <tr>
+                        <td align="center" class="tdE" colspan="2" style="height: 35px" valign="middle">
+                            <a href="#" id="btnSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">
+                                确定</a> &nbsp; &nbsp;&nbsp; &nbsp; <a href="#" id="btnCancel" class="easyui-linkbutton"
+                                    data-options="iconCls:'icon-cancel'">取消</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</body>
+</html>
